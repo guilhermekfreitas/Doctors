@@ -1,6 +1,16 @@
 DOCTORS PROJECT
 ---------------------------------------------------------
 
-Abaixo há as instruções a serem realizadas no projeto:
+Tarefas a serem realizadas:
 
-..
+- Implementar Cadastros Básicos para Entidades:
+   - Convenio;
+   - Pessoa;
+   - Medico;
+   - Paciente;
+   - Funcionario;
+   - Consulta;
+   - Agendamento;
+   - Exame;
+   - Atestado;
+   - Receita;
