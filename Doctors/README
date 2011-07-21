@@ -1,9 +1,9 @@
 DOCTORS PROJECT
 ---------------------------------------------------------
 
-Tarefas a serem realizadas: [até 27/07]
+Tarefas a serem realizadas: [atï¿½ 27/07]
 
-- Implementar Cadastros Básicos para Entidades:
+- Implementar Cadastros Bï¿½sicos para Entidades:
    - Convenio;
    - Pessoa;
    - Medico;
@@ -17,6 +17,8 @@ Tarefas a serem realizadas: [até 27/07]
    
    
 - Para cada entidade, deve ser criada:
-  - Classe de domínio (ela mesma!)
+  - Classe de domï¿½nio (ela mesma!)
   - Classe de controle ("nomedaentidade"Controller)
   - dentro da pasta WebContent/WEB-INF/jsp, criar pasta com nome: "nomedaentidade"
+    Para cada metodo criado na classe de controle, criar uma pagina .JSP com o mesmo nome do metodo
+    ex: void adiciona(){ }               ---> criar pagina adiciona.jsp
