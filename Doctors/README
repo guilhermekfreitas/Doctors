@@ -28,12 +28,11 @@ Tarefas a serem realizadas: [at� 27/07]
 
 --------------------------------------------------------------
 Receber Atualizacoes:
-   - No seu projeto > Team > Fetch from Upstream
-   - Em seguida, execute Team > Pull
+   - No seu projeto, execute Team > Pull
 
 
 Enviar Alteracoes:
    - Primeiramente, atualize seu projeto (evitar conflitos de arquivos)
    - Clique com o botao direito no projeto > Team > Commit
       - Insira um comentario, e envie os arquivos (reveja se vc quer enviar todos os arquivos da lista)
-
+   - Em seguida, Team > Push to Upstream
