@@ -13,6 +13,6 @@
 	<c:forEach items="${convenios}" var="convenio">
 		${convenio.nome} - ${convenio.tipo} <br/>
 	</c:forEach>
-	
+	<a href="../convenios/">Voltar página inicial do módulo</a><br/>
 </body>
 </html>

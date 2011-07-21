@@ -8,5 +8,6 @@
 </head>
 <body>
 	<h1>Convenio adicionado com sucesso!</h1>
+	<a href="../convenios/">Voltar página inicial do módulo</a><br/>
 </body>
 </html>
