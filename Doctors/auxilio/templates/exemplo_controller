@@ -1,0 +1,74 @@
+package br.com.doctors.controller;
+
+import br.com.caelum.vraptor.Path;
+import br.com.caelum.vraptor.Post;
+import br.com.caelum.vraptor.Resource;
+import br.com.caelum.vraptor.Result;
+import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.view.Results;
+
+import br.com.doctors.dao.ConvenioDao;
+import br.com.doctors.modelo.Convenio;
+
+@Resource
+public class <nome da entidade>Controller {
+	private <dao da entidade> dao;
+	private Result result;
+	private Validator validator;
+
+	public ConveniosController(Result result, <dao da entidade> dao, Validator validator ) {
+		this.dao = dao;
+		this.result = result;
+		this.validator = validator;
+	}
+	
+	@Path("/convenios/")
+	public void index () {
+		
+	}
+	
+	
+	//@Post
+	public void adiciona(Convenio convenio){
+		dao.adiciona(convenio);
+		result.redirectTo(ConveniosController.class).list();
+	}
+	
+	public void cadastro(){
+		
+	}
+	
+	public void buscaForm(){
+		
+	}
+	
+	public void busca(String nome){
+		result.include("nome", nome);
+		result.include("resultados", dao.busca(nome) );
+	}
+	
+	public void list(){
+		result.include("convenios", dao.listaTodos());
+	}
+}
+
+
+
+
+list()
+
+cadastro() ===> @Get("/adicionar")
+adicionar() ===> @Post("/adicionar")
+edit() ====> @Post("/editar")
+editar() ??
+visualizar()
+excluir()
+
+
+
+
+
+
+
+
+

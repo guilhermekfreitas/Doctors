@@ -18,41 +18,33 @@ public class ConvenioDao {
 	public ConvenioDao(Session session) {
 		this.session = session;
 	}
-	
-	public void adiciona(Convenio convenio){
-		Transaction tx = null;
-		try {
-		tx = session.beginTransaction();
+
+	public void adiciona(Convenio convenio) {
 		session.save(convenio);
-		tx.commit();
-		} catch (HibernateException exc ){
-			exc.printStackTrace();
-			tx.rollback();
-		}
 	}
-	
-	public void atualiza(Convenio convenio){
-		Transaction tx = session.beginTransaction();
+
+	public void atualiza(Convenio convenio) {
 		session.update(convenio);
-		tx.commit();
 	}
-	
-	public void remove(Convenio convenio){
-		Transaction tx = session.beginTransaction();
+
+	public void remove(Convenio convenio) {
 		session.delete(convenio);
-		tx.commit();
 	}
-	
-	public Convenio get(Integer id){
+
+	public Convenio get(Long id) {
 		return (Convenio) session.get(Convenio.class, id);
 	}
-	
-	public List<Convenio> busca(String nome){
+
+	public List<Convenio> busca(String nome) {
 		return session.createCriteria(Convenio.class)
-			.add(Restrictions.ilike("nome", nome)).list();
+				.add(Restrictions.ilike("nome", nome)).list();
 	}
-	
-	public List<Convenio> listaTodos(){
+
+	public List<Convenio> listaTodos() {
 		return session.createCriteria(Convenio.class).list();
+	}
+
+	public Convenio carrega(Long id) {
+		return (Convenio) session.load(Convenio.class, id);
 	}
 }

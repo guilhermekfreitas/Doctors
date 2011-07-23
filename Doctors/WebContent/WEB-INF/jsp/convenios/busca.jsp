@@ -15,7 +15,7 @@
 	</c:if>
 	
 	<c:forEach items="${resultados}" var="convenio">
-		${convenio.nome} - ${convenio.tipo} <br/>
+		${convenio.nome} <br/>
 	</c:forEach>
 </body>
 </html>

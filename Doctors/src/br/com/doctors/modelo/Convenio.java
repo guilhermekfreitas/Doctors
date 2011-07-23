@@ -2,39 +2,46 @@ package br.com.doctors.modelo;
 
 import javax.persistence.*;
 
+/***
+ * 
+ * @author <nome do autor>
+ *
+ */
 
 @Entity
+@Table(name="convenios")
 public class Convenio {
 	@Id
 	@GeneratedValue
-	private Integer id;
+	private Long id;
 	private String nome;
-	private Character tipo;
 	
 	public Convenio(){
 		
 	}
 	
-	public Convenio(String nome, Character tipo){
+	public Convenio(String nome){
 		this.nome = nome;
-		this.tipo = tipo;
 	}
 	
 	public String getNome() {
 		return nome;
 	}
-	public Character getTipo() {
-		return tipo;
-	}
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-	public void setTipo(Character tipo) {
-		this.tipo = tipo;
 	}
 	
 	@Override
 	public String toString() {
-		return nome + " " + tipo;
+		return id+":"+nome;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id){
+		this.id = id;
+	}
+	
 }

@@ -10,8 +10,7 @@
 	<h1>Página Inicial do módulo Convênios</h1>
 	
 	Lista: <a href="list">Link</a><br/>
-	Adicionar: <a href="form">Link</a><br/>
-	
+	Adicionar novo Convenio: <a href="cadastro">Link</a><br/>
 	
 </body>
 </html>
