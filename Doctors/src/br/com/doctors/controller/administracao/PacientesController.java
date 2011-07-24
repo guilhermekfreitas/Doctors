@@ -43,7 +43,17 @@ public class PacientesController {
 	}
 	
 	@Post @Path("/pacientes")
-	public void adiciona(final Paciente paciente){
+	public void adiciona(final Paciente paciente, Collection<Long> conveniosId){
+		
+		System.out.println(conveniosId);
+		
+		// recuperar cada id, e adicionar ao paciente
+		List<Convenio> convenios = new ArrayList<Convenio>();
+		for( Long id : conveniosId ){
+			convenios.add(daoConvenio.carrega(id));
+		}
+		
+		paciente.setConvenios(convenios);
 		
 		System.out.println("-======================================");
 		System.out.println("Paciente:" + paciente + paciente.getConvenios());

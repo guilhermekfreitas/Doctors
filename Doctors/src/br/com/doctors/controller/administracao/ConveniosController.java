@@ -1,4 +1,4 @@
-package br.com.doctors.controller;
+package br.com.doctors.controller.administracao;
 
 
 import br.com.caelum.vraptor.Delete;

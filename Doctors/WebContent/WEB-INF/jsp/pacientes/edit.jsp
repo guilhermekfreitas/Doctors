@@ -51,7 +51,7 @@
 				for="convenios">Convênios associados:</label>	
 				<select id="convenios" name="convenioAtual">
 					<c:forEach items="${convenios}" var="convenio">
-					<option value="${convenio.nome}">${convenio.nome}</option>
+					<option value="${convenio.id}">${convenio.nome}</option>
 					</c:forEach>
 				</select> 
 				<img src="<c:url value='/img/adicionar.gif'/>" onclick="adicionarConvenio();"/>
@@ -60,14 +60,15 @@
 				Convênios Associados: <br />
 		    	<c:forEach items="${paciente.convenios}" var="convenio" varStatus="status">
             	<div data-index="${status.index}" class="convenio-item">
+            		<input type="hidden" name="conveniosId[${status.index}]" value="${convenio.id}"/>
                 	Nome:
-                	<input type="text" name="filme.convenios[${status.index}].nome" value="${convenio.nome}"/>
+                	<input type="text" readonly="readonly" name="convenioNome[${status.index}]" value="${convenio.nome}"/>
                 	<img src="<c:url value='/img/remover.gif'/>" class="btn-remover-convenio"/>
             	</div>
 	        </c:forEach>
-			</fieldset>
-			<button type="submit" name="_method" value="PUT">Editar</button>
-		</fieldset>
+	        </fieldset>
+	        
+	        <button type="submit" name="_method" value="PUT">Editar</button>	
 	</form>
 	
 	<script type="text/javascript">
@@ -87,11 +88,14 @@
 				}
 
 				var index = parseInt(firstIndex) + parseInt(lastIndex) + 1;
-
+				
+				var indice = document.form.convenioAtual.selectedIndex
+				var descricao = document.form.convenioAtual[indice].text
 				var valor = document.form.convenioAtual.value
 
-				$('<div class="convenio-item">' +
-					'<input readonly="readonly" type="text" name="paciente.convenios[' + index + '].nome" value="' +  valor + '"/>' +
+				$('<div class="convenio-item">' + 
+					'<input type="hidden" name="conveniosId[' + index + ']" value="' + valor + '"/>' +											
+					'<input type="text" readonly="readonly" name="convenioNome[' + index + ']" value="' +  descricao + '"/>' +
 					'<img src=\'<c:url value="/img/remover.gif"/>\' alt="-" class="btn-remover-convenio"/>' +
 				'</div>')
 				.data('index', index)

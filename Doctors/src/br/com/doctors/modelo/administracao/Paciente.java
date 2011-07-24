@@ -16,7 +16,7 @@ public class Paciente extends Pessoa {
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.PERSIST)
 	private List<Convenio> convenios;
 	
-	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="paciente",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	private Set<Consulta> consultas;
 	
 	public Long getId() {

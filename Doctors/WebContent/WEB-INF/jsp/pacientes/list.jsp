@@ -17,6 +17,8 @@
 		<thead>
 			<tr>
 				<th>Nome</th>
+				<th>Email</th>
+				<th>Telefone</th>
 				<th>Alterar</th>
 				<th>Excluir</th>
 			</tr>
@@ -25,6 +27,8 @@
 			<c:forEach items="${pacientes}" var="paciente">
 				<tr>
 					<td>${paciente.nome}</td>
+					<td>${paciente.email}</td>
+					<td>${paciente.telefone}</td>
 					<td><a href="<c:url value="/pacientes/${paciente.id}"/>">Alterar</a></td>
 					<td><a href="<c:url value="/pacientes/remover/${paciente.id}"/>">Remover</a></td>
 				</tr>

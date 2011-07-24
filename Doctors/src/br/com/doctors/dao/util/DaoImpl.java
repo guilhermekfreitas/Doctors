@@ -3,7 +3,9 @@ package br.com.doctors.dao.util;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.transform.ResultTransformer;
 
 
 public class DaoImpl<T> implements Dao<T> {
@@ -34,13 +36,17 @@ public class DaoImpl<T> implements Dao<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> listaTudo() {
-		return session.createCriteria(classe).list();
+		return session.createCriteria(classe).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public T carrega(Serializable id) {
 		return (T) session.get(classe, id);
+	}
+
+	public Session getSession() {
+		return session;
 	}
 
 }

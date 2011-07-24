@@ -19,7 +19,7 @@ public class Convenio {
 	private Long id;
 	private String nome;
 	
-	@ManyToMany
+	@ManyToMany(mappedBy="convenios")
 	private List<Paciente> pacientes;
 	
 	public Convenio(){

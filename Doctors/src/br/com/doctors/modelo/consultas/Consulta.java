@@ -2,6 +2,7 @@ package br.com.doctors.modelo.consultas;
 
 import javax.persistence.*;
 
+import br.com.doctors.modelo.administracao.Medico;
 import br.com.doctors.modelo.administracao.Paciente;
 
 @Entity
@@ -17,8 +18,11 @@ public class Consulta {
 	private String queixaPrincipal;
 	private String observacoes;
 	
-	@ManyToOne	@JoinColumn(name="paciente_id")
+	@ManyToOne(fetch=FetchType.EAGER)	@JoinColumn(name="paciente_id")
  	private Paciente paciente;
+	
+	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="medico_id")
+	private Medico medico;
 	
 	public void emitirReceita(){ }
 	
@@ -63,6 +67,14 @@ public class Consulta {
 
 	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
+	}
+
+	public Medico getMedico() {
+		return medico;
+	}
+
+	public void setMedico(Medico medico) {
+		this.medico = medico;
 	}
 	
 	
