@@ -5,7 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
-import br.com.doctors.modelo.Convenio;
+import br.com.doctors.modelo.administracao.Convenio;
 
 // TESTE
 public class DeletaConvenio {

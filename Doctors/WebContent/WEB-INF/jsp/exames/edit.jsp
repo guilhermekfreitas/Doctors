@@ -15,14 +15,14 @@
 			<li>${error.category} - ${error.message}</li>
 		</c:forEach>
 	</ul>
-	<form action="<c:url value="/convenios/${convenio.id}"/>" method="post">
+	<form action="<c:url value="/exames/${exame.id}"/>" method="post">
 		<fieldset>
-			<legend>Editar Convênio:</legend>
+			<legend>Editar Exame:</legend>
 
-			<input id="id" type="hidden" name="convenio.id"	value="${convenio.id}" /> 
+			<input id="id" type="hidden" name="exame.id"	value="${exame.id}" /> 
 			
-			<label for="nome">Nome:</label> <input
-				id="nome" type="text" name="convenio.nome" value="${convenio.nome}" />
+			<label for="descricao">Descrição:</label> <input
+				id="descricao" type="text" name="exame.descricao" value="${exame.descricao}" />
 
 			<button type="submit" name="_method" value="PUT">Editar</button>
 		</fieldset>

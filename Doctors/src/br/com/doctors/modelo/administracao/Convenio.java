@@ -1,4 +1,7 @@
-package br.com.doctors.modelo;
+package br.com.doctors.modelo.administracao;
+
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -15,6 +18,9 @@ public class Convenio {
 	@GeneratedValue
 	private Long id;
 	private String nome;
+	
+	@ManyToMany
+	private List<Paciente> pacientes;
 	
 	public Convenio(){
 		
@@ -42,6 +48,14 @@ public class Convenio {
 
 	public void setId(Long id){
 		this.id = id;
+	}
+
+	public List<Paciente> getPacientes() {
+		return pacientes;
+	}
+
+	public void setPacientes(List<Paciente> pacientes) {
+		this.pacientes = pacientes;
 	}
 	
 }

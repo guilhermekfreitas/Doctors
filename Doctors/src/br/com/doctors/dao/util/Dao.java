@@ -1,4 +1,4 @@
-package br.com.doctors.dao;
+package br.com.doctors.dao.util;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,5 +8,5 @@ public interface Dao<T> {
 	void remove(T t);
 	void atualiza(T t);
 	List<T> listaTudo();
-	T procura(Serializable T);
+	T carrega(Serializable T);
 }

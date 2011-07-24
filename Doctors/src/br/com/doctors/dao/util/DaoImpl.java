@@ -1,16 +1,17 @@
-package br.com.doctors.dao;
+package br.com.doctors.dao.util;
 
 import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Session;
 
+
 public class DaoImpl<T> implements Dao<T> {
 
 	private final Session session;
-	private final Class classe;
+	private final Class<T> classe;
 	
-	public DaoImpl(Session session, Class classe) {
+	public DaoImpl(Session session, Class<T> classe) {
 		this.session = session;
 		this.classe = classe;
 	}
@@ -30,13 +31,15 @@ public class DaoImpl<T> implements Dao<T> {
 		session.merge(t);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> listaTudo() {
 		return session.createCriteria(classe).list();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public T procura(Serializable id) {
+	public T carrega(Serializable id) {
 		return (T) session.get(classe, id);
 	}
 

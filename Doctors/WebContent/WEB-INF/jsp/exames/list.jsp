@@ -5,33 +5,33 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Lista de Convênios</title>
+<title>Lista de Exames</title>
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 </head>
 <body>
 	<c:import url="../header.jsp"></c:import>
 
-	<h1>Lista de Convênios</h1>
+	<h1>Lista de Exames</h1>
 
 	<table>
 		<thead>
 			<tr>
-				<th>Nome</th>
+				<th>Descrição</th>
 				<th>Alterar</th>
 				<th>Excluir</th>
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${convenios}" var="convenio">
+			<c:forEach items="${exames}" var="exame">
 				<tr>
-					<td>${convenio.nome}</td>
-					<td><a href="<c:url value="/convenios/${convenio.id}"/>">Alterar</a></td>
-					<td><a href="<c:url value="/convenios/remover/${convenio.id}"/>">Remover</a></td>
+					<td>${exame.descricao}</td>
+					<td><a href="<c:url value="/exames/${exame.id}"/>">Alterar</a></td>
+					<td><a href="<c:url value="/exames/remover/${exame.id}"/>">Remover</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
-	<a href="<c:url value="/convenios/novo"/>">Adicionar novo Produto</a><br />
+	<a href="<c:url value="/exames/novo"/>">Adicionar novo Exame</a><br />
 	<a href="<c:url value="./"/>">Voltar à página inicial</a><br />
 </body>
 </html>

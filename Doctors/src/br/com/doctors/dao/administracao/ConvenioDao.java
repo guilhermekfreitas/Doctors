@@ -1,14 +1,15 @@
-package br.com.doctors.dao;
+package br.com.doctors.dao.administracao;
 
 import java.util.List;
 
 import javax.persistence.*;
 
 import org.hibernate.*;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import br.com.caelum.vraptor.ioc.Component;
-import br.com.doctors.modelo.Convenio;
+import br.com.doctors.modelo.administracao.Convenio;
 
 @Component
 public class ConvenioDao {
@@ -37,7 +38,7 @@ public class ConvenioDao {
 
 	public List<Convenio> busca(String nome) {
 		return session.createCriteria(Convenio.class)
-				.add(Restrictions.ilike("nome", nome)).list();
+				.add(Restrictions.ilike("nome", nome, MatchMode.ANYWHERE)).list();
 	}
 
 	public List<Convenio> listaTodos() {

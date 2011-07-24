@@ -7,7 +7,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
-
 </head>
 <body>
 	<ul>
@@ -15,16 +14,15 @@
 			<li>${error.category} - ${error.message}</li>
 		</c:forEach>
 	</ul>
-	<form action="<c:url value="/convenios/${convenio.id}"/>" method="post">
+
+	<form action="<c:url value="/exames"/>" method="post">
 		<fieldset>
-			<legend>Editar Convênio:</legend>
+			<legend>Adicionar Exame:</legend>
 
-			<input id="id" type="hidden" name="convenio.id"	value="${convenio.id}" /> 
-			
-			<label for="nome">Nome:</label> <input
-				id="nome" type="text" name="convenio.nome" value="${convenio.nome}" />
+			<label for="descricao">Descrição:</label> <input id="descricao" type="text"
+				name="exame.descricao" />
 
-			<button type="submit" name="_method" value="PUT">Editar</button>
+			<button id="enviar" type="submit">Enviar</button>
 		</fieldset>
 	</form>
 </body>

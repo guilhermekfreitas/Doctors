@@ -1,16 +1,19 @@
 package br.com.doctors.controller;
 
 
+import br.com.caelum.vraptor.Delete;
+import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
+import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.validator.Validations;
 import br.com.caelum.vraptor.view.Results;
 
-import br.com.doctors.dao.ConvenioDao;
-import br.com.doctors.modelo.Convenio;
+import br.com.doctors.dao.administracao.ConvenioDao;
+import br.com.doctors.modelo.administracao.Convenio;
 
 @Resource
 public class ConveniosController {
@@ -24,14 +27,20 @@ public class ConveniosController {
 		this.validator = validator;
 	}
 	
-	@Path("/convenios/")
-	public void index () {
+	public void index(){
+		
 	}
 	
+	@Get @Path("/convenios/novo")
 	public void cadastro(){
 	}
 	
-	@Post
+	@Get @Path({"/convenios"})
+	public void list(){
+		result.include("convenios", dao.listaTodos());
+	}
+	
+	@Post @Path("/convenios")
 	public void adiciona(final Convenio convenio){
 		
 		// hibernate validator -> validator.validate(convenio);
@@ -46,16 +55,15 @@ public class ConveniosController {
 		result.redirectTo(ConveniosController.class).list();
 	}
 	
-	public void list(){
-		result.include("convenios", dao.listaTodos());
-	}
 	
+	@Get @Path("/convenios/{id}")
 	public Convenio edit(Long id){
 		Convenio c = dao.carrega(id);
 		System.out.println(c);
 		return c;
 	}
 	
+	@Put @Path("/convenios/{convenio.id}")
 	public void alterar(final Convenio convenio){
 		validator.checking(new Validations(){{
 			that(convenio.getNome() != null && convenio.getNome().length() >= 3, 
@@ -67,6 +75,7 @@ public class ConveniosController {
 		result.redirectTo(ConveniosController.class).list();
 	}
 	
+	@Path("/convenios/remover/{id}")
 	public void remover(Long id){
 		Convenio convenio = dao.carrega(id);
 		dao.remove(convenio);

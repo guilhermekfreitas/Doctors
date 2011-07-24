@@ -5,13 +5,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Lista de Convênios</title>
+<title>Lista de Pacientes</title>
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 </head>
 <body>
 	<c:import url="../header.jsp"></c:import>
 
-	<h1>Lista de Convênios</h1>
+	<h1>Lista de Pacientes</h1>
 
 	<table>
 		<thead>
@@ -22,16 +22,16 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${convenios}" var="convenio">
+			<c:forEach items="${pacientes}" var="paciente">
 				<tr>
-					<td>${convenio.nome}</td>
-					<td><a href="<c:url value="/convenios/${convenio.id}"/>">Alterar</a></td>
-					<td><a href="<c:url value="/convenios/remover/${convenio.id}"/>">Remover</a></td>
+					<td>${paciente.nome}</td>
+					<td><a href="<c:url value="/pacientes/${paciente.id}"/>">Alterar</a></td>
+					<td><a href="<c:url value="/pacientes/remover/${paciente.id}"/>">Remover</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
-	<a href="<c:url value="/convenios/novo"/>">Adicionar novo Produto</a><br />
+	<a href="<c:url value="/pacientes/novo"/>">Adicionar novo Paciente</a><br />
 	<a href="<c:url value="./"/>">Voltar à página inicial</a><br />
 </body>
 </html>

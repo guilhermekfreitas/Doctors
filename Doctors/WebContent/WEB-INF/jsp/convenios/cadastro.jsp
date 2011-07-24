@@ -15,7 +15,7 @@
 		</c:forEach>
 	</ul>
 
-	<form action="adiciona" method="post">
+	<form action="<c:url value="/convenios"/>" method="post">
 		<fieldset>
 			<legend>Adicionar Convênio:</legend>
 

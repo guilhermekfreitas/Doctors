@@ -5,15 +5,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Sistema Doctor's - Página Inicial</title>
 </head>
 <body>
-	Hey, it works! sss
 	<jsp:include page="WEB-INF/jsp/header.jsp"></jsp:include> 
 	<h1>Doctors</h1>
 	
-	Modulos:<br/>
-	<a href="convenios/">Convenio</a><br/>
+	Módulos:<br/>
+	<a href="convenios">Convênio</a><br/>
+	<a href="exames">Exame</a><br />
+	<a href="pacientes">Paciente</a><br />
+	<a href="medicos">Médico</a><br />
 	[ inserir outros aqui ]
 </body>
 </html>

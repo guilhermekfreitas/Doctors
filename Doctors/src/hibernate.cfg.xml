@@ -14,6 +14,11 @@
 
 <!-- entidades >
 </!-->
-<mapping class="br.com.doctors.modelo.Convenio"/>
+<mapping class="br.com.doctors.modelo.administracao.Convenio"/>
+<mapping class="br.com.doctors.modelo.administracao.Paciente"/>
+<mapping class="br.com.doctors.modelo.administracao.Medico"/>
+<mapping class="br.com.doctors.modelo.administracao.Pessoa"/>
+<mapping class="br.com.doctors.modelo.consultas.Consulta"/>
+<mapping class="br.com.doctors.modelo.consultas.Exame"/>
 </session-factory>
 </hibernate-configuration>
