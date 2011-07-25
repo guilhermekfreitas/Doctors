@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Editar Médico</title>
+<title>Editar Funcionário</title>
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 
 </head>
@@ -16,42 +16,39 @@
 			<li>${error.category} - ${error.message}</li>
 		</c:forEach>
 	</ul>
-	<form action="<c:url value="/medicos/${medico.id}"/>" method="post">
+	<form action="<c:url value="/funcionarios/${funcionario.id}"/>" method="post">
 		<fieldset>
-			<legend>Editar Médico:</legend>
+			<legend>Editar Funcionário:</legend>
 
 			<label for="nome">Nome:</label> <input id="nome" type="text"
-				name="medico.nome" value="${medico.nome}" /><br /> 
+				name="funcionario.nome" value="${funcionario.nome}" /><br /> 
 			
-			<label for="crm">CRM:</label> <input id="crm" type="text"
-				name="medico.crm" value="${medico.crm}" /><br /> 
+			<label for="dataAdmissao">Data de Admissão:</label> <input id="dataAdmissao" type="text"
+				name="funcionario.dataAdmissao" value="${funcionario.dataAdmissao}"/><br /> 
 			
-			<label for="ufRegistro">UF de Registro:</label> <input id="ufRegistro" type="text" 
-				name="medico.ufRegistro" value="${medico.ufRegistro}"/><br />
-
-			<label for="especialidade">Especialidade:</label> <input id="especialidade" type="text" 
-				name="medico.especialidade" value="${medico.especialidade}"/><br />
-
+			<label for="matricula">Número de Matrícula:</label> <input id="matricula" type="text" 
+				name="funcionario.matricula" value="${funcionario.matricula}"/><br />
+				
 			<label for="endereco">Endereço:</label> <input id="endereco" type="text" 
-				name="medico.endereco" value="${medico.endereco}"/><br /> 
+				name="funcionario.endereco" value="${funcionario.endereco}"/><br /> 
 				
 			<label for="cpf">CPF:</label> <input id="cpf" type="text" 
-				name="medico.cpf" value="${medico.cpf}"/><br /> 
+				name="funcionario.cpf" value="${funcionario.cpf}"/><br /> 
 			
 			<label for="telefone">Telefone:</label> <input id="telefone" type="text" 
-				name="medico.telefone" value="${medico.telefone}"/><br /> 
+				name="funcionario.telefone" value="${funcionario.telefone}"/><br /> 
 			
 			<label for="email">Email:</label> <input id="email" type="text"
-				name="medico.email" value="${medico.email}"/><br /> 
+				name="funcionario.email" value="${funcionario.email}"/><br /> 
 				
 			<label for="dataNasc">Data de Nascimento:</label> <input id="dataNasc" type="text"
-				name="medico.dataDeNascimento" value="<fmt:formatDate value="${medico.dataDeNascimento}" pattern="dd/MM/yyyy"/>" /> <br /> 
+				name="funcionario.dataDeNascimento" value="<fmt:formatDate value="${funcionario.dataDeNascimento}" pattern="dd/MM/yyyy"/>" /> <br /> 
 				
 			<label for="login">Login:</label> <input id="login" type="text"
-				name="medico.login" value="${medico.login}" /><br />
+				name="funcionario.login" value="${funcionario.login}" /><br />
 				
 			<label for="senha">Senha:</label> <input id="senha" type="text"
-				name="medico.senha" value="${medico.senha}" /><br />
+				name="funcionario.senha" value="${funcionario.senha}" /><br />
 
 			<button type="submit" name="_method" value="PUT">Editar</button>
 		</fieldset>

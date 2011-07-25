@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import br.com.doctors.modelo.agendamento.Agendamento;
 import br.com.doctors.modelo.consultas.Consulta;
 
 @Entity
@@ -12,11 +13,14 @@ public class Medico extends Pessoa {
 	@Id @GeneratedValue
 	private Long id;
 	private Integer crm;
-	private String uf;
+	private String ufRegistro;
 	private String especialidade;
 	
-	@OneToMany(mappedBy="medico")  //mappedBy: nome do atributo de Consulta que está associado com este
-	private List<Consulta> consultas;
+//	@OneToMany(mappedBy="medico")  //mappedBy: nome do atributo de Consulta que está associado com este
+//	private List<Consulta> consultas;
+	
+	@OneToMany(mappedBy="medico",fetch=FetchType.LAZY)  //mappedBy: nome do atributo de Agendamento que está associado com este
+	private List<Agendamento> agendamentos;
 	
 	public Long getId() {
 		return id;
@@ -24,8 +28,8 @@ public class Medico extends Pessoa {
 	public Integer getCrm() {
 		return crm;
 	}
-	public String getUf() {
-		return uf;
+	public String getUfRegistro() {
+		return ufRegistro;
 	}
 	public String getEspecialidade() {
 		return especialidade;
@@ -36,18 +40,15 @@ public class Medico extends Pessoa {
 	public void setCrm(Integer crm) {
 		this.crm = crm;
 	}
-	public void setUf(String uf) {
-		this.uf = uf;
+	public void setUfRegistro(String ufRegistro) {
+		this.ufRegistro = ufRegistro;
 	}
 	public void setEspecialidade(String especialidade) {
 		this.especialidade = especialidade;
 	}
 	
-	public List<Consulta> getConsultas() {
-		return consultas;
-	}
-	public void setConsultas(List<Consulta> consultas) {
-		this.consultas = consultas;
+	public List<Agendamento> getAgendamentos() {
+		return agendamentos;
 	}
 	
 	@Override

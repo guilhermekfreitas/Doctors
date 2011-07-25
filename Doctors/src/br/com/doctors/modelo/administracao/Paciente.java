@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import br.com.doctors.modelo.agendamento.Agendamento;
 import br.com.doctors.modelo.consultas.Consulta;
 
 @Entity
@@ -18,6 +19,9 @@ public class Paciente extends Pessoa {
 	
 	@OneToMany(mappedBy="paciente",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
 	private Set<Consulta> consultas;
+	
+	@OneToMany(mappedBy="paciente",fetch=FetchType.LAZY)
+	private List<Agendamento> agendamentos;
 	
 	public Long getId() {
 		return id;
@@ -57,7 +61,15 @@ public class Paciente extends Pessoa {
 
 	@Override
 	public String toString() {
-		return getNome() + ": " + getDataDeNascimento();
+		return getId() + ":" + getNome() + ": " + getDataDeNascimento();
+	}
+
+	public List<Agendamento> getAgendamentos() {
+		return agendamentos;
+	}
+
+	public void setAgendamentos(List<Agendamento> agendamentos) {
+		this.agendamentos = agendamentos;
 	}
 	
 }

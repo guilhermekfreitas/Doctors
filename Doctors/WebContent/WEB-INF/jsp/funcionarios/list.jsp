@@ -6,21 +6,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Lista de Médicos</title>
+<title>Lista de Funcionários</title>
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 </head>
 <body>
 	<c:import url="../header.jsp"></c:import>
 
-	<h1>Lista de Médicos</h1>
+	<h1>Lista de Funcionários</h1>
 
 	<table>
 		<thead>
 			<tr>
 				<th>Nome</th>
-				<th>CRM</th>
-				<th>UF de Registro</th>
-				<th>Especialidade</th>
+				<th>Data de Admissão</th>
+				<th>Matrícula</th>
 				<th>Endereco</th>
 				<th>Cpf</th>
 				<th>telefone</th>
@@ -32,25 +31,24 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${medicos}" var="medico">
+			<c:forEach items="${funcionarios}" var="funcionario">
 				<tr>
-					<td>${medico.nome}</td>
-					<td>${medico.crm}</td>
-					<td>${medico.ufRegistro}</td>
-					<td>${medico.especialidade}</td>
-					<td>${medico.endereco}</td>
-					<td>${medico.cpf}</td>
-					<td>${medico.telefone}</td>
-					<td>${medico.email}</td>
-					<td><fmt:formatDate value="${medico.dataDeNascimento}" pattern="dd/MM/yyyy"/></td>
-					<td>${medico.login}</td>
-					<td><a href="<c:url value="/medicos/${medico.id}"/>">Alterar</a></td>
-					<td><a href="<c:url value="/medicos/remover/${medico.id}"/>">Remover</a></td>
+					<td>${funcionario.nome}</td>
+					<td>${funcionario.dataAdmissao}</td>
+					<td>${funcionario.matricula}</td>
+					<td>${funcionario.endereco}</td>
+					<td>${funcionario.cpf}</td>
+					<td>${funcionario.telefone}</td>
+					<td>${funcionario.email}</td>
+					<td><fmt:formatDate value="${funcionario.dataDeNascimento}" pattern="dd/MM/yyyy"/></td>
+					<td>${funcionario.login}</td>
+					<td><a href="<c:url value="/funcionarios/${funcionario.id}"/>">Alterar</a></td>
+					<td><a href="<c:url value="/funcionarios/remover/${funcionario.id}"/>">Remover</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
-	<a href="<c:url value="/medicos/novo"/>">Adicionar novo Médico</a><br />
+	<a href="<c:url value="/funcionarios/novo"/>">Adicionar novo Funcionário</a><br />
 	<a href="<c:url value="./"/>">Voltar à página inicial</a><br />
 </body>
 </html>

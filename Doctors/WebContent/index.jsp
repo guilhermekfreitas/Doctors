@@ -16,6 +16,9 @@
 	<a href="exames">Exame</a><br />
 	<a href="pacientes">Paciente</a><br />
 	<a href="medicos">Médico</a><br />
+	<a href="consultas">Consulta</a><br />
+	<a href="funcionarios">Funcionário</a><br />
+	<a href="agenda">Agendamento</a><br />
 	[ inserir outros aqui ]
 </body>
 </html>

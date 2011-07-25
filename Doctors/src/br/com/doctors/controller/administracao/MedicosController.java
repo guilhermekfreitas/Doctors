@@ -32,7 +32,6 @@ public class MedicosController {
 	
 	@Get @Path("/medicos/novo")
 	public void cadastro() {
-		result.include("convenios", dao.listaTudo() );
 	}
 	
 	@Post @Path("/medicos")

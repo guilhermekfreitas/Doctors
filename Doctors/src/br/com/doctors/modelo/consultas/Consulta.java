@@ -2,8 +2,10 @@ package br.com.doctors.modelo.consultas;
 
 import javax.persistence.*;
 
+import br.com.doctors.modelo.administracao.Convenio;
 import br.com.doctors.modelo.administracao.Medico;
 import br.com.doctors.modelo.administracao.Paciente;
+import br.com.doctors.modelo.agendamento.Agendamento;
 
 @Entity
 @Table(name="consultas")
@@ -23,6 +25,12 @@ public class Consulta {
 	
 	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="medico_id")
 	private Medico medico;
+	
+	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="convenio_id")
+	private Convenio convenio;
+	
+//	@OneToOne(fetch=FetchType.EAGER)
+//	private Agendamento agendamento;
 	
 	public void emitirReceita(){ }
 	
@@ -76,6 +84,20 @@ public class Consulta {
 	public void setMedico(Medico medico) {
 		this.medico = medico;
 	}
+
+	public Convenio getConvenio() {
+		return convenio;
+	}
+
+	public void setConvenio(Convenio convenio) {
+		this.convenio = convenio;
+	}
 	
+
+	@Override
+	public String toString() {
+		return String.format("Consulta para: %s - Médico: %s --> %s - %s", paciente.getNome(),
+				medico.getNome(), data, hora);
+	}
 	
 }

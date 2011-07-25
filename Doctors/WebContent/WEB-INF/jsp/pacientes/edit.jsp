@@ -68,7 +68,8 @@
 	        </c:forEach>
 	        </fieldset>
 	        
-	        <button type="submit" name="_method" value="PUT">Editar</button>	
+	        <button type="submit" name="_method" value="PUT">Editar</button>
+	    </fieldset>	
 	</form>
 	
 	<script type="text/javascript">

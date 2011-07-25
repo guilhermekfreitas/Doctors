@@ -5,6 +5,9 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import br.com.doctors.modelo.agendamento.Agendamento;
+import br.com.doctors.modelo.consultas.Consulta;
+
 /***
  * 
  * @author <nome do autor>
@@ -19,8 +22,15 @@ public class Convenio {
 	private Long id;
 	private String nome;
 	
-	@ManyToMany(mappedBy="convenios")
+	@ManyToMany(mappedBy="convenios",fetch=FetchType.LAZY)
 	private List<Paciente> pacientes;
+
+//	@OneToMany(mappedBy="convenio",fetch=FetchType.LAZY)
+//	private List<Agendamento> agendamentos;
+	
+//	@OneToMany(mappedBy="convenio",fetch=FetchType.LAZY)
+//	private List<Consulta> consultas;
+	
 	
 	public Convenio(){
 		
@@ -54,8 +64,8 @@ public class Convenio {
 		return pacientes;
 	}
 
-	public void setPacientes(List<Paciente> pacientes) {
-		this.pacientes = pacientes;
-	}
-	
+//	public List<Agendamento> getAgendamentos() {
+//		return agendamentos;
+//	}
+
 }

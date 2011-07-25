@@ -10,6 +10,7 @@ import org.hibernate.criterion.Restrictions;
 
 import br.com.caelum.vraptor.ioc.Component;
 import br.com.doctors.modelo.administracao.Convenio;
+import br.com.doctors.modelo.administracao.Paciente;
 
 @Component
 public class ConvenioDao {
@@ -39,6 +40,12 @@ public class ConvenioDao {
 	public List<Convenio> busca(String nome) {
 		return session.createCriteria(Convenio.class)
 				.add(Restrictions.ilike("nome", nome, MatchMode.ANYWHERE)).list();
+	}
+	
+	public List<Convenio> buscaPor(Long idPaciente){
+		return session.createCriteria(Convenio.class)
+				.createCriteria("pacientes").add(Restrictions.idEq(idPaciente)).
+				setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 	}
 
 	public List<Convenio> listaTodos() {

@@ -26,8 +26,8 @@
 			<label for="crm">CRM:</label> <input id="crm" type="text"
 				name="medico.crm" /><br /> 
 			
-			<label for="ufRegistro">UF de Registro:</label> <input id="ufRegistro" type="text" 
-				name="medico.ufRegistro" /><br />
+			<label for="uf">UF:</label> <input id="uf" type="text" 
+				name="medico.uf" /><br />
 
 			<label for="especialidade">Especialidade:</label> <input id="especialidade" type="text" 
 				name="medico.especialidade" /><br />
