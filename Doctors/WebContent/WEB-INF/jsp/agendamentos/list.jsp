@@ -24,6 +24,7 @@
 				<th>Nome do Paciente</th>
 				<th>Nome do Médico</th>
 				<th>Funcionário?</th>
+				<th>Consulta</th>
 				<th>Alterar</th>
 				<th>Excluir</th>
 			</tr>
@@ -47,7 +48,17 @@
 					</td>
 					<td>${agendamento.paciente.nome}</td>
 					<td>${agendamento.medico.nome}</td>
-					<td>Não implementado</td>
+					<td>${agendamento.funcionario.nome}</td>
+					<td>
+						<%--<c:if test="${agendamento.isConsultaDisponivel()}">
+							<c:choose>
+								<c:when test="${ empty agendamento.consulta}">
+									<a href="<c:url value="/consultas/novo/${agendamento.id}"/>">Iniciar Consulta</a>
+								</c:when>
+								<c:when test="${ !empty agendamento.consulta}">Já Efetuada</c:when>
+							</c:choose>
+						</c:if> --%>
+					</td>
 					<td><a href="<c:url value="/agenda/${agendamento.id}"/>">Alterar</a></td>
 					<td><a href="<c:url value="/agenda/remover/${agendamento.id}"/>">Remover</a></td>
 				</tr>

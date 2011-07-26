@@ -11,10 +11,12 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.doctors.controller.agendamento.AgendamentosController;
 import br.com.doctors.dao.administracao.ConvenioDao;
+import br.com.doctors.dao.administracao.FuncionarioDao;
 import br.com.doctors.dao.administracao.MedicoDao;
 import br.com.doctors.dao.administracao.PacienteDao;
 import br.com.doctors.dao.agendamento.AgendamentoDao;
 import br.com.doctors.modelo.administracao.Convenio;
+import br.com.doctors.modelo.administracao.Funcionario;
 import br.com.doctors.modelo.administracao.Paciente;
 import br.com.doctors.modelo.agendamento.Agendamento;
 
@@ -26,16 +28,18 @@ public class AgendamentosController {
 	private PacienteDao daoPaciente;
 	private MedicoDao daoMedico;
 	private ConvenioDao daoConvenio;
+	private FuncionarioDao daoFuncionario;
 
 	public AgendamentosController(AgendamentoDao daoAgendamento, Result result, 
 			Validator validator, PacienteDao daoPaciente, MedicoDao daoMedico,
-			ConvenioDao daoConvenio) {
+			ConvenioDao daoConvenio, FuncionarioDao daoFuncionario) {
 		this.daoAgendamento = daoAgendamento;
 		this.result = result;
 		this.validator = validator;
 		this.daoPaciente = daoPaciente;
 		this.daoMedico = daoMedico;
 		this.daoConvenio = daoConvenio;
+		this.daoFuncionario = daoFuncionario;
 	}
 	
 	@Get @Path({"/agenda"})
@@ -66,11 +70,16 @@ public class AgendamentosController {
 	
 	@Get @Path("/agenda/{id}")
 	public Agendamento edit(Long id){
+		result.include("funcionarios", daoFuncionario.listaTudo());
 		return daoAgendamento.carrega(id);
 	}
 	
 	@Put @Path("/agenda/{agendamento.id}")
-	public void alterar(final Agendamento agendamento){
+	public void alterar(final Agendamento agendamento, Long funcionarioId){
+		
+//		Funcionario funcionario = daoFuncionario.carrega(funcionarioId);
+
+//		agendamento.setFuncionario(funcionario);
 		
 		daoAgendamento.atualiza(agendamento);
 		result.redirectTo(AgendamentosController.class).list();

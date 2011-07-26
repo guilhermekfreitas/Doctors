@@ -1,13 +1,10 @@
 package br.com.doctors.modelo.agendamento;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import org.hibernate.annotations.CascadeType;
+
+import br.com.doctors.modelo.administracao.Funcionario;
 import br.com.doctors.modelo.administracao.Medico;
 import br.com.doctors.modelo.administracao.Paciente;
 
@@ -30,8 +27,8 @@ public class Agendamento {
 	
 	//@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="convenio_id")
 	//private Convenio convenio;
-	//@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="funcionario_id")
-	//private Funcionario funcionario;
+	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="funcionario_id")
+	private Funcionario funcionario;
 	
 	public void confirmarPreAgendamento(){
 		confirmado = true;
@@ -107,11 +104,11 @@ public class Agendamento {
 	public Paciente getPaciente() {
 		return paciente;
 	}
-//
-//	public Funcionario getFuncionario() {
-//		return funcionario;
-//	}
-//
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
 //	public void setConvenio(Convenio convenio) {
 //		this.convenio = convenio;
 //	}
@@ -123,10 +120,10 @@ public class Agendamento {
 	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
 	}
-//
-//	public void setFuncionario(Funcionario funcionario) {
-//		this.funcionario = funcionario;
-//	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
 	
 	
 }
