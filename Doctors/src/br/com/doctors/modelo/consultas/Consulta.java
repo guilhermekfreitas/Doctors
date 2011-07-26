@@ -1,11 +1,17 @@
 package br.com.doctors.modelo.consultas;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import br.com.doctors.modelo.administracao.Convenio;
 import br.com.doctors.modelo.administracao.Medico;
 import br.com.doctors.modelo.administracao.Paciente;
-import br.com.doctors.modelo.agendamento.Agendamento;
 
 @Entity
 @Table(name="consultas")
@@ -29,14 +35,22 @@ public class Consulta {
 	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="convenio_id")
 	private Convenio convenio;
 	
+	@ManyToMany
+	
 //	@OneToOne(fetch=FetchType.EAGER)
 //	private Agendamento agendamento;
 	
-	public void emitirReceita(){ }
+	public void emitirReceita(){
+		
+	}
 	
-	public void emitirSolReceita(){ }
+	public void emitirSolReceita(){
+		
+	}
 	
-	public void emitirAtestado(){ }
+	public void emitirAtestado(){
+		
+	}
 	
 	public Long getId() {
 		return id;

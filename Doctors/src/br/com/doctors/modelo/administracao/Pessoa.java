@@ -2,15 +2,17 @@ package br.com.doctors.modelo.administracao;
 
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.Calendar;
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+/**
+ * 
+ * @author Guilherme
+ *
+ */
 
 @MappedSuperclass
 public abstract class Pessoa {

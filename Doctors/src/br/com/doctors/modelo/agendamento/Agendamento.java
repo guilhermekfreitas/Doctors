@@ -1,9 +1,13 @@
 package br.com.doctors.modelo.agendamento;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-import br.com.doctors.modelo.administracao.Convenio;
-import br.com.doctors.modelo.administracao.Funcionario;
 import br.com.doctors.modelo.administracao.Medico;
 import br.com.doctors.modelo.administracao.Paciente;
 
