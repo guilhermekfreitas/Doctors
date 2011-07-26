@@ -16,48 +16,83 @@
 		</c:forEach>
 	</ul>
 
-	<form name="form" action="<c:url value="/medicos"/>" method="post">
+	<form name="form" action="<c:url value="/consultas"/>" method="post">
 		<fieldset>
-			<legend>Adicionar Médico:</legend>
+			<legend>Iniciar Consulta:</legend>
 
-			<label for="nome">Nome:</label> <input id="nome" type="text"
-				name="medico.nome" /><br /> 
-			
-			<label for="crm">CRM:</label> <input id="crm" type="text"
-				name="medico.crm" /><br /> 
-			
-			<label for="uf">UF:</label> <input id="uf" type="text" 
-				name="medico.uf" /><br />
+			<input type="hidden" name="consulta.agendamento.id" value="${agendamento.id}"/>
 
-			<label for="especialidade">Especialidade:</label> <input id="especialidade" type="text" 
-				name="medico.especialidade" /><br />
+			<label for="paciente">Paciente:</label> <input id="paciente" type="text"
+				 value="${agendamento.paciente.nome}" disabled="disabled" size="40"/><br /> 
 
-			<label for="endereco">Endereço:</label> <input id="endereco" type="text" 
-				name="medico.endereco" /><br /> 
-				
-			<label for="cpf">CPF:</label> <input id="cpf" type="text" 
-				name="medico.cpf" /><br /> 
-			
-			<label for="telefone">Telefone:</label> <input id="telefone" type="text" 
-				name="medico.telefone" /><br /> 
-			
-			<label for="email">Email:</label> <input id="email" type="text"
-				name="medico.email" /><br /> 
-				
-			<label for="dataNasc">Data de Nascimento:</label> <input id="dataNasc" type="text"
-				name="medico.dataDeNascimento" value="<fmt:formatDate value="${medico.dataDeNascimento}" pattern="dd/MM/yyyy"/>" /> <br /> 
-				
-			<label for="login">Login:</label><input id="login" type="text" 
-				name="medico.login" /><br /> 
-			
-			<label for="senha">Senha:</label> <input id="senha" type="text"
-				name="medico.senha" /><br />
+			<label for="medico">Médico:</label> <input id="medico" type="text"
+				 value="${agendamento.medico.nome}" disabled="disabled" size="40"/><br /> 			
 
+			<label for="queixaPrincipal">Queixa Principal:</label><br /> 
+			<textarea id="queixaPrincipal" rows="4" cols="30" name="consulta.queixaPrincipal" ></textarea><br /> 
+
+			<label for="observacoes">Observações:</label><br /> 
+			<textarea id="observacoes" rows="4" cols="30" name="consulta.observacoes" ></textarea><br /> 
 			
+			<label for="exames">Lista de Exames:</label><br />
+			<fieldset id="exames">
 				
-			<button id="enviar" type="submit">Enviar</button>
+			</fieldset>
+			
+			
+			<fieldset id="exame">
+				<div id="novoExame">Novo Exame</div>
+			</fieldset>
+			
+			<label
+				for="novoExame">Solicitar Exame:</label>	
+				<input type="text" id="novoExame" name="novoExame" />
+				<img src="<c:url value='/img/adicionar.gif'/>" onclick="adicionarExame();"/>
+				
+			<fieldset id="lista-exames">
+				Exames solicitados: <br />
+		    	<c:forEach items="${consulta.exames}" var="exame" varStatus="status">
+            	<div data-index="${status.index}" class="exame-item">
+            		Descrição:
+                	<input type="text" readonly="readonly" name="exames[${status.index}]" value="${exame.descricao}"/>
+                	<img src="<c:url value='/img/remover.gif'/>" class="btn-remover-exame"/>
+            	</div>
+	        </c:forEach>
+			</fieldset>	
+			
+			
+				<button id="enviar" type="submit">Enviar</button>
 		</fieldset>
 	</form>
-		
+	<script type="text/javascript">
+			$('.btn-remover-exame').live('click', function() {
+				$(this).parent().remove();
+			});
+
+			function adicionarExame() {
+				var $container	= $('#lista-exames'),
+					$convenios	= $container.children('.exame-item'),
+					firstIndex	= $convenios.first().data('index'),
+					lastIndex	= $convenios.last().data('index');
+
+				if (firstIndex === undefined) {
+					firstIndex = 0;
+					lastIndex = 0;
+				}
+
+				var index = parseInt(firstIndex) + parseInt(lastIndex) + 1;
+				
+				var descricao = document.form.novoExame.value
+				
+				$('<div class="exame-item">' + 							
+					'<input type="text" readonly="readonly" name="exames[' + index + ']" value="' +  descricao + '"/>' +
+					'<img src=\'<c:url value="/img/remover.gif"/>\' alt="-" class="btn-remover-exame"/>' +
+				'</div>')
+				.data('index', index)
+				.appendTo($container);
+				
+				document.form.novoExame.value = "";
+			};
+		</script>	
 </body>
 </html>

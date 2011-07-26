@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Editar Médico</title>
+<title>Editar Consulta</title>
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 
 </head>
@@ -16,45 +16,77 @@
 			<li>${error.category} - ${error.message}</li>
 		</c:forEach>
 	</ul>
-	<form action="<c:url value="/medicos/${medico.id}"/>" method="post">
+	<form action="<c:url value="/consultas/${consulta.id}"/>" method="post">
 		<fieldset>
-			<legend>Editar Médico:</legend>
+			<legend>Editar Consulta:</legend>
 
-			<label for="nome">Nome:</label> <input id="nome" type="text"
-				name="medico.nome" value="${medico.nome}" /><br /> 
-			
-			<label for="crm">CRM:</label> <input id="crm" type="text"
-				name="medico.crm" value="${medico.crm}" /><br /> 
-			
-			<label for="uf">UF:</label> <input id="uf" type="text" 
-				name="medico.uf" value="${medico.uf}"/><br />
+			<input type="hidden" name="consulta.agendamento.id" value="${consulta.agendamento.id}"/>
 
-			<label for="especialidade">Especialidade:</label> <input id="especialidade" type="text" 
-				name="medico.especialidade" value="${medico.especialidade}"/><br />
+			<label for="paciente">Paciente:</label> <input id="paciente" type="text"
+				 value="${consulta.agendamento.paciente.nome}" disabled="disabled" size="40"/><br /> 
 
-			<label for="endereco">Endereço:</label> <input id="endereco" type="text" 
-				name="medico.endereco" value="${medico.endereco}"/><br /> 
-				
-			<label for="cpf">CPF:</label> <input id="cpf" type="text" 
-				name="medico.cpf" value="${medico.cpf}"/><br /> 
+			<label for="medico">Médico:</label> <input id="medico" type="text"
+				 value="${consulta.agendamento.medico.nome}" disabled="disabled" size="40"/><br /> 			
+
+			<label for="queixaPrincipal">Queixa Principal:</label><br /> 
+			<textarea id="queixaPrincipal" rows="4" cols="30" name="consulta.queixaPrincipal">${consulta.queixaPrincipal}</textarea><br /> 
+
+			<label for="observacoes">Observações:</label><br /> 
+			<textarea id="observacoes" rows="4" cols="30" name="consulta.observacoes">${consulta.observacoes}</textarea><br /> 
+
+			<fieldset id="exame">
+				<div id="novoExame">Novo Exame</div>
+			</fieldset>
 			
-			<label for="telefone">Telefone:</label> <input id="telefone" type="text" 
-				name="medico.telefone" value="${medico.telefone}"/><br /> 
-			
-			<label for="email">Email:</label> <input id="email" type="text"
-				name="medico.email" value="${medico.email}"/><br /> 
+			<label
+				for="novoExame">Solicitar Exame:</label>	
+				<input type="text" id="novoExame" name="novoExame" />
+				<img src="<c:url value='/img/adicionar.gif'/>" onclick="adicionarExame();"/>
 				
-			<label for="dataNasc">Data de Nascimento:</label> <input id="dataNasc" type="text"
-				name="medico.dataDeNascimento" value="<fmt:formatDate value="${medico.dataDeNascimento}" pattern="dd/MM/yyyy"/>" /> <br /> 
-				
-			<label for="login">Login:</label> <input id="login" type="text"
-				name="medico.login" value="${medico.login}" /><br />
-				
-			<label for="senha">Senha:</label> <input id="senha" type="text"
-				name="medico.senha" value="${medico.senha}" /><br />
+			<fieldset id="lista-exames">
+				Exames solicitados: <br />
+		    	<c:forEach items="${consulta.exames}" var="exame" varStatus="status">
+            	<div data-index="${status.index}" class="exame-item">
+            		Descrição:
+                	<input type="text" readonly="readonly" name="exames[${status.index}]" value="${exame.descricao}"/>
+                	<img src="<c:url value='/img/remover.gif'/>" class="btn-remover-exame"/>
+            	</div>
+	        </c:forEach>
+			</fieldset>	
 
 			<button type="submit" name="_method" value="PUT">Editar</button>
+			
 		</fieldset>
 	</form>
+	<script type="text/javascript">
+			$('.btn-remover-exame').live('click', function() {
+				$(this).parent().remove();
+			});
+
+			function adicionarExame() {
+				var $container	= $('#lista-exames'),
+					$convenios	= $container.children('.exame-item'),
+					firstIndex	= $convenios.first().data('index'),
+					lastIndex	= $convenios.last().data('index');
+
+				if (firstIndex === undefined) {
+					firstIndex = 0;
+					lastIndex = 0;
+				}
+
+				var index = parseInt(firstIndex) + parseInt(lastIndex) + 1;
+				
+				var descricao = document.form.novoExame.value
+				
+				$('<div class="exame-item">' + 							
+					'<input type="text" readonly="readonly" name="exames[' + index + ']" value="' +  descricao + '"/>' +
+					'<img src=\'<c:url value="/img/remover.gif"/>\' alt="-" class="btn-remover-exame"/>' +
+				'</div>')
+				.data('index', index)
+				.appendTo($container);
+				
+				document.form.novoExame.value = "";
+			};
+		</script>	
 </body>
 </html>

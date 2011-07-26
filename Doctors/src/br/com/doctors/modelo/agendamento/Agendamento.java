@@ -39,7 +39,7 @@ public class Agendamento {
 	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="funcionario_id")
 	private Funcionario funcionario;
 	
-	@OneToOne(fetch=FetchType.EAGER, mappedBy="agendamento")
+	@OneToOne(fetch=FetchType.EAGER)
 	private Consulta consulta;
 
 	public Consulta getConsulta() {

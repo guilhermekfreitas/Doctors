@@ -31,7 +31,7 @@
 			</c:forEach>
 		</tbody>
 	</table>
-	<a href="<c:url value="/convenios/novo"/>">Adicionar novo Produto</a><br />
+	<a href="<c:url value="/convenios/novo"/>">Adicionar novo Convênio</a><br />
 	<a href="<c:url value="./"/>">Voltar à página inicial</a><br />
 </body>
 </html>

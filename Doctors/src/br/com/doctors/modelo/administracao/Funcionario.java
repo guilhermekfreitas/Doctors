@@ -24,7 +24,8 @@ public class Funcionario extends Pessoa{
 	private Long id;
 	private String dataAdmissao;
 	private Integer matricula;
-	@OneToMany(mappedBy="medico",fetch=FetchType.LAZY)
+	
+	@OneToMany(mappedBy="funcionario",fetch=FetchType.LAZY)
 	private List<Agendamento> agendamentos;
 	
 	public List<Agendamento> getAgendamentos() {
