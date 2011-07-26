@@ -1,12 +1,17 @@
 package br.com.doctors.modelo.administracao;
 
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import br.com.doctors.modelo.agendamento.Agendamento;
-import br.com.doctors.modelo.consultas.Consulta;
 
 @Entity
 @Table(name="pacientes")
@@ -17,9 +22,6 @@ public class Paciente extends Pessoa {
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.PERSIST)
 	private List<Convenio> convenios;
 	
-	@OneToMany(mappedBy="paciente",cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-	private Set<Consulta> consultas;
-	
 	@OneToMany(mappedBy="paciente",fetch=FetchType.LAZY)
 	private List<Agendamento> agendamentos;
 	
@@ -29,14 +31,6 @@ public class Paciente extends Pessoa {
 	
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Set<Consulta> getConsultas() {
-		return consultas;
-	}
-
-	public void setConsultas(Set<Consulta> consultas) {
-		this.consultas = consultas;
 	}
 
 	public List<Convenio> getConvenios() {

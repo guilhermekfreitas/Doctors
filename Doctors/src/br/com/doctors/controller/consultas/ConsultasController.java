@@ -1,9 +1,5 @@
 package br.com.doctors.controller.consultas;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
@@ -11,13 +7,9 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
-import br.com.caelum.vraptor.validator.Validations;
-import br.com.doctors.controller.administracao.PacientesController;
-import br.com.doctors.dao.administracao.ConvenioDao;
 import br.com.doctors.dao.administracao.MedicoDao;
 import br.com.doctors.dao.administracao.PacienteDao;
 import br.com.doctors.dao.consultas.ConsultaDao;
-import br.com.doctors.modelo.administracao.Convenio;
 import br.com.doctors.modelo.administracao.Medico;
 import br.com.doctors.modelo.administracao.Paciente;
 import br.com.doctors.modelo.consultas.Consulta;
@@ -57,9 +49,6 @@ public class ConsultasController {
 		Medico medico = daoMedico.carrega(medicoId);
 		System.out.println(medico);
 		
-		consulta.setMedico(medico);
-		consulta.setPaciente(paciente);
-		
 		System.out.println("======================================");
 		System.out.println("Consulta:" + consulta);
 		
@@ -75,6 +64,46 @@ public class ConsultasController {
 		result.redirectTo(ConsultasController.class).list();
 	}
 	
+	public ConsultaDao getDaoConsulta() {
+		return daoConsulta;
+	}
+
+	public void setDaoConsulta(ConsultaDao daoConsulta) {
+		this.daoConsulta = daoConsulta;
+	}
+
+	public MedicoDao getDaoMedico() {
+		return daoMedico;
+	}
+
+	public void setDaoMedico(MedicoDao daoMedico) {
+		this.daoMedico = daoMedico;
+	}
+
+	public PacienteDao getDaoPaciente() {
+		return daoPaciente;
+	}
+
+	public void setDaoPaciente(PacienteDao daoPaciente) {
+		this.daoPaciente = daoPaciente;
+	}
+
+	public Result getResult() {
+		return result;
+	}
+
+	public void setResult(Result result) {
+		this.result = result;
+	}
+
+	public Validator getValidator() {
+		return validator;
+	}
+
+	public void setValidator(Validator validator) {
+		this.validator = validator;
+	}
+
 	@Get @Path("/consultas/{id}")
 	public Consulta edit(Long id){
 		result.include("medicos", daoMedico.listaTudo() );

@@ -6,11 +6,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import br.com.doctors.modelo.administracao.Funcionario;
 import br.com.doctors.modelo.administracao.Medico;
 import br.com.doctors.modelo.administracao.Paciente;
+import br.com.doctors.modelo.consultas.Consulta;
 
 // Funcionario: funcionário que realizou a confirmação
 
@@ -30,13 +32,23 @@ public class Agendamento {
 
 	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="paciente_id")
 	private Paciente paciente;
+
 	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="medico_id")
 	private Medico medico;
 	
-	//@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="convenio_id")
-	//private Convenio convenio;
 	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="funcionario_id")
 	private Funcionario funcionario;
+	
+	@OneToOne(fetch=FetchType.EAGER, mappedBy="agendamento")
+	private Consulta consulta;
+
+	public Consulta getConsulta() {
+		return consulta;
+	}
+
+	public void setConsulta(Consulta consulta) {
+		this.consulta = consulta;
+	}
 
 	public void confirmarPreAgendamento(){
 		confirmado = true;
@@ -101,10 +113,6 @@ public class Agendamento {
 		this.cancelado = cancelado;
 	}
 
-//	public Convenio getConvenio() {
-//		return convenio;
-//	}
-//
 	public Medico getMedico() {
 		return medico;
 	}
@@ -117,10 +125,6 @@ public class Agendamento {
 		return funcionario;
 	}
 
-//	public void setConvenio(Convenio convenio) {
-//		this.convenio = convenio;
-//	}
-//
 	public void setMedico(Medico medico) {
 		this.medico = medico;
 	}

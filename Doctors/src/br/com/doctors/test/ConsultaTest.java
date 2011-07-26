@@ -33,9 +33,6 @@ public class ConsultaTest {
 		consulta.setObservacoes("nada a declarar");
 		consulta.setQueixaPrincipal("DOr de estomago");
 
-		consulta.setMedico(medico);
-		consulta.setPaciente(paciente);
-
 		session.beginTransaction();
 		session.save(consulta);
 		session.getTransaction().commit();

@@ -6,14 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import br.com.doctors.modelo.administracao.Convenio;
-import br.com.doctors.modelo.administracao.Medico;
-import br.com.doctors.modelo.administracao.Paciente;
+import br.com.doctors.modelo.agendamento.Agendamento;
 
 /**
  * 
@@ -34,14 +31,8 @@ public class Consulta {
 	private String queixaPrincipal;
 	private String observacoes;
 	
-	@ManyToOne(fetch=FetchType.EAGER)	@JoinColumn(name="paciente_id")
- 	private Paciente paciente;
-	
-	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="medico_id")
-	private Medico medico;
-	
-	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="convenio_id")
-	private Convenio convenio;
+	@OneToOne(fetch=FetchType.EAGER, mappedBy="consulta")
+	private Agendamento agendamento;
 	
 	@OneToMany(mappedBy="consulta",fetch=FetchType.LAZY)
 	private List<Atestado> atestados;
@@ -122,35 +113,18 @@ public class Consulta {
 		this.observacoes = observacoes;
 	}
 
-	public Paciente getPaciente() {
-		return paciente;
+	public Agendamento getAgendamento() {
+		return agendamento;
 	}
 
-	public void setPaciente(Paciente paciente) {
-		this.paciente = paciente;
+	public void setAgendamento(Agendamento agendamento) {
+		this.agendamento = agendamento;
 	}
-
-	public Medico getMedico() {
-		return medico;
-	}
-
-	public void setMedico(Medico medico) {
-		this.medico = medico;
-	}
-
-	public Convenio getConvenio() {
-		return convenio;
-	}
-
-	public void setConvenio(Convenio convenio) {
-		this.convenio = convenio;
-	}
-	
 
 	@Override
 	public String toString() {
-		return String.format("Consulta para: %s - Médico: %s --> %s - %s", paciente.getNome(),
-				medico.getNome(), data, hora);
+		return String.format("Consulta para: %s - Médico: %s --> %s - %s", agendamento.getPaciente().getNome(),
+				agendamento.getMedico().getNome(), data, hora);
 	}
 	
 }

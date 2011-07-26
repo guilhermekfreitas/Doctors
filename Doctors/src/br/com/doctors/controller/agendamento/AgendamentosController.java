@@ -9,15 +9,12 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
-import br.com.doctors.controller.agendamento.AgendamentosController;
 import br.com.doctors.dao.administracao.ConvenioDao;
 import br.com.doctors.dao.administracao.FuncionarioDao;
 import br.com.doctors.dao.administracao.MedicoDao;
 import br.com.doctors.dao.administracao.PacienteDao;
 import br.com.doctors.dao.agendamento.AgendamentoDao;
 import br.com.doctors.modelo.administracao.Convenio;
-import br.com.doctors.modelo.administracao.Funcionario;
-import br.com.doctors.modelo.administracao.Paciente;
 import br.com.doctors.modelo.agendamento.Agendamento;
 
 @Resource
