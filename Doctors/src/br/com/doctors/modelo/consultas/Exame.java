@@ -13,7 +13,16 @@ import javax.persistence.*;
 public class Exame extends Documento {
 	@Id @GeneratedValue
 	private Long id;
+
+	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="consulta_id")
+	private Consulta consulta;
 	
+	public Consulta getConsulta() {
+		return consulta;
+	}
+	public void setConsulta(Consulta consulta) {
+		this.consulta = consulta;
+	}
 	public Long getId() {
 		return id;
 	}
