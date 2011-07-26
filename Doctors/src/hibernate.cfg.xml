@@ -21,6 +21,8 @@
 <mapping class="br.com.doctors.modelo.administracao.Pessoa"/>
 <mapping class="br.com.doctors.modelo.consultas.Consulta"/>
 <mapping class="br.com.doctors.modelo.consultas.Exame"/>
+<mapping class="br.com.doctors.modelo.consultas.Atestado"/>
+<mapping class="br.com.doctors.modelo.consultas.Receita"/>
 <mapping class="br.com.doctors.modelo.agendamento.Agendamento"/>
 </session-factory>
 </hibernate-configuration>

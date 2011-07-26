@@ -8,10 +8,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import br.com.doctors.modelo.administracao.Funcionario;
 import br.com.doctors.modelo.administracao.Medico;
 import br.com.doctors.modelo.administracao.Paciente;
 
 // Funcionario: funcionário que realizou a confirmação
+
+/**
+ * @author Jonathan/Guilherme
+ */
 
 @Entity
 @Table(name="agenda")
@@ -27,12 +32,22 @@ public class Agendamento {
 	private Paciente paciente;
 	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="medico_id")
 	private Medico medico;
+	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="funcionario_id")
+	private Funcionario funcionario;
 	
 	//@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="convenio_id")
 	//private Convenio convenio;
 	//@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="funcionario_id")
 	//private Funcionario funcionario;
 	
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+
 	public void confirmarPreAgendamento(){
 		confirmado = true;
 	}

@@ -1,17 +1,25 @@
 package br.com.doctors.modelo.consultas;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.com.doctors.modelo.administracao.Convenio;
 import br.com.doctors.modelo.administracao.Medico;
 import br.com.doctors.modelo.administracao.Paciente;
+
+/**
+ * 
+ * @author Jonathan/Guilherme
+ *
+ */
 
 @Entity
 @Table(name="consultas")
@@ -35,7 +43,14 @@ public class Consulta {
 	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="convenio_id")
 	private Convenio convenio;
 	
-	@ManyToMany
+	@OneToMany(mappedBy="consulta",fetch=FetchType.LAZY)
+	private List<Atestado> atestados;
+	
+	@OneToMany(mappedBy="consulta",fetch=FetchType.LAZY)
+	private List<Exame> exames;
+	
+	@OneToMany(mappedBy="consulta",fetch=FetchType.LAZY)
+	private List<Receita> receitas;
 	
 //	@OneToOne(fetch=FetchType.EAGER)
 //	private Agendamento agendamento;
@@ -44,6 +59,30 @@ public class Consulta {
 		
 	}
 	
+	public List<Atestado> getAtestados() {
+		return atestados;
+	}
+
+	public void setAtestados(List<Atestado> atestados) {
+		this.atestados = atestados;
+	}
+
+	public List<Exame> getExames() {
+		return exames;
+	}
+
+	public void setExames(List<Exame> exames) {
+		this.exames = exames;
+	}
+
+	public List<Receita> getReceitas() {
+		return receitas;
+	}
+
+	public void setReceitas(List<Receita> receitas) {
+		this.receitas = receitas;
+	}
+
 	public void emitirSolReceita(){
 		
 	}
