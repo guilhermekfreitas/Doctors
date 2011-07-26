@@ -2,10 +2,14 @@ package br.com.doctors.modelo.administracao;
 
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import br.com.doctors.modelo.agendamento.Agendamento;
-import br.com.doctors.modelo.consultas.Consulta;
 
 @Entity
 @Table(name="medicos")
