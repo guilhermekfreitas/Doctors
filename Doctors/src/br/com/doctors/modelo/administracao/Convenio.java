@@ -1,16 +1,17 @@
 package br.com.doctors.modelo.administracao;
 
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.*;
-
-import br.com.doctors.modelo.agendamento.Agendamento;
-import br.com.doctors.modelo.consultas.Consulta;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 /***
  * 
- * @author <nome do autor>
+ * @author Guilherme/Jonathan
  *
  */
 
@@ -24,13 +25,6 @@ public class Convenio {
 	
 	@ManyToMany(mappedBy="convenios",fetch=FetchType.LAZY)
 	private List<Paciente> pacientes;
-
-//	@OneToMany(mappedBy="convenio",fetch=FetchType.LAZY)
-//	private List<Agendamento> agendamentos;
-	
-//	@OneToMany(mappedBy="convenio",fetch=FetchType.LAZY)
-//	private List<Consulta> consultas;
-	
 	
 	public Convenio(){
 		
@@ -63,9 +57,5 @@ public class Convenio {
 	public List<Paciente> getPacientes() {
 		return pacientes;
 	}
-
-//	public List<Agendamento> getAgendamentos() {
-//		return agendamentos;
-//	}
 
 }

@@ -1,10 +1,9 @@
 package br.com.doctors.modelo.administracao;
 
-import java.util.List;
-
-import javax.persistence.*;
-
-import br.com.doctors.modelo.agendamento.Agendamento;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name="funcionarios")
@@ -13,9 +12,6 @@ public class Funcionario extends Pessoa{
 	private Long id;
 	private String dataAdmissao;
 	private Integer matricula;
-	
-	//@OneToMany(mappedBy="funcionario",fetch=FetchType.LAZY)
-//	private List<Agendamento> agendamentos;
 	
 	public Long getId() {
 		return id;
@@ -35,10 +31,6 @@ public class Funcionario extends Pessoa{
 	public void setMatricula(Integer matricula) {
 		this.matricula = matricula;
 	}
-	
-//	public List<Agendamento> getAgendamentos() {
-//		return agendamentos;
-//	}
 	
 	@Override
 	public String toString() {
