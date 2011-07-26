@@ -35,6 +35,13 @@
 			<label for="hora">Hora:</label> <input id="hora" type="text"
 				name="agendamento.hora" value="${agendamento.hora}"/><br /> 
 			
+			<label for="funcionarios">Funcionário:</label> 
+			<select id="funcionarios" name="agendamento.funcionario.id">
+				<c:forEach items="${funcionarios}" var="funcionario">
+				<option value="${funcionario.id}">${funcionario.nome}</option>
+				</c:forEach>
+			</select><br />
+			
 			<label for="confirmado">Confirmado:</label> <input id="confirmado" type="checkbox"
 				name="agendamento.confirmado" value="true" ${agendamento.confirmado?'checked':''}/><br />
 				
@@ -42,12 +49,7 @@
 				name="agendamento.cancelado" value="true" ${agendamento.cancelado?'checked':''}/><br />
 				 
 			<!--  Falta inserir:
-			    - paciente;
-			    - médico;     ( E pode editar? )
-			    
-			    Outras questões:
-			    - confirmado;
-			    - cancelado;
+				- 
 			 -->
 
 			<button type="submit" name="_method" value="PUT">Editar</button>

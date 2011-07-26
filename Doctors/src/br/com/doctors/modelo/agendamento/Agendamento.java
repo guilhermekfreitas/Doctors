@@ -32,21 +32,11 @@ public class Agendamento {
 	private Paciente paciente;
 	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="medico_id")
 	private Medico medico;
-	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="funcionario_id")
-	private Funcionario funcionario;
 	
 	//@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="convenio_id")
 	//private Convenio convenio;
-	//@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="funcionario_id")
-	//private Funcionario funcionario;
-	
-	public Funcionario getFuncionario() {
-		return funcionario;
-	}
-
-	public void setFuncionario(Funcionario funcionario) {
-		this.funcionario = funcionario;
-	}
+	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="funcionario_id")
+	private Funcionario funcionario;
 
 	public void confirmarPreAgendamento(){
 		confirmado = true;
@@ -122,11 +112,11 @@ public class Agendamento {
 	public Paciente getPaciente() {
 		return paciente;
 	}
-//
-//	public Funcionario getFuncionario() {
-//		return funcionario;
-//	}
-//
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
 //	public void setConvenio(Convenio convenio) {
 //		this.convenio = convenio;
 //	}
@@ -138,10 +128,10 @@ public class Agendamento {
 	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
 	}
-//
-//	public void setFuncionario(Funcionario funcionario) {
-//		this.funcionario = funcionario;
-//	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
 	
 	
 }

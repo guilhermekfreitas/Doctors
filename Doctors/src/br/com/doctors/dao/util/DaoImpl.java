@@ -7,7 +7,11 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.transform.ResultTransformer;
 
-
+/***
+ * 
+ * @author Guilherme
+ *
+ */
 public class DaoImpl<T> implements Dao<T> {
 
 	private final Session session;
