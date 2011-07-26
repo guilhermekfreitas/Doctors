@@ -30,10 +30,10 @@
 		<tbody>
 			<c:forEach items="${consultas}" var="consulta">
 				<tr>
-					<td>${consulta.paciente.nome}</td>
-					<td>${consulta.medico.nome}</td>
-					<td>${consulta.data}</td>
-					<td>${consulta.hora}</td>
+					<td>${consulta.agendamento.paciente.nome}</td>
+					<td>${consulta.agendamento.medico.nome}</td>
+					<td>${consulta.agendamento.data}</td>
+					<td>${consulta.agendamento.hora}</td>
 					<td>${consulta.queixaPrincipal}</td>
 					<td>${consulta.observacoes}</td>
 					<td><a href="<c:url value="/consultas/${consulta.id}"/>">Alterar</a></td>

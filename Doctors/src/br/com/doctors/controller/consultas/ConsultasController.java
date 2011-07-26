@@ -7,25 +7,20 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
-import br.com.doctors.dao.administracao.MedicoDao;
-import br.com.doctors.dao.administracao.PacienteDao;
+import br.com.doctors.dao.agendamento.AgendamentoDao;
 import br.com.doctors.dao.consultas.ConsultaDao;
-import br.com.doctors.modelo.administracao.Medico;
-import br.com.doctors.modelo.administracao.Paciente;
 import br.com.doctors.modelo.consultas.Consulta;
 
 @Resource
 public class ConsultasController {
 	private ConsultaDao daoConsulta;
-	private MedicoDao daoMedico;
-	private PacienteDao daoPaciente;
 	private Result result;
 	private Validator validator;
+	private AgendamentoDao daoAgendamento;
 
-	public ConsultasController(ConsultaDao daoConsulta, MedicoDao daoMedico, PacienteDao daoPaciente, Result result, Validator validator) {
-		this.daoPaciente = daoPaciente;
+	public ConsultasController(ConsultaDao daoConsulta, AgendamentoDao daoAgendamento, Result result, Validator validator) {
 		this.daoConsulta = daoConsulta;
-		this.daoMedico = daoMedico;
+		this.daoAgendamento = daoAgendamento; 
 		this.result = result;
 		this.validator = validator;
 	}
@@ -35,22 +30,17 @@ public class ConsultasController {
 		result.include("consultas", daoConsulta.listaTudo());
 	}
 	
-	@Get @Path("/consultas/novo")
-	public void cadastro() {
-		result.include("convenios", daoConsulta.listaTudo() );
+	@Get @Path("/consultas/novo/{idAgendamento}")
+	public void cadastro(Long idAgendamento) {
+		result.include("agendamento",daoAgendamento.carrega(idAgendamento));
+		result.include("consultas", daoConsulta.listaTudo() );
 	}
 	
 	@Post @Path("/consultas")
-	public void adiciona(final Consulta consulta, Long pacienteId, Long medicoId){
-		
-		Paciente paciente = daoPaciente.carrega(pacienteId);
-		System.out.println(paciente);
-		
-		Medico medico = daoMedico.carrega(medicoId);
-		System.out.println(medico);
+	public void adiciona(final Consulta consulta){
 		
 		System.out.println("======================================");
-		System.out.println("Consulta:" + consulta);
+		//System.out.println("Consulta:" + consulta);
 		
 //		validator.checking(new Validations(){{
 //			that(consulta.getNome() != null && consulta.getNome().length() >= 3, 
@@ -72,22 +62,6 @@ public class ConsultasController {
 		this.daoConsulta = daoConsulta;
 	}
 
-	public MedicoDao getDaoMedico() {
-		return daoMedico;
-	}
-
-	public void setDaoMedico(MedicoDao daoMedico) {
-		this.daoMedico = daoMedico;
-	}
-
-	public PacienteDao getDaoPaciente() {
-		return daoPaciente;
-	}
-
-	public void setDaoPaciente(PacienteDao daoPaciente) {
-		this.daoPaciente = daoPaciente;
-	}
-
 	public Result getResult() {
 		return result;
 	}
@@ -106,7 +80,6 @@ public class ConsultasController {
 
 	@Get @Path("/consultas/{id}")
 	public Consulta edit(Long id){
-		result.include("medicos", daoMedico.listaTudo() );
 		return daoConsulta.carrega(id);
 	}
 	

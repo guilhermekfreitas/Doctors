@@ -39,7 +39,7 @@ public class Agendamento {
 	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="funcionario_id")
 	private Funcionario funcionario;
 	
-	@OneToOne(fetch=FetchType.EAGER)
+	@OneToOne(fetch=FetchType.EAGER) @JoinColumn(name="consulta_id")
 	private Consulta consulta;
 
 	public Consulta getConsulta() {
@@ -138,4 +138,8 @@ public class Agendamento {
 	}
 	
 	
+	public boolean isConsultaDisponivel(){
+		return confirmado && !cancelado;
+	}
+
 }

@@ -123,8 +123,7 @@ public class Consulta {
 
 	@Override
 	public String toString() {
-		return String.format("Consulta para: %s - Médico: %s --> %s - %s", agendamento.getPaciente().getNome(),
-				agendamento.getMedico().getNome(), data, hora);
+		return queixaPrincipal;
 	}
 	
 }
