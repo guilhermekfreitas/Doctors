@@ -40,18 +40,18 @@ h1 {
 	margin: .6em 0;
 }
 
-div#users-contain {
+div#lista-regs {
 	width: 350px;
 	margin: 20px 0;
 }
 
-div#users-contain table {
+div#lista-regs table {
 	margin: 1em 0;
 	border-collapse: collapse;
 	width: 100%;
 }
 
-div#users-contain table td,div#users-contain table th {
+div#lista-regs table td,div#lista-regs table th {
 	border: 1px solid #eee;
 	padding: .6em 10px;
 	text-align: left;

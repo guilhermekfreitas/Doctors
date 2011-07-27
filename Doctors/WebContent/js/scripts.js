@@ -58,7 +58,7 @@
 					bValid = bValid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
 
 					if ( bValid ) {
-						$( "#users tbody" ).append( "<tr>" +
+						$( "#regList tbody" ).append( "<tr>" +
 							"<td>" + name.val() + "</td>" + 
 							"<td>" + email.val() + "</td>" + 
 							"<td>" + password.val() + "</td>" +
@@ -75,7 +75,7 @@
 			}
 		});
 
-		$( "#create-user" )
+		$( "#submit-button" )
 			.button()
 			.click(function() {
 				$( "#dialog-form" ).dialog( "open" );

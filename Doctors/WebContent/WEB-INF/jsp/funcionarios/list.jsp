@@ -16,9 +16,9 @@
 <body>
 	<c:import url="../header.jsp"></c:import>
 	
-	<div id="users-contain" class="ui-widget">
+	<div id="lista-regs" class="ui-widget">
 	<h1>Lista de Funcionários</h1>
-	<table id="users" class="ui-widget ui-widget-content">
+	<table id="regList" class="ui-widget ui-widget-content">
 		<thead>
 			<tr class="ui-widget-header">
 				<th>Nome</th>
@@ -53,7 +53,7 @@
 		</tbody>
 	</table>
 	</div>
-	<a id="create-user" href="<c:url value="/funcionarios/novo"/>">Adicionar novo Funcionário</a>
-	<a id="cancel-operation" href="<c:url value="./"/>">Voltar à página inicial</a><br />
+	<a id="submit-button" href="<c:url value="/funcionarios/novo"/>">Adicionar novo Funcionário</a>
+	<a id="cancel-operation" href="<c:url value="./"/>">Voltar à Página Inicial</a><br />
 </body>
 </html>

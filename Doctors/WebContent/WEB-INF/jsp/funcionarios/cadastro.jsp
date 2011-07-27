@@ -9,6 +9,7 @@
 <title>Cadastrar novo Funcionário:</title>
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/scripts.js'/>"></script>
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/ui-lightness/jquery-ui-1.8.14.custom.css"/>"/>  
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/meucss.css"/>"/>
 </head>
@@ -19,7 +20,7 @@
 		</c:forEach>
 	</ul>
 
-	<form name="form" action="<c:url value="/funcionarios"/>" method="post">
+	<form id="form" name="form" action="<c:url value="/funcionarios"/>" method="post">
 		<fieldset>
 			<legend>Adicionar Funcionário:</legend>
 
@@ -53,8 +54,8 @@
 			<label for="senha">Senha:</label> <input id="senha" type="text"
 				name="funcionario.senha" value="${funcionario.senha}" /><br />
 			
-			<button id="enviar" type="submit">Enviar</button>
-			<a href="./"><button id="cancelar" type="submit" >Cancelar</button></a>
+			<button id="submit-button" type="submit">Enviar</button>
+			<a href="./"><button id="cancel-operation" type="submit" >Cancelar</button></a>
 		</fieldset>
 	</form>
 	<script>

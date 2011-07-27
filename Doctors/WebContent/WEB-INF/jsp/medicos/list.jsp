@@ -8,15 +8,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Lista de Médicos</title>
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/scripts.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
+<link rel="stylesheet"  type="text/css" href="<c:url value="/css/ui-lightness/jquery-ui-1.8.14.custom.css"/>"/>  
+<link rel="stylesheet"  type="text/css" href="<c:url value="/css/meucss.css"/>"/>
 </head>
 <body>
 	<c:import url="../header.jsp"></c:import>
-
+	
+	<div id="lista-regs" class="ui-widget">
 	<h1>Lista de Médicos</h1>
-
-	<table>
+	<table id="regList" class="ui-widget ui-widget-content">
 		<thead>
-			<tr>
+			<tr class="ui-widget-header">
 				<th>Nome</th>
 				<th>CRM</th>
 				<th>UF de Registro</th>
@@ -50,7 +54,8 @@
 			</c:forEach>
 		</tbody>
 	</table>
-	<a href="<c:url value="/medicos/novo"/>">Adicionar novo Médico</a><br />
-	<a href="<c:url value="./"/>">Voltar à página inicial</a><br />
+	</div>
+	<a id="submit-button" href="<c:url value="/medicos/novo"/>">Adicionar novo Médico</a>
+	<a id="cancel-operation" href="<c:url value="./"/>">Voltar à página inicial</a><br />
 </body>
 </html>
