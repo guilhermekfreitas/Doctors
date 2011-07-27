@@ -9,7 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import br.com.caelum.vraptor.validator.Validations;
 import br.com.doctors.modelo.agendamento.Agendamento;
+import com.google.common.base.Strings;
+
 
 @Entity
 @Table(name="medicos")
@@ -58,5 +61,22 @@ public class Medico extends Pessoa {
 	@Override
 	public String toString() {
 		return String.format("%s: %s - %s ", getNome(), crm, especialidade);
+	}
+	
+	public Validations getValidations() {
+		return new Validations(){{
+			that(Medico.this.getNome() != null && Medico.this.getNome().length() >= 3, 
+					"medico.nome", "nome.obrigatorio");
+			that(Medico.this.getCrm() != null, 
+					"medico.crm", "campo.obrigatorio", "CRM");
+			that(!Strings.isNullOrEmpty(Medico.this.getUfRegistro()), 
+					"medico.ufRegistro", "campo.obrigatorio", "relacionado ao UF de registro do médico");
+			that(!Strings.isNullOrEmpty(Medico.this.getEspecialidade()), 
+					"medico.especialidade", "campo.obrigatorio", "Especialidade");
+			that(!Strings.isNullOrEmpty(Medico.this.getLogin() ), 
+					"medico.login", "campo.obrigatorio", "Login");
+			that(!Strings.isNullOrEmpty(Medico.this.getSenha()), 
+					"medico.senha", "campo.obrigatorio", "Senha");
+		}};
 	}
 }

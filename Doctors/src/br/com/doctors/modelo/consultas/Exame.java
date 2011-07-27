@@ -14,6 +14,13 @@ public class Exame extends Documento {
 	@Id @GeneratedValue
 	private Long id;
 
+	public Exame(){
+	}
+
+	public Exame(String descricao){
+		setDescricao(descricao);
+	}
+	
 	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="consulta_id")
 	private Consulta consulta;
 	

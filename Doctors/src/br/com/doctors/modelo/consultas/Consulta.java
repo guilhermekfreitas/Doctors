@@ -6,9 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import javax.persistence.CascadeType;
 
 import br.com.doctors.modelo.agendamento.Agendamento;
 
@@ -26,25 +29,22 @@ public class Consulta {
 	
 	@Id @GeneratedValue
 	private Long id;
-	private String data;
+	private String data; // retirar
 	private String hora;
 	private String queixaPrincipal;
 	private String observacoes;
 	
-	@OneToOne(fetch=FetchType.EAGER, mappedBy="consulta")
+	@OneToOne(fetch=FetchType.EAGER, mappedBy="consulta") @JoinColumn(name="agendamento_id")
 	private Agendamento agendamento;
 	
-	@OneToMany(mappedBy="consulta",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="consulta",fetch=FetchType.LAZY,cascade={CascadeType.PERSIST})
 	private List<Atestado> atestados;
 	
 	@OneToMany(mappedBy="consulta",fetch=FetchType.LAZY)
 	private List<Exame> exames;
 	
-	@OneToMany(mappedBy="consulta",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="consulta",fetch=FetchType.LAZY,cascade={CascadeType.PERSIST})
 	private List<Receita> receitas;
-	
-//	@OneToOne(fetch=FetchType.EAGER)
-//	private Agendamento agendamento;
 	
 	public void emitirReceita(){
 		

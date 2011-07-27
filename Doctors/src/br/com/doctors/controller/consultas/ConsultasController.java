@@ -1,5 +1,9 @@
 package br.com.doctors.controller.consultas;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
@@ -9,7 +13,9 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.doctors.dao.agendamento.AgendamentoDao;
 import br.com.doctors.dao.consultas.ConsultaDao;
+import br.com.doctors.dao.consultas.ExameDao;
 import br.com.doctors.modelo.consultas.Consulta;
+import br.com.doctors.modelo.consultas.Exame;
 
 @Resource
 public class ConsultasController {
@@ -17,12 +23,15 @@ public class ConsultasController {
 	private Result result;
 	private Validator validator;
 	private AgendamentoDao daoAgendamento;
+	private ExameDao exameDao;
 
-	public ConsultasController(ConsultaDao daoConsulta, AgendamentoDao daoAgendamento, Result result, Validator validator) {
+	public ConsultasController(ConsultaDao daoConsulta, AgendamentoDao daoAgendamento, Result result, 
+				Validator validator, ExameDao exameDao) {
 		this.daoConsulta = daoConsulta;
 		this.daoAgendamento = daoAgendamento; 
 		this.result = result;
 		this.validator = validator;
+		this.exameDao = exameDao;
 	}
 	
 	@Get @Path({"/consultas"})
@@ -37,10 +46,22 @@ public class ConsultasController {
 	}
 	
 	@Post @Path("/consultas")
-	public void adiciona(final Consulta consulta){
+	public void adiciona(final Consulta consulta, Collection<String> exames){
+		
+		System.out.println(consulta.getAgendamento());
 		
 		System.out.println("======================================");
 		//System.out.println("Consulta:" + consulta);
+		
+		List<Exame> examesList = new ArrayList<Exame>();
+		for( String descricao : exames ){
+			System.out.println(descricao);
+			Exame exame = new Exame(descricao);
+			exame.setConsulta(consulta);
+			exameDao.adiciona(exame);
+			examesList.add(exame);
+		}
+//		consulta.setExames(examesList);
 		
 //		validator.checking(new Validations(){{
 //			that(consulta.getNome() != null && consulta.getNome().length() >= 3, 

@@ -37,6 +37,9 @@ public class FuncionariosController {
 		System.out.println("-======================================");
 		System.out.println("Funcionario:" + funcionario );
 		
+		validator.checking(funcionario.getValidations());
+		validator.onErrorUsePageOf(this).cadastro();
+		
 		dao.adiciona(funcionario);
 		result.redirectTo(FuncionariosController.class).list();
 	}
@@ -48,6 +51,9 @@ public class FuncionariosController {
 	
 	@Put @Path("/funcionarios/{funcionario.id}")
 	public void alterar(final Funcionario funcionario){
+		
+		validator.checking(funcionario.getValidations());
+		validator.onErrorUsePageOf(this).edit(funcionario.getId());
 		
 		dao.atualiza(funcionario);
 		result.redirectTo(FuncionariosController.class).list();

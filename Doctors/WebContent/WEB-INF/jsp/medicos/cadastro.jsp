@@ -21,41 +21,41 @@
 			<legend>Adicionar Médico:</legend>
 
 			<label for="nome">Nome:</label> <input id="nome" type="text"
-				name="medico.nome" /><br /> 
+				name="medico.nome" value="${medico.nome}" /><br /> 
 			
 			<label for="crm">CRM:</label> <input id="crm" type="text"
-				name="medico.crm" /><br /> 
+				name="medico.crm" value="${medico.crm}"/><br /> 
 			
 			<label for="ufRegistro">UF de Registro:</label> <input id="ufRegistro" type="text" 
-				name="medico.ufRegistro" /><br />
+				name="medico.ufRegistro" value="${medico.ufRegistro}"/><br />
 
 			<label for="especialidade">Especialidade:</label> <input id="especialidade" type="text" 
-				name="medico.especialidade" /><br />
+				name="medico.especialidade" value="${medico.especialidade}"/><br />
 
 			<label for="endereco">Endereço:</label> <input id="endereco" type="text" 
-				name="medico.endereco" /><br /> 
+				name="medico.endereco" value="${medico.endereco}"/><br /> 
 				
 			<label for="cpf">CPF:</label> <input id="cpf" type="text" 
-				name="medico.cpf" /><br /> 
+				name="medico.cpf" value="${medico.cpf}"/><br /> 
 			
 			<label for="telefone">Telefone:</label> <input id="telefone" type="text" 
-				name="medico.telefone" /><br /> 
+				name="medico.telefone" value="${medico.telefone}"/><br /> 
 			
 			<label for="email">Email:</label> <input id="email" type="text"
-				name="medico.email" /><br /> 
+				name="medico.email" value="${medico.email}"/><br /> 
 				
 			<label for="dataNasc">Data de Nascimento:</label> <input id="dataNasc" type="text"
 				name="medico.dataDeNascimento" value="<fmt:formatDate value="${medico.dataDeNascimento}" pattern="dd/MM/yyyy"/>" /> <br /> 
 				
 			<label for="login">Login:</label><input id="login" type="text" 
-				name="medico.login" /><br /> 
+				name="medico.login" value="${medico.login}"/><br /> 
 			
 			<label for="senha">Senha:</label> <input id="senha" type="text"
-				name="medico.senha" /><br />
+				name="medico.senha" value="${medico.senha}"/><br />
 
-			
 				
 			<button id="enviar" type="submit">Enviar</button>
+			<a href="./"><button id="cancelar" type="submit" >Cancelar</button></a>
 		</fieldset>
 	</form>
 		

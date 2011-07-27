@@ -38,7 +38,10 @@ public class MedicosController {
 	public void adiciona(final Medico medico){
 		
 		System.out.println("-======================================");
-		System.out.println("Medico:" + medico );
+		System.out.println("Medico:" + medico + medico.getUfRegistro());
+		
+		validator.checking(medico.getValidations());
+		validator.onErrorUsePageOf(this).cadastro();
 		
 		dao.adiciona(medico);
 		result.redirectTo(MedicosController.class).list();
@@ -51,6 +54,9 @@ public class MedicosController {
 	
 	@Put @Path("/medicos/{medico.id}")
 	public void alterar(final Medico medico){
+		
+		validator.checking(medico.getValidations());
+		validator.onErrorUsePageOf(this).edit(medico.getId());
 		
 		dao.atualiza(medico);
 		result.redirectTo(MedicosController.class).list();

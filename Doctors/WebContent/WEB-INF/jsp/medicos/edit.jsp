@@ -54,6 +54,7 @@
 				name="medico.senha" value="${medico.senha}" /><br />
 
 			<button type="submit" name="_method" value="PUT">Editar</button>
+			<a href="./"><button id="cancelar" type="submit" >Cancelar</button></a>
 		</fieldset>
 	</form>
 </body>

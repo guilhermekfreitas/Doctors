@@ -21,36 +21,37 @@
 			<legend>Adicionar Funcionário:</legend>
 
 			<label for="nome">Nome:</label> <input id="nome" type="text"
-				name="funcionario.nome" /><br /> 
-			
+				name="funcionario.nome" value="${funcionario.nome}" /><br /> 
+
 			<label for="dataAdmissao">Data de Admissão:</label> <input id="dataAdmissao" type="text"
-				name="funcionario.dataAdmissao" /><br /> 
+				name="funcionario.dataAdmissao" value="${funcionario.dataAdmissao}"/><br /> 
 			
 			<label for="matricula">Número de Matrícula:</label> <input id="matricula" type="text" 
-				name="funcionario.matricula" /><br />
-
+				name="funcionario.matricula" value="${funcionario.matricula}"/><br />
+			
 			<label for="endereco">Endereço:</label> <input id="endereco" type="text" 
-				name="funcionario.endereco" /><br /> 
+				name="funcionario.endereco" value="${funcionario.endereco}"/><br /> 
 				
 			<label for="cpf">CPF:</label> <input id="cpf" type="text" 
-				name="funcionario.cpf" /><br /> 
+				name="funcionario.cpf" value="${funcionario.cpf}"/><br /> 
 			
 			<label for="telefone">Telefone:</label> <input id="telefone" type="text" 
-				name="funcionario.telefone" /><br /> 
+				name="funcionario.telefone" value="${funcionario.telefone}"/><br /> 
 			
 			<label for="email">Email:</label> <input id="email" type="text"
-				name="funcionario.email" /><br /> 
+				name="funcionario.email" value="${funcionario.email}"/><br /> 
 				
 			<label for="dataNasc">Data de Nascimento:</label> <input id="dataNasc" type="text"
 				name="funcionario.dataDeNascimento" value="<fmt:formatDate value="${funcionario.dataDeNascimento}" pattern="dd/MM/yyyy"/>" /> <br /> 
 				
-			<label for="login">Login:</label><input id="login" type="text" 
-				name="funcionario.login" /><br /> 
-			
-			<label for="senha">Senha:</label> <input id="senha" type="text"
-				name="funcionario.senha" /><br />
+			<label for="login">Login:</label> <input id="login" type="text"
+				name="funcionario.login" value="${funcionario.login}" /><br />
 				
+			<label for="senha">Senha:</label> <input id="senha" type="text"
+				name="funcionario.senha" value="${funcionario.senha}" /><br />
+
 			<button id="enviar" type="submit">Enviar</button>
+			<a href="./"><button id="cancelar" type="submit" >Cancelar</button></a>
 		</fieldset>
 	</form>
 		

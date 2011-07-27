@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.common.base.Strings;
+
+import br.com.caelum.vraptor.validator.Validations;
 import br.com.doctors.modelo.agendamento.Agendamento;
 
 /**
@@ -56,5 +59,20 @@ public class Funcionario extends Pessoa{
 	@Override
 	public String toString() {
 		return getNome() + ": " + matricula;
+	}
+	
+	public Validations getValidations() {
+		return new Validations(){{
+			that(Funcionario.this.getNome() != null && Funcionario.this.getNome().length() >= 3, 
+					"medico.nome", "nome.obrigatorio");
+			that(Funcionario.this.getMatricula() != null, 
+					"medico.matricula", "campo.obrigatorio", "número de matrícula");
+			that(!Strings.isNullOrEmpty(Funcionario.this.getDataAdmissao()), 
+					"medico.dataAdmissao", "campo.obrigatorio", "data de admissão");
+			that(!Strings.isNullOrEmpty(Funcionario.this.getLogin() ), 
+					"medico.login", "campo.obrigatorio", "Login");
+			that(!Strings.isNullOrEmpty(Funcionario.this.getSenha()), 
+					"medico.senha", "campo.obrigatorio", "Senha");
+		}};
 	}
 }

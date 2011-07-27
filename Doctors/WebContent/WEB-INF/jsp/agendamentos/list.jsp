@@ -50,6 +50,7 @@
 					<td>${agendamento.medico.nome}</td>
 					<td>${agendamento.funcionario.nome}</td>
 					<td>
+						${agendamento.consulta.id}
 						<c:if test="${agendamento.isConsultaDisponivel()}">
 							<c:choose>
 								<c:when test="${ empty agendamento.consulta}">
