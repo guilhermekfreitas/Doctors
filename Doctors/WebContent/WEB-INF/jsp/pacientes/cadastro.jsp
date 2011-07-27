@@ -20,6 +20,8 @@
 		<fieldset>
 			<legend>Adicionar Paciente:</legend>
 
+			<input type="hidden" name="convenios" value="${convenios}" />
+
 			<label for="nome">Nome:</label> <input id="nome" type="text"
 				name="paciente.nome" value="${paciente.nome}"/><br /> 
 				
@@ -44,26 +46,42 @@
 			<label for="senha">Senha:</label> <input id="senha" type="text"
 				name="paciente.senha" value="${paciente.senha}" /><br />
 
-			<label for="convenios">Convênios associados:</label> 
-			<select id="convenios" name="convenioAtual">
-				<c:forEach items="${convenios}" var="convenio">
-					<option value="${convenio.id}">${convenio.nome}</option>
+			<label for="opcaoConvenios">Opção de Convênios:</label><br />
+			<input type="radio" name="opcaoConvenios" value="Particular" onclick="hideConveniados()"> Particular<br>
+			<input type="radio" name="opcaoConvenios" value="Conveniado" checked onclick="showConveniados()"> Conveniado<br>
+			<hr>
+
+			<div id="divConvenios">
+				<label for="convenios">Adicionar:</label>  
+				<select id="convenios" name="convenioAtual">
+				    <option value="">Selecione..</option>
+					<c:forEach items="${convenios}" var="convenio">
+						<%--<option value="${convenio.id}">${convenio.nome}</option> --%>
+						
+						<option <c:if test="${convenioAtual == convenio.id}"> selected="selected"</c:if>   
+                 		 value="${convenio.id}">${convenio.nome}</option> 
 					</c:forEach>
-			</select> 
-			<img src="<c:url value='/img/adicionar.gif'/>" onclick="adicionarConvenio();"/>
+				</select> 
+				<img src="<c:url value='/img/adicionar.gif'/>" onclick="adicionarConvenio();"/><br/>
 				
-			<fieldset id="lista-convenios">
-				Convênios Associados: <br />
-		    	<c:forEach items="${paciente.convenios}" var="convenio" varStatus="status">
-            	<div data-index="${status.index}" class="convenio-item">
-            		<input type="hidden" name="conveniosId[${status.index}]" value="40"/>
-                	Nome:
-                	<input type="text" readonly="readonly" name="convenioNome[${status.index}]" value="${convenio.nome}"/>
-                	<img src="<c:url value='/img/remover.gif'/>" class="btn-remover-convenio"/>
-            	</div>
-	        </c:forEach>
-			</fieldset>	
-				
+				<table id="lista-convenios" >
+					<tr>Lista de convênios</tr>
+					<tr></tr>
+					
+			    	<c:forEach items="${paciente.convenios}" var="convenio" varStatus="status">
+	            		<div data-index="${status.index}" class="convenio-item">
+	            		<td>
+	    	            	<input type="hidden" name="conveniosId[${status.index}]" value="${convenio.id}"/>
+		                	<input type="text" readonly="readonly" name="convenioNome[${status.index}]" value="${convenio.nome}"/>
+	                	</td>
+	                	<td>
+	                		<img src="<c:url value='/img/remover.gif'/>" class="btn-remover-convenio"/>
+	                	</td><br />
+	            	</div>
+		        	</c:forEach>
+				</table>	
+			</div>
+			
 			<button id="enviar" type="submit">Enviar</button>
 			<a href="./"><button id="cancelar" type="submit" >Cancelar</button></a>
 		</fieldset>
@@ -74,6 +92,14 @@
 				$(this).parent().remove();
 			});
 
+			function hideConveniados(){
+				$('#divConvenios').hide();
+			}
+			
+			function showConveniados(){
+				$('#divConvenios').show();
+			}
+			
 			function adicionarConvenio() {
 				var $container	= $('#lista-convenios'),
 					$convenios	= $container.children('.convenio-item'),

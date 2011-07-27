@@ -21,7 +21,7 @@
 			<legend>Iniciar Consulta:</legend>
 
 			<input type="hidden" name="consulta.agendamento.id" value="${agendamento.id}"/>
-
+			
 			<label for="paciente">Paciente:</label> <input id="paciente" type="text"
 				 value="${agendamento.paciente.nome}" disabled="disabled" size="40"/><br /> 
 

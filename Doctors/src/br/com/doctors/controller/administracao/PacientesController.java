@@ -43,21 +43,16 @@ public class PacientesController {
 	}
 	
 	@Post @Path("/pacientes")
-	public void adiciona(final Paciente paciente, Collection<Long> conveniosId){
+	public void adiciona(final Paciente paciente, Collection<Long> conveniosId, String opcaoConvenios){
 		
-		System.out.println(conveniosId);
-		
-		if (conveniosId != null){
+		if (conveniosId != null && opcaoConvenios.equalsIgnoreCase("conveniado")){
 			// recuperar cada id, e adicionar ao paciente
-			List<Convenio> convenios = new ArrayList<Convenio>();
+			List<Convenio> conveniosList = new ArrayList<Convenio>();
 			for( Long id : conveniosId ){
-				convenios.add(daoConvenio.carrega(id));
+				conveniosList.add(daoConvenio.carrega(id));
 			}
-			paciente.setConvenios(convenios);
+			paciente.setConvenios(conveniosList);
 		}
-		System.out.println("-======================================");
-		System.out.println("Paciente:" + paciente + paciente.getConvenios());
-		
 		validator.checking(paciente.getValidations());
 		validator.onErrorUsePageOf(this).cadastro();
 		
