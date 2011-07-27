@@ -8,8 +8,7 @@
 <title>Sistema Doctor's - Página Inicial</title>
 </head>
 <body>
-	<jsp:include page="WEB-INF/jsp/header.jsp"></jsp:include> 
-	<h1>Doctors</h1>
+	<jsp:include page="WEB-INF/jsp/header.jsp"></jsp:include><br /> 
 	
 	Cadastros Básicos:<br/>
 	<a href="medicos">Médico</a><br />

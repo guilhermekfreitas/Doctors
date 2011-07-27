@@ -17,6 +17,11 @@ import br.com.doctors.dao.agendamento.AgendamentoDao;
 import br.com.doctors.modelo.administracao.Convenio;
 import br.com.doctors.modelo.agendamento.Agendamento;
 
+/**
+ * 
+ * @author Guilherme
+ *
+ */
 @Resource
 public class AgendamentosController {
 	private Result result;

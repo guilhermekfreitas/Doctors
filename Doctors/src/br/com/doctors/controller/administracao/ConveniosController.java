@@ -15,6 +15,11 @@ import br.com.caelum.vraptor.view.Results;
 import br.com.doctors.dao.administracao.ConvenioDao;
 import br.com.doctors.modelo.administracao.Convenio;
 
+/***
+ * 
+ * @author Guilherme/Jonathan
+ *
+ */
 @Resource
 public class ConveniosController {
 	private ConvenioDao dao;

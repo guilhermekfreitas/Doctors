@@ -18,6 +18,11 @@ import br.com.doctors.dao.administracao.PacienteDao;
 import br.com.doctors.modelo.administracao.Convenio;
 import br.com.doctors.modelo.administracao.Paciente;
 
+/***
+ * 
+ * @author Renato
+ *
+ */
 @Resource
 public class PacientesController {
 	private PacienteDao daoPacientes;

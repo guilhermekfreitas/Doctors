@@ -16,6 +16,11 @@ import com.google.common.base.Strings;
 import br.com.caelum.vraptor.validator.Validations;
 import br.com.doctors.modelo.agendamento.Agendamento;
 
+/***
+ * 
+ * @author Renato
+ *
+ */
 @Entity
 @Table(name="pacientes")
 public class Paciente extends Pessoa {

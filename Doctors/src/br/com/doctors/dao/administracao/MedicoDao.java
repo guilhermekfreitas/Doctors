@@ -10,6 +10,11 @@ import br.com.doctors.dao.util.DaoImpl;
 import br.com.doctors.modelo.administracao.Medico;
 import br.com.doctors.modelo.administracao.Paciente;
 
+/***
+ * 
+ * @author Bruno
+ *
+ */
 @Component
 public class MedicoDao extends DaoImpl<Medico>{
 

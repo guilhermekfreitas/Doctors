@@ -10,6 +10,11 @@ import br.com.caelum.vraptor.Validator;
 import br.com.doctors.dao.administracao.FuncionarioDao;
 import br.com.doctors.modelo.administracao.Funcionario;
 
+/**
+ * 
+ * @author Jonathan/Guilherme
+ *
+ */
 @Resource
 public class FuncionariosController {
 	private Result result;

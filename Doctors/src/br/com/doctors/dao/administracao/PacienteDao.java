@@ -9,6 +9,11 @@ import br.com.caelum.vraptor.ioc.Component;
 import br.com.doctors.dao.util.DaoImpl;
 import br.com.doctors.modelo.administracao.Paciente;
 
+/***
+ * 
+ * @author Renato
+ *
+ */
 @Component
 public class PacienteDao extends DaoImpl<Paciente> {
 

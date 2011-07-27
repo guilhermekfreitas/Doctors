@@ -13,7 +13,11 @@ import br.com.caelum.vraptor.validator.Validations;
 import br.com.doctors.modelo.agendamento.Agendamento;
 import com.google.common.base.Strings;
 
-
+/***
+ * 
+ * @author Bruno
+ *
+ */
 @Entity
 @Table(name="medicos")
 public class Medico extends Pessoa {

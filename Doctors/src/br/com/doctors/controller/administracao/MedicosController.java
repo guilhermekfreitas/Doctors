@@ -13,6 +13,11 @@ import br.com.doctors.dao.administracao.MedicoDao;
 import br.com.doctors.dao.administracao.MedicoDao;
 import br.com.doctors.modelo.administracao.Medico;
 
+/***
+ * 
+ * @author Bruno
+ *
+ */
 @Resource
 public class MedicosController {
 	private Result result;

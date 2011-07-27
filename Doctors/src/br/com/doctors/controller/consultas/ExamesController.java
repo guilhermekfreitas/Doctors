@@ -11,6 +11,11 @@ import br.com.caelum.vraptor.validator.Validations;
 import br.com.doctors.dao.consultas.ExameDao;
 import br.com.doctors.modelo.consultas.Exame;
 
+/**
+ * 
+ * @author Jonathan/Guilherme
+ *
+ */
 @Resource
 public class ExamesController {
 

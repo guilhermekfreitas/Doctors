@@ -14,11 +14,13 @@
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/meucss.css"/>"/>
 </head>
 <body>
-	<ul>
+	<c:import url="../header.jsp"></c:import>
+	
+		<div class="ui-state-error">
 		<c:forEach var="error" items="${errors}">
 			<li>${error.category} - ${error.message}</li>
 		</c:forEach>
-	</ul>
+		</div>
 
 	<form id="form" name="form" action="<c:url value="/funcionarios"/>" method="post">
 		<fieldset>

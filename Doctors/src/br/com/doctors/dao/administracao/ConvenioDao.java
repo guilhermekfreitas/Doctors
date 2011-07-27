@@ -13,6 +13,11 @@ import br.com.doctors.dao.util.DaoImpl;
 import br.com.doctors.modelo.administracao.Convenio;
 import br.com.doctors.modelo.administracao.Paciente;
 
+/***
+ * 
+ * @author Guilherme/Jonathan
+ *
+ */
 @Component
 public class ConvenioDao extends DaoImpl<Convenio>{
 

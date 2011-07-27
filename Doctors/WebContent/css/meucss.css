@@ -14,11 +14,13 @@ label {
 	width: 80px;
 	padding-right: 10px;
 	padding-bottom: 10px;
+	font-size: 14px;
 	
 }
 
 fieldset {
 	border: solid 1px #000;
+	font-size: 14px;
 }
 
 br {
