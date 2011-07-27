@@ -20,9 +20,10 @@
 			<legend>Adicionar Convênio:</legend>
 
 			<label for="nome">Nome:</label> <input id="nome" type="text"
-				name="convenio.nome" />
+				name="convenio.nome" /><br />
 
 			<button id="enviar" type="submit">Enviar</button>
+			<a href="./"><button id="cancelar" type="submit" >Cancelar</button></a>
 		</fieldset>
 	</form>
 </body>

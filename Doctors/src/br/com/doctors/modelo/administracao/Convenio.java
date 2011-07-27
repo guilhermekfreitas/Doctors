@@ -9,6 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import br.com.caelum.vraptor.validator.Validations;
+
+import com.google.common.base.Strings;
+
 /***
  * 
  * @author Guilherme/Jonathan
@@ -54,8 +58,15 @@ public class Convenio {
 		this.id = id;
 	}
 
-	public List<Paciente> getPacientes() {
+	public List<Paciente> getConvenios() {
 		return pacientes;
+	}
+	
+	public Validations getValidations() {
+		return new Validations(){{
+			that(Convenio.this.getNome() != null && Convenio.this.getNome().length() >= 3, 
+					"convenio.nome", "nome.obrigatorio");
+		}};
 	}
 
 }

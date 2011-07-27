@@ -37,22 +37,17 @@ public class ConveniosController {
 	
 	@Get @Path({"/convenios"})
 	public void list(){
-		result.include("convenios", dao.listaTodos());
+		result.include("convenios", dao.listaTudo());
 	}
 	
 	@Post @Path("/convenios")
 	public void adiciona(final Convenio convenio){
 		
-		// hibernate validator -> validator.validate(convenio);
-		
-		validator.checking(new Validations(){{
-			that(convenio.getNome() != null && convenio.getNome().length() >= 3, 
-					"convenio.nome", "nome.obrigatorio");
-		}});
+		validator.checking(convenio.getValidations());
 		validator.onErrorUsePageOf(this).cadastro();
 		
 		dao.adiciona(convenio);
-		result.redirectTo(ConveniosController.class).list();
+		result.redirectTo(this).list();
 	}
 	
 	
@@ -65,10 +60,7 @@ public class ConveniosController {
 	
 	@Put @Path("/convenios/{convenio.id}")
 	public void alterar(final Convenio convenio){
-		validator.checking(new Validations(){{
-			that(convenio.getNome() != null && convenio.getNome().length() >= 3, 
-					"convenio.nome", "nome.obrigatorio");
-		}});
+		validator.checking(convenio.getValidations());
 		validator.onErrorUsePageOf(this).edit(convenio.getId());
 		
 		dao.atualiza(convenio);

@@ -9,33 +9,30 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import br.com.caelum.vraptor.ioc.Component;
+import br.com.doctors.dao.util.DaoImpl;
 import br.com.doctors.modelo.administracao.Convenio;
 import br.com.doctors.modelo.administracao.Paciente;
 
 @Component
-public class ConvenioDao {
+public class ConvenioDao extends DaoImpl<Convenio>{
 
 	private Session session;
 
 	public ConvenioDao(Session session) {
-		this.session = session;
+		super(session,Convenio.class);
 	}
 
-	public void adiciona(Convenio convenio) {
-		session.save(convenio);
-	}
-
-	public void atualiza(Convenio convenio) {
-		session.update(convenio);
-	}
-
-	public void remove(Convenio convenio) {
-		session.delete(convenio);
-	}
-
-	public Convenio get(Long id) {
-		return (Convenio) session.get(Convenio.class, id);
-	}
+//	public void adiciona(Convenio convenio) {
+//		session.save(convenio);
+//	}
+//
+//	public void atualiza(Convenio convenio) {
+//		session.update(convenio);
+//	}
+//
+//	public void remove(Convenio convenio) {
+//		session.delete(convenio);
+//	}
 
 	public List<Convenio> busca(String nome) {
 		return session.createCriteria(Convenio.class)
@@ -48,11 +45,11 @@ public class ConvenioDao {
 				setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 	}
 
-	public List<Convenio> listaTodos() {
-		return session.createCriteria(Convenio.class).list();
-	}
-
-	public Convenio carrega(Long id) {
-		return (Convenio) session.load(Convenio.class, id);
-	}
+//	public List<Convenio> listaTudo() {
+//		return session.createCriteria(Convenio.class).list();
+//	}
+//
+//	public Convenio carrega(Long id) {
+//		return (Convenio) session.load(Convenio.class, id);
+//	}
 }

@@ -21,38 +21,36 @@
 			<legend>Adicionar Paciente:</legend>
 
 			<label for="nome">Nome:</label> <input id="nome" type="text"
-				name="paciente.nome" /><br /> <label for="telefone">Telefone:</label>
-			<input id="telefone" type="text" name="paciente.telefone" /><br />
+				name="paciente.nome" value="${paciente.nome}"/><br /> 
+				
+			<label for="telefone">Telefone:</label>	<input id="telefone" type="text" 
+				name="paciente.telefone" value="${paciente.telefone}"/><br />
 
-			<label for="endereco">Endereço:</label> <input id="endereco"
-				type="text" name="paciente.endereco" /><br /> 
+			<label for="endereco">Endereço:</label> <input id="endereco" type="text" 
+				name="paciente.endereco" value="${paciente.endereco}"/><br /> 
 				
-			<label for="cpf">CPF:</label>
-			<input id="cpf" type="text" name="paciente.cpf" /><br /> 
+			<label for="cpf">CPF:</label><input id="cpf" type="text" 
+				name="paciente.cpf" value="${paciente.cpf}"/><br /> 
 			
-			<label
-				for="email">Email:</label> <input id="email" type="text"
-				name="paciente.email" /><br /> 
+			<label for="email">Email:</label> <input id="email" type="text"
+				name="paciente.email" value="${paciente.email}"/><br /> 
 				
-				<label for="dataNasc">Data
-				de Nascimento:</label> <input id="dataNasc" type="text"
+			<label for="dataNasc">Data de Nascimento:</label> <input id="dataNasc" type="text"
 				name="paciente.dataDeNascimento" value="<fmt:formatDate value="${paciente.dataDeNascimento}" pattern="dd/MM/yyyy"/>" /> <br /> 
 				
-				<label for="login">Login:</label>
-			<input id="login" type="text" name="paciente.login" /><br /> 
+			<label for="login">Login:</label><input id="login" type="text" 
+				name="paciente.login" value="${paciente.login}"/><br /> 
 			
-			<label
-				for="senha">Senha:</label> <input id="senha" type="text"
-				name="paciente.senha" /><br />
+			<label for="senha">Senha:</label> <input id="senha" type="text"
+				name="paciente.senha" value="${paciente.senha}" /><br />
 
-				<label
-				for="convenios">Convênios associados:</label>	
-				<select id="convenios" name="convenioAtual">
-					<c:forEach items="${convenios}" var="convenio">
+			<label for="convenios">Convênios associados:</label> 
+			<select id="convenios" name="convenioAtual">
+				<c:forEach items="${convenios}" var="convenio">
 					<option value="${convenio.id}">${convenio.nome}</option>
 					</c:forEach>
-				</select> 
-				<img src="<c:url value='/img/adicionar.gif'/>" onclick="adicionarConvenio();"/>
+			</select> 
+			<img src="<c:url value='/img/adicionar.gif'/>" onclick="adicionarConvenio();"/>
 				
 			<fieldset id="lista-convenios">
 				Convênios Associados: <br />
@@ -66,8 +64,8 @@
 	        </c:forEach>
 			</fieldset>	
 				
-				
 			<button id="enviar" type="submit">Enviar</button>
+			<a href="./"><button id="cancelar" type="submit" >Cancelar</button></a>
 		</fieldset>
 	</form>
 		

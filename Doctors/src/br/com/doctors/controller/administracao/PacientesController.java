@@ -39,7 +39,7 @@ public class PacientesController {
 	
 	@Get @Path("/pacientes/novo")
 	public void cadastro() {
-		result.include("convenios", daoConvenio.listaTodos() );
+		result.include("convenios", daoConvenio.listaTudo() );
 	}
 	
 	@Post @Path("/pacientes")
@@ -47,23 +47,18 @@ public class PacientesController {
 		
 		System.out.println(conveniosId);
 		
-		// recuperar cada id, e adicionar ao paciente
-		List<Convenio> convenios = new ArrayList<Convenio>();
-		for( Long id : conveniosId ){
-			convenios.add(daoConvenio.carrega(id));
+		if (conveniosId != null){
+			// recuperar cada id, e adicionar ao paciente
+			List<Convenio> convenios = new ArrayList<Convenio>();
+			for( Long id : conveniosId ){
+				convenios.add(daoConvenio.carrega(id));
+			}
+			paciente.setConvenios(convenios);
 		}
-		
-		paciente.setConvenios(convenios);
-		
 		System.out.println("-======================================");
 		System.out.println("Paciente:" + paciente + paciente.getConvenios());
 		
-		validator.checking(new Validations(){{
-			that(paciente.getNome() != null && paciente.getNome().length() >= 3, 
-					"paciente.nome", "nome.obrigatorio");
-			
-			// mais validações
-		}});
+		validator.checking(paciente.getValidations());
 		validator.onErrorUsePageOf(this).cadastro();
 		
 		daoPacientes.adiciona(paciente);
@@ -72,18 +67,23 @@ public class PacientesController {
 	
 	@Get @Path("/pacientes/{id}")
 	public Paciente edit(Long id){
-		result.include("convenios", daoConvenio.listaTodos() );
+		result.include("convenios", daoConvenio.listaTudo() );
 		return daoPacientes.carrega(id);
 	}
 	
 	@Put @Path("/pacientes/{paciente.id}")
-	public void alterar(final Paciente paciente){
-		validator.checking(new Validations(){{
-			that(paciente.getNome() != null && paciente.getNome().length() >= 3, 
-					"paciente.nome", "nome.obrigatorio");
-			
-			// mais validações
-		}});
+	public void alterar(final Paciente paciente, Collection<Long> conveniosId){
+
+		if (conveniosId != null){
+			// recuperar cada id, e adicionar ao paciente
+			List<Convenio> convenios = new ArrayList<Convenio>();
+			for( Long id : conveniosId ){
+				convenios.add(daoConvenio.carrega(id));
+			}
+			paciente.setConvenios(convenios);
+		}
+		
+		validator.checking(paciente.getValidations());
 		validator.onErrorUsePageOf(this).edit(paciente.getId());
 		
 		daoPacientes.atualiza(paciente);

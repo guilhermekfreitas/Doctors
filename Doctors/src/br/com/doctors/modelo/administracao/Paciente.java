@@ -11,6 +11,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.common.base.Strings;
+
+import br.com.caelum.vraptor.validator.Validations;
 import br.com.doctors.modelo.agendamento.Agendamento;
 
 @Entity
@@ -66,4 +69,14 @@ public class Paciente extends Pessoa {
 		this.agendamentos = agendamentos;
 	}
 	
+	public Validations getValidations() {
+		return new Validations(){{
+			that(Paciente.this.getNome() != null && Paciente.this.getNome().length() >= 3, 
+					"medico.nome", "nome.obrigatorio");
+			that(!Strings.isNullOrEmpty(Paciente.this.getLogin() ), 
+					"medico.login", "campo.obrigatorio", "Login");
+			that(!Strings.isNullOrEmpty(Paciente.this.getSenha()), 
+					"medico.senha", "campo.obrigatorio", "Senha");
+		}};
+	}
 }

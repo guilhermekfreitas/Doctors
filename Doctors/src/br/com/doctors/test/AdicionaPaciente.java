@@ -31,7 +31,7 @@ public class AdicionaPaciente {
 		p.setEndereco("endereco");
 		
 		ConvenioDao dao = new ConvenioDao(session);
-		List<Convenio> convenios = dao.listaTodos();
+		List<Convenio> convenios = dao.listaTudo();
 		
 		System.out.println(convenios);
 		

@@ -22,9 +22,11 @@
 			<input id="id" type="hidden" name="convenio.id"	value="${convenio.id}" /> 
 			
 			<label for="nome">Nome:</label> <input
-				id="nome" type="text" name="convenio.nome" value="${convenio.nome}" />
+				id="nome" type="text" name="convenio.nome" value="${convenio.nome}" /><br />
+
 
 			<button type="submit" name="_method" value="PUT">Editar</button>
+			<a href="./"><button id="cancelar" type="submit" >Cancelar</button></a>
 		</fieldset>
 	</form>
 </body>
