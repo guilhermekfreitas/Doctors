@@ -1,0 +1,26 @@
+.div.ui-datepicker, .ui-datepicker {
+        font-family:Garamond;
+        font-size: 12px;
+        margin-left:10px
+}
+
+label,  input {
+	display: block;
+	float: left;
+}
+
+label {	
+	text-align: right;
+	width: 80px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	
+}
+
+fieldset {
+	border: solid 1px #000;
+}
+
+br {
+	clear: left;
+}

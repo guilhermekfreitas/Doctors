@@ -8,6 +8,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Cadastrar novo Funcionário:</title>
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
+<link rel="stylesheet"  type="text/css" href="<c:url value="/css/ui-lightness/jquery-ui-1.8.14.custom.css"/>"/>  
+<link rel="stylesheet"  type="text/css" href="<c:url value="/css/meucss.css"/>"/>
 </head>
 <body>
 	<ul>
@@ -20,12 +23,12 @@
 		<fieldset>
 			<legend>Adicionar Funcionário:</legend>
 
-			<label for="nome">Nome:</label> <input id="nome" type="text"
+			<label for="nome">Nome:</label><input id="nome" type="text"
 				name="funcionario.nome" value="${funcionario.nome}" /><br /> 
 
-			<label for="dataAdmissao">Data de Admissão:</label> <input id="dataAdmissao" type="text"
+			<label for="dataAdmissao">Data de Admissão:</label><input id="dataAdmissao" type="text"
 				name="funcionario.dataAdmissao" value="${funcionario.dataAdmissao}"/><br /> 
-			
+
 			<label for="matricula">Número de Matrícula:</label> <input id="matricula" type="text" 
 				name="funcionario.matricula" value="${funcionario.matricula}"/><br />
 			
@@ -49,11 +52,15 @@
 				
 			<label for="senha">Senha:</label> <input id="senha" type="text"
 				name="funcionario.senha" value="${funcionario.senha}" /><br />
-
+			
 			<button id="enviar" type="submit">Enviar</button>
 			<a href="./"><button id="cancelar" type="submit" >Cancelar</button></a>
 		</fieldset>
 	</form>
-		
+	<script>
+		$(function(){
+			$( "#dataNasc").datepicker({autoSize:true,dateFormat:'dd/mm/yy'});
+		});
+	</script>
 </body>
 </html>
