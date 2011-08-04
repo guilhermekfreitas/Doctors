@@ -77,11 +77,11 @@ public class Paciente extends Pessoa {
 	public Validations getValidations() {
 		return new Validations(){{
 			that(Paciente.this.getNome() != null && Paciente.this.getNome().length() >= 3, 
-					"medico.nome", "nome.obrigatorio");
+					"paciente.nome", "nome.obrigatorio");
 			that(!Strings.isNullOrEmpty(Paciente.this.getLogin() ), 
-					"medico.login", "campo.obrigatorio", "Login");
+					"paciente.login", "campo.obrigatorio", "Login");
 			that(!Strings.isNullOrEmpty(Paciente.this.getSenha()), 
-					"medico.senha", "campo.obrigatorio", "Senha");
+					"paciente.senha", "campo.obrigatorio", "Senha");
 		}};
 	}
 }

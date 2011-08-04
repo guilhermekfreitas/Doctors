@@ -48,26 +48,41 @@
 			<label for="senha">Senha:</label> <input id="senha" type="text"
 				name="paciente.senha" value="${paciente.senha}" /><br />
 
-			<label
-				for="convenios">Convênios associados:</label>	
+			<label for="opcaoConvenios">Opção de Convênios:</label><br />
+			<input type="radio" name="opcaoConvenios" value="Particular" <c:if test="${empty paciente.convenios}"> checked</c:if> onclick="hideConveniados()"> Particular<br>
+			<input type="radio" name="opcaoConvenios" value="Conveniado" <c:if test="${!empty paciente.convenios}"> checked</c:if> onclick="showConveniados()"> Conveniado<br>
+			<hr>
+
+			<div id="divConvenios">
+				<label for="convenios">Adicionar:</label>  
 				<select id="convenios" name="convenioAtual">
+				    <option value="">Selecione..</option>
 					<c:forEach items="${convenios}" var="convenio">
-					<option value="${convenio.id}">${convenio.nome}</option>
+						<%--<option value="${convenio.id}">${convenio.nome}</option> --%>
+						
+						<option <c:if test="${convenioAtual == convenio.id}"> selected="selected"</c:if>   
+                 		 value="${convenio.id}">${convenio.nome}</option> 
 					</c:forEach>
 				</select> 
-				<img src="<c:url value='/img/adicionar.gif'/>" onclick="adicionarConvenio();"/>
+				<img src="<c:url value='/img/adicionar.gif'/>" onclick="adicionarConvenio();"/><br/>
 				
-			<fieldset id="lista-convenios">
-				Convênios Associados: <br />
-		    	<c:forEach items="${paciente.convenios}" var="convenio" varStatus="status">
-            	<div data-index="${status.index}" class="convenio-item">
-            		<input type="hidden" name="conveniosId[${status.index}]" value="${convenio.id}"/>
-                	Nome:
-                	<input type="text" readonly="readonly" name="convenioNome[${status.index}]" value="${convenio.nome}"/>
-                	<img src="<c:url value='/img/remover.gif'/>" class="btn-remover-convenio"/>
-            	</div>
-	        </c:forEach>
-	        </fieldset>
+				<table id="lista-convenios" >
+					<tr>Lista de convênios</tr>
+					<tr></tr>
+					
+			    	<c:forEach items="${paciente.convenios}" var="convenio" varStatus="status">
+	            		<div data-index="${status.index}" class="convenio-item">
+	            		<td>
+	    	            	<input type="hidden" name="conveniosId[${status.index}]" value="${convenio.id}"/>
+		                	<input type="text" readonly="readonly" name="convenioNome[${status.index}]" value="${convenio.nome}"/>
+	                	</td>
+	                	<td>
+	                		<img src="<c:url value='/img/remover.gif'/>" class="btn-remover-convenio"/>
+	                	</td><br />
+	            	</div>
+		        	</c:forEach>
+				</table>	
+			</div>
 	        
 	        <button type="submit" name="_method" value="PUT">Editar</button>
 	        <a href="./"><button id="cancelar" type="submit" >Cancelar</button></a>
@@ -75,35 +90,43 @@
 	</form>
 	
 	<script type="text/javascript">
-			$('.btn-remover-convenio').live('click', function() {
-				$(this).parent().remove();
-			});
-
-			function adicionarConvenio() {
-				var $container	= $('#lista-convenios'),
-					$convenios	= $container.children('.convenio-item'),
-					firstIndex	= $convenios.first().data('index'),
-					lastIndex	= $convenios.last().data('index');
-
-				if (firstIndex === undefined) {
-					firstIndex = 0;
-					lastIndex = 0;
-				}
-
-				var index = parseInt(firstIndex) + parseInt(lastIndex) + 1;
-				
-				var indice = document.form.convenioAtual.selectedIndex
-				var descricao = document.form.convenioAtual[indice].text
-				var valor = document.form.convenioAtual.value
-
-				$('<div class="convenio-item">' + 
-					'<input type="hidden" name="conveniosId[' + index + ']" value="' + valor + '"/>' +											
-					'<input type="text" readonly="readonly" name="convenioNome[' + index + ']" value="' +  descricao + '"/>' +
-					'<img src=\'<c:url value="/img/remover.gif"/>\' alt="-" class="btn-remover-convenio"/>' +
-				'</div>')
-				.data('index', index)
-				.appendTo($container);
-			};
+		$('.btn-remover-convenio').live('click', function() {
+			$(this).parent().remove();
+		});
+	
+		function hideConveniados(){
+			$('#divConvenios').hide();
+		}
+		
+		function showConveniados(){
+			$('#divConvenios').show();
+		}
+		
+		function adicionarConvenio() {
+			var $container	= $('#lista-convenios'),
+				$convenios	= $container.children('.convenio-item'),
+				firstIndex	= $convenios.first().data('index'),
+				lastIndex	= $convenios.last().data('index');
+	
+			if (firstIndex === undefined) {
+				firstIndex = 0;
+				lastIndex = 0;
+			}
+	
+			var index = parseInt(firstIndex) + parseInt(lastIndex) + 1;
+			
+			var indice = document.form.convenioAtual.selectedIndex
+			var descricao = document.form.convenioAtual[indice].text
+			var valor = document.form.convenioAtual.value
+	
+			$('<div class="convenio-item">' + 
+				'<input type="hidden" name="conveniosId[' + index + ']" value="' + valor + '"/>' +											
+				'<input type="text" readonly="readonly" name="convenioNome[' + index + ']" value="' +  descricao + '"/>' +
+				'<img src=\'<c:url value="/img/remover.gif"/>\' alt="-" class="btn-remover-convenio"/>' +
+			'</div>')
+			.data('index', index)
+			.appendTo($container);
+		};
 		</script>
 </body>
 </html>

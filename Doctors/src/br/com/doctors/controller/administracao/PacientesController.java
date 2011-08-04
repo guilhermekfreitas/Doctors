@@ -72,9 +72,9 @@ public class PacientesController {
 	}
 	
 	@Put @Path("/pacientes/{paciente.id}")
-	public void alterar(final Paciente paciente, Collection<Long> conveniosId){
+	public void alterar(final Paciente paciente, Collection<Long> conveniosId, String opcaoConvenios){
 
-		if (conveniosId != null){
+		if (conveniosId != null && opcaoConvenios.equalsIgnoreCase("conveniado")){
 			// recuperar cada id, e adicionar ao paciente
 			List<Convenio> convenios = new ArrayList<Convenio>();
 			for( Long id : conveniosId ){
