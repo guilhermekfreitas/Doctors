@@ -47,10 +47,10 @@
 				name="paciente.dataDeNascimento" value="<fmt:formatDate value="${paciente.dataDeNascimento}" pattern="dd/MM/yyyy"/>" /> <br /> 
 				
 			<label for="login">Login:</label><input id="login" type="text" 
-				name="paciente.login" value="${paciente.login}"/><br /> 
+				name="paciente.perfil.login" value="${paciente.perfil.login}"/><br /> 
 			
-			<label for="senha">Senha:</label> <input id="senha" type="text"
-				name="paciente.senha" value="${paciente.senha}" /><br />
+			<label for="senha">Senha:</label> <input id="senha" type="password"
+				name="paciente.perfil.senha" value="${paciente.perfil.senha}" /><br />
 
 			<label for="opcaoConvenios">Opção de Convênios:</label><br />
 			<input type="radio" name="opcaoConvenios" value="Particular" onclick="hideConveniados()"> Particular<br>
@@ -99,11 +99,11 @@
 			});
 
 			function hideConveniados(){
-				$('#divConvenios').hide();
+				$('#divConvenios').hide( 'slide' );
 			}
 			
 			function showConveniados(){
-				$('#divConvenios').show();
+				$('#divConvenios').show( 'slide');
 			}
 			
 			function adicionarConvenio() {

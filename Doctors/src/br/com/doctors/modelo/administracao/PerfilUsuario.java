@@ -14,6 +14,7 @@ public class PerfilUsuario {
 	private Long id;
 	private String login;
 	private String senha;
+	@Enumerated(EnumType.STRING)
 	private TipoPerfil tipo;
 	
 	public PerfilUsuario() {
@@ -60,4 +61,10 @@ public class PerfilUsuario {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("Login: %s Senha: %s TipoPerfil:%s", login, senha, tipo);
+	}
 }
+

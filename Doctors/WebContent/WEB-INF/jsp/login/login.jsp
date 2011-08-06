@@ -10,11 +10,23 @@
 <body>
 	<c:import url="../header.jsp"></c:import>
 
+	<ul>
+		<c:forEach var="error" items="${errors}">
+			<li>${error.category} - ${error.message}</li>
+		</c:forEach>
+	</ul>
+
 	<form action="<c:url value='/login'/>" method="post">
-		Nome do usuário: <input type="text" name="pessoa.login"/>
-		Senha: <input type="password" name="pessoa.senha" />
-		<input type="submit" value="Logar"/>
+		<label for="login">Nome do Usuário:</label> <input id="login" 
+			type="text" name="perfilUsuario.login"/><br >
+		<label for="senha">Senha:</label> <input id="senha" 
+			type="password" name="perfilUsuario.senha" /><br />
+		<input type="submit" value="Logar"/><br />
 	</form>
+	
+	<div id="mensagem">
+		${message }
+	</div>
 	
 	Não tem login? <a href="<c:url value='/cadastro'/>">Cadastre-se (Link quebrado)</a>
 </body>

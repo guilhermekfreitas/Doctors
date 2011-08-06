@@ -7,14 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.google.common.base.Strings;
 
 import br.com.caelum.vraptor.validator.Validations;
 import br.com.doctors.modelo.agendamento.Agendamento;
+import br.com.doctors.modelo.util.TipoPerfil;
 
 /***
  * 
@@ -27,6 +30,10 @@ public class Paciente extends Pessoa {
 	
 	@Id @GeneratedValue
 	private Long id;
+	
+	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.PERSIST) @JoinColumn(name="perfil_id")
+	private PerfilUsuario perfil;
+	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.PERSIST)
 	private List<Convenio> convenios;
 	
@@ -75,13 +82,15 @@ public class Paciente extends Pessoa {
 	}
 	
 	public Validations getValidations() {
-		return new Validations(){{
-			that(Paciente.this.getNome() != null && Paciente.this.getNome().length() >= 3, 
-					"paciente.nome", "nome.obrigatorio");
-			that(!Strings.isNullOrEmpty(Paciente.this.getLogin() ), 
-					"paciente.login", "campo.obrigatorio", "Login");
-			that(!Strings.isNullOrEmpty(Paciente.this.getSenha()), 
-					"paciente.senha", "campo.obrigatorio", "Senha");
-		}};
+		return null;
+	}
+
+	public PerfilUsuario getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(PerfilUsuario perfil) {
+		this.perfil = perfil;
+		perfil.setTipo(TipoPerfil.PACIENTE);
 	}
 }

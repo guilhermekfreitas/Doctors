@@ -58,7 +58,7 @@
 					bValid = bValid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
 
 					if ( bValid ) {
-						$( "#regList tbody" ).append( "<tr>" +
+						$( ".tablesorter tbody" ).append( "<tr>" +
 							"<td>" + name.val() + "</td>" + 
 							"<td>" + email.val() + "</td>" + 
 							"<td>" + password.val() + "</td>" +
@@ -75,7 +75,7 @@
 			}
 		});
 
-		$( "#submit-button" )
+		$( ".btn-layout" )
 			.button()
 			.click(function() {
 				$( "#dialog-form" ).dialog( "open" );
@@ -86,4 +86,7 @@
 		.click(function() {
 			$( "#dialog-form" ).dialog( "open" );
 		});
+		
+		$(".tablesorter").tablesorter( {sortList: [[0,0]]} );
+		
 	});

@@ -10,6 +10,7 @@
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/scripts.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery.tablesorter.min.js'/>"></script>
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/ui-lightness/jquery-ui-1.8.14.custom.css"/>"/>  
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/meucss.css"/>"/>
 </head>
@@ -18,9 +19,9 @@
 	
 	<div id="lista-regs" class="ui-widget">
 	<h1>Lista de Funcionários</h1>
-	<table id="regList" class="ui-widget ui-widget-content">
+	<table class="tablesorter">
 		<thead>
-			<tr class="ui-widget-header">
+			<tr>
 				<th>Nome</th>
 				<th>Data de Admissão</th>
 				<th>Matrícula</th>

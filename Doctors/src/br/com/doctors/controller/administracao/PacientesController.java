@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.common.base.Strings;
+
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
@@ -15,6 +17,7 @@ import br.com.caelum.vraptor.validator.Validations;
 import br.com.doctors.controller.administracao.PacientesController;
 import br.com.doctors.dao.administracao.ConvenioDao;
 import br.com.doctors.dao.administracao.PacienteDao;
+import br.com.doctors.dao.administracao.PerfilUsuarioDao;
 import br.com.doctors.modelo.administracao.Convenio;
 import br.com.doctors.modelo.administracao.Paciente;
 
@@ -29,12 +32,15 @@ public class PacientesController {
 	private Result result;
 	private Validator validator;
 	private ConvenioDao daoConvenio;
+	private PerfilUsuarioDao daoPerfilUsuario;
 
-	public PacientesController(ConvenioDao daoConvenio, PacienteDao daoPaciente, Result result, Validator validator) {
+	public PacientesController(ConvenioDao daoConvenio, PacienteDao daoPaciente, PerfilUsuarioDao daoPerfilUsuario,
+			       Result result, Validator validator) {
 		this.daoPacientes = daoPaciente;
 		this.result = result;
 		this.validator = validator;
 		this.daoConvenio = daoConvenio;
+		this.daoPerfilUsuario = daoPerfilUsuario;
 	}
 	
 	@Get @Path({"/pacientes"})
@@ -50,6 +56,8 @@ public class PacientesController {
 	@Post @Path("/pacientes")
 	public void adiciona(final Paciente paciente, Collection<Long> conveniosId, String opcaoConvenios){
 		
+		System.out.println("Tipo de Perfil: " + paciente.getPerfil());
+		
 		if (conveniosId != null && opcaoConvenios.equalsIgnoreCase("conveniado")){
 			// recuperar cada id, e adicionar ao paciente
 			List<Convenio> conveniosList = new ArrayList<Convenio>();
@@ -58,9 +66,20 @@ public class PacientesController {
 			}
 			paciente.setConvenios(conveniosList);
 		}
-		validator.checking(paciente.getValidations());
+		validator.checking(new Validations(){{
+			that(paciente.getNome() != null && paciente.getNome().length() >= 3, 
+					"paciente.nome", "nome.obrigatorio");
+			that(!Strings.isNullOrEmpty(paciente.getPerfil().getLogin() ), 
+					"paciente.perfil.login", "campo.obrigatorio", "Login");
+			that(!Strings.isNullOrEmpty(paciente.getPerfil().getSenha()), 
+					"paciente.perfil.senha", "campo.obrigatorio", "Senha");
+			that(!daoPerfilUsuario.loginJaExiste(paciente.getPerfil().getLogin()),
+					"paciente.perfil.login", "login.ja.existe", paciente.getPerfil().getLogin());
+			
+		}});
 		validator.onErrorUsePageOf(this).cadastro();
 		
+		daoPerfilUsuario.adiciona(paciente.getPerfil());
 		daoPacientes.adiciona(paciente);
 		result.redirectTo(PacientesController.class).list();
 	}

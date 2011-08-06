@@ -9,17 +9,44 @@
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/scripts.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery.tablesorter.min.js'/>"></script>
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/ui-lightness/jquery-ui-1.8.14.custom.css"/>"/>  
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/meucss.css"/>"/>
+<link rel="stylesheet"  type="text/css" href="<c:url value="/css/blue-tablesorter/style.css"/>"/>
+	<script type="text/javascript">
+		$(document).ready(function() 
+			    { 
+			        $(".tablesorter").tablesorter( {sortList: [[0,0]]} );
+			        $("dialog-confirm").dialog("destroy");
+			    } 
+		);
+		
+		function apagarPaciente(idPaciente){
+	        $( "#dialog-confirm" ).dialog({
+				resizable: false,
+				height:140,
+				modal: true,
+				buttons: {
+					"Apagar": function() {
+						$( this ).dialog( "close" );
+						location.href = location.href + "/remover/"+idPaciente
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+        }
+	</script>
 </head>
 <body>
 	<c:import url="../header.jsp"></c:import>
 
 	<div id="lista-regs" class="ui-widget">
 	<h1>Lista de Pacientes</h1>
-	<table id="regList" class="ui-widget ui-widget-content">
+	<table class="tablesorter">
 		<thead>
-			<tr class="ui-widget-header">
+			<tr>
 				<th>Nome</th>
 				<th>Email</th>
 				<th>Telefone</th>
@@ -33,14 +60,22 @@
 					<td>${paciente.nome}</td>
 					<td>${paciente.email}</td>
 					<td>${paciente.telefone}</td>
-					<td><a href="<c:url value="/pacientes/${paciente.id}"/>">Alterar</a></td>
-					<td><a href="<c:url value="/pacientes/remover/${paciente.id}"/>">Remover</a></td>
+					<td><a class="btn-layout" href="<c:url value="/pacientes/${paciente.id}"/>">Alterar</a></td>
+					<td><button class="btn-layout" onclick="javascript:apagarPaciente(${paciente.id})">Remover</button></td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
 	</div>
-	<a id="submit-button" href="<c:url value="/pacientes/novo"/>">Adicionar novo Paciente</a>
-	<a id="cancel-operation" href="<c:url value="./"/>">Voltar à página inicial</a><br />
+	<a class="btn-layout" href="<c:url value="/pacientes/novo"/>">Adicionar novo Paciente</a>
+	<a class="btn-layout" href="<c:url value="./"/>">Voltar à página inicial</a><br />
+	
+	<div style="display:none;" id="dialog-confirm" title="Deletar paciente?">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+			Este paciente será apagado permanentemente. Tem certeza?
+		</p>
+	</div>
+	
+
 </body>
 </html>

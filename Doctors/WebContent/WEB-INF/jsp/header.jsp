@@ -27,6 +27,7 @@
 	font-weight: bold;
 }
 </style>
+<link rel="stylesheet"  type="text/css" href="<c:url value="/css/blue-tablesorter/style.css"/>"/>
 </head>
 <body>
 	<label id="principal">Doctors</label><br />

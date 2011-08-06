@@ -30,4 +30,9 @@ public class PerfilUsuarioDao extends DaoImpl<PerfilUsuario>{
 		return user;
 	}
 	
+	public boolean loginJaExiste(String login){
+		return getSession().createCriteria(PerfilUsuario.class)
+				.add(Restrictions.ilike("login", login, MatchMode.EXACT)).uniqueResult() != null;
+	}
+	
 }
