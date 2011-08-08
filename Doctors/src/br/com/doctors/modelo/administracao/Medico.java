@@ -11,6 +11,8 @@ import javax.persistence.Table;
 
 import br.com.caelum.vraptor.validator.Validations;
 import br.com.doctors.modelo.agendamento.Agendamento;
+import br.com.doctors.modelo.util.TipoPerfil;
+
 import com.google.common.base.Strings;
 
 /***
@@ -64,23 +66,17 @@ public class Medico extends Pessoa {
 	
 	@Override
 	public String toString() {
-		return String.format("%s: %s - %s ", getNome(), crm, especialidade);
+		return String.format("%s: %s - %s (Login:%s|Senha:%s)", getNome(), crm, especialidade, 
+				getPerfil().getLogin(),getPerfil().getSenha());
 	}
 	
 	public Validations getValidations() {
-		return new Validations(){{
-			that(Medico.this.getNome() != null && Medico.this.getNome().length() >= 3, 
-					"medico.nome", "nome.obrigatorio");
-			that(Medico.this.getCrm() != null, 
-					"medico.crm", "campo.obrigatorio", "CRM");
-			that(!Strings.isNullOrEmpty(Medico.this.getUfRegistro()), 
-					"medico.ufRegistro", "campo.obrigatorio", "relacionado ao UF de registro do médico");
-			that(!Strings.isNullOrEmpty(Medico.this.getEspecialidade()), 
-					"medico.especialidade", "campo.obrigatorio", "Especialidade");
-			that(!Strings.isNullOrEmpty(Medico.this.getLogin() ), 
-					"medico.login", "campo.obrigatorio", "Login");
-			that(!Strings.isNullOrEmpty(Medico.this.getSenha()), 
-					"medico.senha", "campo.obrigatorio", "Senha");
-		}};
+		return null;
+	}
+	
+	@Override
+	public void setPerfil(PerfilUsuario perfil) {
+		perfil.setTipo(TipoPerfil.ROLE_MEDICO);
+		super.setPerfil(perfil);
 	}
 }

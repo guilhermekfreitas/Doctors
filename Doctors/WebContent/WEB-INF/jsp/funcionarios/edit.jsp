@@ -22,6 +22,8 @@
 		<fieldset>
 			<legend>Editar Funcionário:</legend>
 
+			<input id="id3" type="hidden" name="funcionario.perfil.id"	value="${funcionario.perfil.id}" />
+
 			<label for="nome">Nome:</label> <input id="nome" type="text"
 				name="funcionario.nome" value="${funcionario.nome}" /><br /> 
 			
@@ -47,10 +49,10 @@
 				name="funcionario.dataDeNascimento" value="<fmt:formatDate value="${funcionario.dataDeNascimento}" pattern="dd/MM/yyyy"/>" /> <br /> 
 				
 			<label for="login">Login:</label> <input id="login" type="text"
-				name="funcionario.login" value="${funcionario.login}" /><br />
+				name="funcionario.perfil.login" value="${funcionario.perfil.login}" disabled="disabled" /><br />
 				
 			<label for="senha">Senha:</label> <input id="senha" type="text"
-				name="funcionario.senha" value="${funcionario.senha}" /><br />
+				name="funcionario.perfil.senha" value="${funcionario.perfil.senha}" disabled="disabled" /><br />
 
 			<button type="submit" name="_method" value="PUT">Editar</button>
 			<a href="./"><button id="cancelar" type="submit" >Cancelar</button></a>

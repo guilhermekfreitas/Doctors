@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -15,23 +16,6 @@
 <body>
 	<jsp:include page="WEB-INF/jsp/header.jsp"></jsp:include><br /> 
 	
-	<c:if test="${empty userSession.usuario }">
-		Olá, Visitante. <a href="<c:url value='/login'/>">Logar</a><br />
-		<button type="button" onclick="abrirDialog()">Cadastre-se</button>
-	</c:if>
-	<c:if test="${!empty userSession.usuario }">
-		Olá, ${userSession.usuario.login} <a href="<c:url value='/logout'/>">Logout</a>
-		Tipo de Perfil: ${userSession.usuario.tipo}	<br />
-	</c:if>
-	
-	<div style="display:none;" id="dialog-cadastro" title="Cadastro de novo usuário" >
-		<p>Para se cadastrar, confirme o perfil abaixo: </p>
-		
-		<a href="<c:url value='/pacientes/novo'/>">Paciente</a><br />
-		<a href="<c:url value='/medicos/novo'/>">Medico</a><br />
-		<a href="<c:url value='/funcionarios/novo'/>">Funcionario</a><br />
-	</div>
-	
 	<br />Cadastros Básicos:<br/>
 	<a href="medicos">Médico</a><br />
 	<a href="funcionarios">Funcionário</a><br />
@@ -41,11 +25,13 @@
 	Outros (em desenvolvimento):<br/>
 	<a href="consultas">Consulta</a><br />
 	<a href="exames">Exame</a><br />
-	<a href="agenda">Agendamento</a><br />
+	<a href="agenda">Agendamento</a><br /><br />
 	
+	Area administrativa:<br />
+	<a href="admin">Administração</a><br />
 	
-	[ Projeto de ES II ]
-	
+	[ Projeto de ES II ]<br />
+
 	<script type="text/javascript">
 	
 		function abrirDialog(){

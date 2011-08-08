@@ -1,5 +1,9 @@
 package br.com.doctors.controller.administracao;
 
+import javax.annotation.security.RolesAllowed;
+
+import com.google.common.base.Strings;
+
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
@@ -11,6 +15,7 @@ import br.com.caelum.vraptor.validator.Validations;
 import br.com.doctors.dao.administracao.ConvenioDao;
 import br.com.doctors.dao.administracao.MedicoDao;
 import br.com.doctors.dao.administracao.MedicoDao;
+import br.com.doctors.dao.administracao.PerfilUsuarioDao;
 import br.com.doctors.modelo.administracao.Medico;
 
 /***
@@ -22,17 +27,20 @@ import br.com.doctors.modelo.administracao.Medico;
 public class MedicosController {
 	private Result result;
 	private Validator validator;
-	private MedicoDao dao;
+	private MedicoDao daoMedico;
+	private PerfilUsuarioDao daoPerfil;
 
-	public MedicosController(MedicoDao dao, Result result, Validator validator) {
-		this.dao = dao;
+	public MedicosController(MedicoDao daoMedico, Result result, PerfilUsuarioDao daoPerfilUsuario, 
+			Validator validator) {
+		this.daoMedico = daoMedico;
 		this.result = result;
 		this.validator = validator;
+		this.daoPerfil = daoPerfilUsuario;
 	}
 	
 	@Get @Path({"/medicos"})
 	public void list() {
-		result.include("medicos", dao.listaTudo());
+		result.include("medicos", daoMedico.listaTudo());
 	}
 	
 	@Get @Path("/medicos/novo")
@@ -45,32 +53,58 @@ public class MedicosController {
 		System.out.println("-======================================");
 		System.out.println("Medico:" + medico + medico.getUfRegistro());
 		
-		validator.checking(medico.getValidations());
+		validator.checking(new Validations(){{
+			that(medico.getNome() != null && medico.getNome().length() >= 3, 
+					"medico.nome", "nome.obrigatorio");
+			that(medico.getCrm() != null, 
+					"medico.crm", "campo.obrigatorio", "CRM");
+			that(!Strings.isNullOrEmpty(medico.getUfRegistro()), 
+					"medico.ufRegistro", "campo.obrigatorio", "relacionado ao UF de registro do médico");
+			that(!Strings.isNullOrEmpty(medico.getEspecialidade()), 
+					"medico.especialidade", "campo.obrigatorio", "Especialidade");
+			that(!Strings.isNullOrEmpty(medico.getPerfil().getLogin() ), 
+					"medico.perfil.login", "campo.obrigatorio", "Login");
+			that(!Strings.isNullOrEmpty(medico.getPerfil().getSenha()), 
+					"medico.perfil.senha", "campo.obrigatorio", "Senha");
+			that(!daoPerfil.loginJaExiste(medico.getPerfil().getLogin()),
+					"medico.perfil.login", "login.ja.existe", medico.getPerfil().getLogin());
+		}});
 		validator.onErrorUsePageOf(this).cadastro();
 		
-		dao.adiciona(medico);
+		daoPerfil.adiciona(medico.getPerfil());
+		daoMedico.adiciona(medico);
 		result.redirectTo(MedicosController.class).list();
 	}
 	
 	@Get @Path("/medicos/{id}")
 	public Medico edit(Long id){
-		return dao.carrega(id);
+		return daoMedico.carrega(id);
 	}
 	
 	@Put @Path("/medicos/{medico.id}")
 	public void alterar(final Medico medico){
 		
-		validator.checking(medico.getValidations());
+		validator.checking(new Validations(){{
+			that(medico.getNome() != null && medico.getNome().length() >= 3, 
+					"medico.nome", "nome.obrigatorio");
+			that(medico.getCrm() != null, 
+					"medico.crm", "campo.obrigatorio", "CRM");
+			that(!Strings.isNullOrEmpty(medico.getUfRegistro()), 
+					"medico.ufRegistro", "campo.obrigatorio", "relacionado ao UF de registro do médico");
+			that(!Strings.isNullOrEmpty(medico.getEspecialidade()), 
+					"medico.especialidade", "campo.obrigatorio", "Especialidade");
+		}});
 		validator.onErrorUsePageOf(this).edit(medico.getId());
 		
-		dao.atualiza(medico);
+		medico.setPerfil(daoPerfil.carrega(medico.getPerfil().getId()));
+		daoMedico.atualiza(medico);
 		result.redirectTo(MedicosController.class).list();
 	}
 	
 	@Path("/medicos/remover/{id}")
 	public void remover(Long id){
-		Medico medico = dao.carrega(id);
-		dao.remove(medico);
+		Medico medico = daoMedico.carrega(id);
+		daoMedico.remove(medico);
 		result.redirectTo(MedicosController.class).list();
 	}
 }

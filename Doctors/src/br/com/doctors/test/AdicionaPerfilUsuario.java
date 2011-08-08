@@ -18,7 +18,7 @@ public class AdicionaPerfilUsuario {
 		PerfilUsuario usuario = new PerfilUsuario();
 		usuario.setLogin("admin");
 		usuario.setSenha("admin");
-		usuario.setTipo(TipoPerfil.FUNCIONARIO);
+		usuario.setTipo(TipoPerfil.ROLE_FUNCIONARIO);
 		
 		System.out.println("Salvando usuário: " + usuario);
 		

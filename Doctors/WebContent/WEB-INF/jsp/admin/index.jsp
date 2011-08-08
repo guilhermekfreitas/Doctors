@@ -5,8 +5,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Painel do Administrador</title>
 </head>
 <body>
-	<small>Copyright 2011 ® - Todos os direitos reservados.</small>
+	<jsp:include page="../header.jsp"></jsp:include><br />
+
+    <c:out value="Painel Admin - Sessão iniciada"/><br/>
+    <c:out value="Seja bem vindo ${nomeUsuario}" /><br />
+    
+    <a href="<c:url value='/' />" >Voltar a pagina principal</a>
 </body>
 </html>

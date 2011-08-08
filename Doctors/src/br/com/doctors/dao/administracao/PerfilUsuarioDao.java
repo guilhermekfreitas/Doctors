@@ -35,4 +35,10 @@ public class PerfilUsuarioDao extends DaoImpl<PerfilUsuario>{
 				.add(Restrictions.ilike("login", login, MatchMode.EXACT)).uniqueResult() != null;
 	}
 	
+	public PerfilUsuario carrega(String nomeUsuario){
+		Criteria criteria = getSession().createCriteria(PerfilUsuario.class)
+				.add(Restrictions.ilike("login", nomeUsuario, MatchMode.EXACT));
+		PerfilUsuario user = (PerfilUsuario) criteria.uniqueResult();
+		return user;
+	}
 }

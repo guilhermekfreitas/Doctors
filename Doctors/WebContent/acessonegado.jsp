@@ -5,8 +5,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Acesso Negado!</title>
 </head>
 <body>
-	<small>Copyright 2011 ® - Todos os direitos reservados.</small>
+	<jsp:include page="WEB-INF/jsp/header.jsp"></jsp:include><br />
+	
+	Acesso negado!
+	<a href="<c:url value='/' />" >Voltar a pagina principal</a>
 </body>
 </html>

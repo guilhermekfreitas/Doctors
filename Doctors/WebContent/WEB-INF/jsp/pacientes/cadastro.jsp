@@ -92,6 +92,13 @@
 			<a href="./"><button id="cancel-operation" type="submit" >Cancelar</button></a>
 		</fieldset>
 	</form>
+	
+	<div style="display:none;" id="dialog-semconvenio" title="Confirmar cadastro?">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+			Você não selecionou nenhum convênio. O paciente será considerado como Particular. Continuar mesmo assim?
+		</p>
+	</div>
+	
 		
 	<script type="text/javascript">
 			$('.btn-remover-convenio').live('click', function() {

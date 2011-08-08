@@ -21,14 +21,21 @@ public class LoginController {
 		this.userSession = userSession;
 	}
 	
+	public void index(){
+		
+	}
+	
 	@Get
 	@Path("/login")
 	public void login(){
+		result.redirectTo(this).index();
 	}
 
 	@Post
-	@Path("/login")
-	public void logar(PerfilUsuario perfilUsuario){
+	@Path("/logar")
+	public void logar(PerfilUsuario perfilUsuario, String j_username, String j_password){ // convencao spring security
+		
+		System.out.println("Logou.." + j_username);
 		
 		validator.checking(perfilUsuario.getValidations());
 		validator.onErrorUsePageOf(this).login();
@@ -49,10 +56,16 @@ public class LoginController {
 	
 	}
 	
+	@Path("/logado")
+	public void logado(){
+		result.redirectTo("/");
+	}
+	
 	@Get
 	@Path("/logout")
 	public void logout(){
 		userSession.setUsuario(null);
 		result.redirectTo("/");
 	}
+	
 }

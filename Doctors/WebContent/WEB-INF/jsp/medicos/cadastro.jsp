@@ -54,10 +54,10 @@
 				name="medico.dataDeNascimento" value="<fmt:formatDate value="${medico.dataDeNascimento}" pattern="dd/MM/yyyy"/>" /> <br /> 
 				
 			<label for="login">Login:</label><input id="login" type="text" 
-				name="medico.login" value="${medico.login}"/><br /> 
+				name="medico.perfil.login" value="${medico.perfil.login}"/><br /> 
 			
-			<label for="senha">Senha:</label> <input id="senha" type="text"
-				name="medico.senha" value="${medico.senha}"/><br />
+			<label for="senha">Senha:</label> <input id="senha" type="password"
+				name="medico.perfil.senha" value="${medico.perfil.senha}"/><br />
 
 				
 			<button id="submit-button" type="submit">Enviar</button>

@@ -4,7 +4,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -26,6 +30,9 @@ public abstract class Pessoa {
 	private Date dataDeNascimento;
 	private String login;
 	private String senha;
+	
+	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}) @JoinColumn(name="perfil_id")
+	private PerfilUsuario perfil;
 	
 	public String getNome() {
 		return nome;
@@ -83,6 +90,12 @@ public abstract class Pessoa {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+	}
+	public PerfilUsuario getPerfil() {
+		return perfil;
+	}
+	public void setPerfil(PerfilUsuario perfil) {
+		this.perfil = perfil;
 	}
 	
 }

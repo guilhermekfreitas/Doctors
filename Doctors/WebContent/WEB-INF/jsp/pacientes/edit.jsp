@@ -22,6 +22,7 @@
 
 			<input id="id" type="hidden" name="paciente.id"	value="${paciente.id}" /> 
 			<input id="id2" type="hidden" name="convenios"	value="${convenios}" />
+			<input id="id3" type="hidden" name="paciente.perfil.id"	value="${paciente.perfil.id}" />
 			
 			<label for="nome">Nome:</label> <input
 				id="nome" type="text" name="paciente.nome" value="${paciente.nome}" /><br />

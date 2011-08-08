@@ -31,9 +31,6 @@ public class Paciente extends Pessoa {
 	@Id @GeneratedValue
 	private Long id;
 	
-	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.PERSIST) @JoinColumn(name="perfil_id")
-	private PerfilUsuario perfil;
-	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.PERSIST)
 	private List<Convenio> convenios;
 	
@@ -70,7 +67,7 @@ public class Paciente extends Pessoa {
 
 	@Override
 	public String toString() {
-		return getId() + ":" + getNome() + ": " + getDataDeNascimento();
+		return getId() + ":" + getNome() + ": " + getDataDeNascimento() + "- " + getPerfil();
 	}
 
 	public List<Agendamento> getAgendamentos() {
@@ -85,12 +82,9 @@ public class Paciente extends Pessoa {
 		return null;
 	}
 
-	public PerfilUsuario getPerfil() {
-		return perfil;
-	}
-
+	@Override
 	public void setPerfil(PerfilUsuario perfil) {
-		this.perfil = perfil;
-		perfil.setTipo(TipoPerfil.PACIENTE);
+		perfil.setTipo(TipoPerfil.ROLE_PACIENTE);
+		super.setPerfil(perfil);
 	}
 }

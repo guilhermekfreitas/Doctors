@@ -51,10 +51,10 @@
 				name="funcionario.dataDeNascimento" value="<fmt:formatDate value="${funcionario.dataDeNascimento}" pattern="dd/MM/yyyy"/>" /> <br /> 
 				
 			<label for="login">Login:</label> <input id="login" type="text"
-				name="funcionario.login" value="${funcionario.login}" /><br />
+				name="funcionario.perfil.login" value="${funcionario.perfil.login}" /><br />
 				
-			<label for="senha">Senha:</label> <input id="senha" type="text"
-				name="funcionario.senha" value="${funcionario.senha}" /><br />
+			<label for="senha">Senha:</label> <input id="senha" type="password"
+				name="funcionario.perfil.senha" value="${funcionario.perfil.senha}" /><br />
 			
 			<button id="submit-button" type="submit">Enviar</button>
 			<a href="./"><button id="cancel-operation" type="submit" >Cancelar</button></a>

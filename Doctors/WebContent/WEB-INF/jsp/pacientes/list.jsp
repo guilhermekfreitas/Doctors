@@ -50,6 +50,7 @@
 				<th>Nome</th>
 				<th>Email</th>
 				<th>Telefone</th>
+				<th>Login</th>
 				<th>Alterar</th>
 				<th>Excluir</th>
 			</tr>
@@ -60,6 +61,7 @@
 					<td>${paciente.nome}</td>
 					<td>${paciente.email}</td>
 					<td>${paciente.telefone}</td>
+					<td>${paciente.perfil.login}</td>
 					<td><a class="btn-layout" href="<c:url value="/pacientes/${paciente.id}"/>">Alterar</a></td>
 					<td><button class="btn-layout" onclick="javascript:apagarPaciente(${paciente.id})">Remover</button></td>
 				</tr>

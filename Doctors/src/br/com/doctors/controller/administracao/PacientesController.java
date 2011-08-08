@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
+
 import com.google.common.base.Strings;
 
 import br.com.caelum.vraptor.Get;
@@ -75,7 +77,6 @@ public class PacientesController {
 					"paciente.perfil.senha", "campo.obrigatorio", "Senha");
 			that(!daoPerfilUsuario.loginJaExiste(paciente.getPerfil().getLogin()),
 					"paciente.perfil.login", "login.ja.existe", paciente.getPerfil().getLogin());
-			
 		}});
 		validator.onErrorUsePageOf(this).cadastro();
 		
@@ -102,9 +103,16 @@ public class PacientesController {
 			paciente.setConvenios(convenios);
 		}
 		
-		validator.checking(paciente.getValidations());
+		validator.checking(new Validations(){{
+			that(paciente.getNome() != null && paciente.getNome().length() >= 3, 
+					"paciente.nome", "nome.obrigatorio");
+		}});
 		validator.onErrorUsePageOf(this).edit(paciente.getId());
 		
+		System.out.println(paciente.getPerfil());
+		System.out.println("---------------------------------");
+		
+		paciente.setPerfil(daoPerfilUsuario.carrega(paciente.getPerfil().getId()));
 		daoPacientes.atualiza(paciente);
 		result.redirectTo(PacientesController.class).list();
 	}

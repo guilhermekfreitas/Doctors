@@ -16,4 +16,8 @@ public class UserSession {
 	public void setUsuario(PerfilUsuario usuario) {
 		this.usuario = usuario;
 	}
+
+	public boolean hasUsuario() {
+		return usuario != null;
+	}
 }

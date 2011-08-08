@@ -18,6 +18,9 @@
 	</ul>
 	<form action="<c:url value="/medicos/${medico.id}"/>" method="post">
 		<fieldset>
+		
+			<input id="id3" type="hidden" name="medico.perfil.id"	value="${medico.perfil.id}" />
+		
 			<legend>Editar Médico:</legend>
 
 			<label for="nome">Nome:</label> <input id="nome" type="text"
@@ -48,10 +51,10 @@
 				name="medico.dataDeNascimento" value="<fmt:formatDate value="${medico.dataDeNascimento}" pattern="dd/MM/yyyy"/>" /> <br /> 
 				
 			<label for="login">Login:</label> <input id="login" type="text"
-				name="medico.login" value="${medico.login}" /><br />
+				name="medico.perfil.login" value="${medico.perfil.login}" disabled="disabled" /><br />
 				
 			<label for="senha">Senha:</label> <input id="senha" type="text"
-				name="medico.senha" value="${medico.senha}" /><br />
+				name="medico.perfil.senha" value="${medico.perfil.senha}" disabled="disabled" /><br />
 
 			<button type="submit" name="_method" value="PUT">Editar</button>
 			<a href="./"><button id="cancelar" type="submit" >Cancelar</button></a>
