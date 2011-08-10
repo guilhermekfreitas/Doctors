@@ -2,6 +2,7 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.joda.org/joda/time/tags" prefix="joda" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -32,8 +33,8 @@
 		<tbody>
 			<c:forEach items="${agendamentos}" var="agendamento">
 				<tr>
-					<td>${agendamento.data}</td>
-					<td>${agendamento.hora}</td>
+					<td><joda:format value="${agendamento.dataAgendamento}"/></td>
+					<td><joda:format value="${agendamento.horaAgendamento}" pattern="hh:mm"/></td>
 					<td>
 						<c:choose>
 							<c:when test="${agendamento.confirmado}">Sim</c:when>

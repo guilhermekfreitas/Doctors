@@ -73,14 +73,14 @@
 					
 			    	<c:forEach items="${paciente.convenios}" var="convenio" varStatus="status">
 	            		<div data-index="${status.index}" class="convenio-item">
-	            		<td>
-	    	            	<input type="hidden" name="conveniosId[${status.index}]" value="${convenio.id}"/>
-		                	<input type="text" readonly="readonly" name="convenioNome[${status.index}]" value="${convenio.nome}"/>
-	                	</td>
-	                	<td>
-	                		<img src="<c:url value='/img/remover.gif'/>" class="btn-remover-convenio"/>
-	                	</td><br />
-	            	</div>
+		            		<td>
+		    	            	<input type="hidden" name="conveniosId[${status.index}]" value="${convenio.id}"/>
+			                	<input type="text" readonly="readonly" name="convenioNome[${status.index}]" value="${convenio.nome}"/>
+		                	</td>
+		                	<td>
+		                		<img src="<c:url value='/img/remover.gif'/>" class="btn-remover-convenio"/>
+		                	</td><br />
+	            		</div>
 		        	</c:forEach>
 				</table>	
 			</div>
@@ -109,24 +109,35 @@
 				firstIndex	= $convenios.first().data('index'),
 				lastIndex	= $convenios.last().data('index');
 	
+			var indiceL = document.getElementById('lista-convenios').rows.length; 
+			alert(indiceL);
+			
+			for (var i in $convenios){
+				alert(i.data('index'));
+			}
+			
 			if (firstIndex === undefined) {
 				firstIndex = 0;
 				lastIndex = 0;
 			}
-	
+				
 			var index = parseInt(firstIndex) + parseInt(lastIndex) + 1;
 			
 			var indice = document.form.convenioAtual.selectedIndex
 			var descricao = document.form.convenioAtual[indice].text
 			var valor = document.form.convenioAtual.value
 	
-			$('<div class="convenio-item">' + 
-				'<input type="hidden" name="conveniosId[' + index + ']" value="' + valor + '"/>' +											
-				'<input type="text" readonly="readonly" name="convenioNome[' + index + ']" value="' +  descricao + '"/>' +
-				'<img src=\'<c:url value="/img/remover.gif"/>\' alt="-" class="btn-remover-convenio"/>' +
+			alert(indice);
+			alert(descricao);
+			
+			$('<div data-index="' + indiceL + '" class="convenio-item">' + 
+				'<td><input type="hidden" name="conveniosId[' + indiceL + ']" value="' + valor + '"/>' +											
+				'<input type="text" readonly="readonly" name="convenioNome[' + indiceL + ']" value="' +  descricao + '"/></td>' +
+				'<td><img src="<c:url value="/img/remover.gif"/>" class="btn-remover-convenio"/></td>' +
 			'</div>')
-			.data('index', index)
+			.data('index', indiceL)
 			.appendTo($container);
+			
 		};
 		</script>
 </body>

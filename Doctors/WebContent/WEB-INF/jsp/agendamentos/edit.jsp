@@ -2,6 +2,7 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.joda.org/joda/time/tags" prefix="joda" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -29,11 +30,11 @@
 			<label for="medico">Médico:</label> <input id="medico" type="text"
 				 value="${agendamento.medico.nome}" disabled="disabled" size="40"/><br /> 
 
-			<label for="data">Data:</label> <input id="data" type="text"
-				name="agendamento.data" value="${agendamento.data}" /><br /> 
+			<label for="horaAgendamento">Hora:</label> <input id="horaAgendamento" type="text"
+				name="agendamento.horaAgendamento" value='<joda:format value="${agendamento.horaAgendamento}" style="-S" />'/><br /> 
 			
-			<label for="hora">Hora:</label> <input id="hora" type="text"
-				name="agendamento.hora" value="${agendamento.hora}"/><br /> 
+			<tr><td><label for="dataAgendamento">Data:</label></td> <td><input id="dataAgendamento" type="text"
+				name="agendamento.dataAgendamento" value='<joda:format value="${agendamento.dataAgendamento}"/>' /></td></tr><br />			
 			
 			<label for="funcionarios">Funcionário:</label> 
 			<select id="funcionarios" name="agendamento.funcionario.id">

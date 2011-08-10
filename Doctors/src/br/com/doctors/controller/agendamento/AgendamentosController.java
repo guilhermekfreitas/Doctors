@@ -2,6 +2,11 @@ package br.com.doctors.controller.agendamento;
 
 import java.util.List;
 
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+
+import com.google.common.base.Strings;
+
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
@@ -9,12 +14,15 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.validator.Validations;
+import br.com.caelum.vraptor.view.Results;
 import br.com.doctors.dao.administracao.ConvenioDao;
 import br.com.doctors.dao.administracao.FuncionarioDao;
 import br.com.doctors.dao.administracao.MedicoDao;
 import br.com.doctors.dao.administracao.PacienteDao;
 import br.com.doctors.dao.agendamento.AgendamentoDao;
 import br.com.doctors.modelo.administracao.Convenio;
+import br.com.doctors.modelo.administracao.PerfilUsuario;
 import br.com.doctors.modelo.agendamento.Agendamento;
 
 /**
@@ -59,13 +67,31 @@ public class AgendamentosController {
 	public void adiciona(final Agendamento agendamento){
 		
 		System.out.println("Agendamento:" + agendamento );
+		System.out.println("Convenio: " + agendamento.getConvenio());
+		System.out.println(agendamento.getPaciente());
+		System.out.println("Data de agendamento" + agendamento.getDataAgendamento());
+		System.out.println("Hora de agendamento" + agendamento.getHoraAgendamento());
+		
+		validator.checking(new Validations(){{
+			that(agendamento.getPaciente() != null && agendamento.getPaciente().getId() != null, 
+					"agendamento.paciente.id", "campo.obrigatorio", "Paciente");
+			that(agendamento.getMedico() != null && agendamento.getMedico().getId() != null, 
+					"agendamento.medico.id", "campo.obrigatorio", "Medico");			
+			//that(agendamento.getDataAgendamento() != null, 
+			//		"agendamento.dataAgendamento", "campo.obrigatorio", "Data");
+//			that(!Strings.isNullOrEmpty(agendamento.getHora() ), 
+//					"agendamento.hora", "campo.obrigatorio", "Hora");			
+		}});
+		validator.onErrorForwardTo(this).cadastro();
+		
+		// verifica se não é particular
+		Convenio conv = agendamento.getConvenio(); 
+		if (conv != null && conv.getId() != 0){
+			Convenio convenio = daoConvenio.carrega(conv.getId());
+			agendamento.setConvenio(convenio);
+		}
 		
 		System.out.println("Paciente id:" + agendamento.getPaciente().getId());
-		List<Convenio> convenios = daoConvenio.buscaPor(agendamento.getPaciente().getId());
-		System.out.println("Convenios de Paciente: " + agendamento.getPaciente().getId());
-		for( Convenio c: convenios)
-			System.out.println(c);
-		
 		daoAgendamento.adiciona(agendamento);
 		result.redirectTo(AgendamentosController.class).list();
 	}
@@ -82,6 +108,17 @@ public class AgendamentosController {
 //		Funcionario funcionario = daoFuncionario.carrega(funcionarioId);
 
 //		agendamento.setFuncionario(funcionario);
+		validator.checking(new Validations(){{
+			that(agendamento.getPaciente() != null && agendamento.getPaciente().getId() != null, 
+					"agendamento.paciente.id", "campo.obrigatorio", "Paciente");
+			that(agendamento.getMedico() != null && agendamento.getMedico().getId() != null, 
+					"agendamento.medico.id", "campo.obrigatorio", "Medico");			
+			that(agendamento.getDataAgendamento() != null, 
+					"agendamento.dataAtendimento", "campo.obrigatorio", "Data");
+//			that(!Strings.isNullOrEmpty(agendamento.getHora() ), 
+//					"agendamento.hora", "campo.obrigatorio", "Hora");			
+		}});
+		validator.onErrorForwardTo(this).cadastro();
 		
 		daoAgendamento.atualiza(agendamento);
 		result.redirectTo(AgendamentosController.class).list();
@@ -93,4 +130,32 @@ public class AgendamentosController {
 		daoAgendamento.remove(agendamento);
 		result.redirectTo(AgendamentosController.class).list();
 	}
+	
+	
+	@Get
+	@Path("/agenda/carregaConvenios/{idPaciente}")
+	public void carregaConvenios(Long idPaciente){
+		List<Convenio> lista = daoConvenio.buscaPor(idPaciente);
+		result.use(Results.json()).from(lista).serialize();
+	}
+	
+	@Get
+	@Path("/agenda/carregaHorarios/{idMedico}")
+	public void carregaHorarios(Long idMedico){
+		
+		List<Agendamento> list = daoAgendamento.carregaPor(idMedico);
+		
+		
+		
+		// pegar horários preenchidos
+		
+		// pegar lista com todos os horários
+		// tirar os horários já preenchidos.
+		
+		// retornar lista de horários p/ jsp
+		
+		
+	}
+	
+	
 }

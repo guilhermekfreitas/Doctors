@@ -21,8 +21,6 @@ import br.com.doctors.modelo.administracao.Paciente;
 @Component
 public class ConvenioDao extends DaoImpl<Convenio>{
 
-	private Session session;
-
 	public ConvenioDao(Session session) {
 		super(session,Convenio.class);
 	}
@@ -40,12 +38,12 @@ public class ConvenioDao extends DaoImpl<Convenio>{
 //	}
 
 	public List<Convenio> busca(String nome) {
-		return session.createCriteria(Convenio.class)
+		return getSession().createCriteria(Convenio.class)
 				.add(Restrictions.ilike("nome", nome, MatchMode.ANYWHERE)).list();
 	}
 	
 	public List<Convenio> buscaPor(Long idPaciente){
-		return session.createCriteria(Convenio.class)
+		return getSession().createCriteria(Convenio.class)
 				.createCriteria("pacientes").add(Restrictions.idEq(idPaciente)).
 				setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 	}

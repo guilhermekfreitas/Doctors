@@ -5,18 +5,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Painel do Administrador</title>
+<title>Configurações do Sistema</title>
 </head>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include><br />
-
-    <h1>Painel Admin - Sessão iniciada</h1><br/>
-    
-    Lista de Ações:
-    
-    <li><a href="<c:url value='/painel_admin/configuracoes' />">Ver Configurações</a> </li>
-    
-    
-    <a href="<c:url value='/' />" >Voltar a pagina principal</a>
+	
+	
 </body>
 </html>

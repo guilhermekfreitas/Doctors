@@ -36,3 +36,31 @@ Enviar Alteracoes:
    - Clique com o botao direito no projeto > Team > Commit
       - Insira um comentario, e envie os arquivos (reveja se vc quer enviar todos os arquivos da lista)
    - Em seguida, Team > Push to Upstream
+   
+   
+   
+--------------------------------------------------------------------
+Pendentes:
+  - Deletar campo "Data" em Agendamento e em seus CRUDS;
+  - Alterar campo "Hora" em Agendamento para LocalTime e em seus Cruds;
+  - Criar lógica de carregar os horarios de determinado médico;
+  - Organizar Site: paineis de médicos/funcionários/admin/pacientes/visitantes;   
+  - Definir um arquivo de configurações;
+  - Arrumar cadastro de pacientes 
+    - eliminar convenios q ja foram adicionados;
+    - corrigir adição de convenios no alterar;
+  - Colocar COMBOBOX em vários CRUDS;
+  - Colocar datepicker() em campos data;
+  - Colocar botao de voltar em alguns CRUD's;
+  - Terminar de mudar layout dos botões e listas;
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   

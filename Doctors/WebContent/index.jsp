@@ -28,7 +28,7 @@
 	<a href="agenda">Agendamento</a><br /><br />
 	
 	Area administrativa:<br />
-	<a href="admin">Administração</a><br />
+	<a href="painel_admin">Administração</a><br />
 	
 	[ Projeto de ES II ]<br />
 
