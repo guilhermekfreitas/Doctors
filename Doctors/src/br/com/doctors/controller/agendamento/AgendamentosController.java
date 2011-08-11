@@ -69,21 +69,15 @@ public class AgendamentosController {
 	@Post @Path("/agenda")
 	public void adiciona(final Agendamento agendamento){
 		
-		System.out.println("Agendamento:" + agendamento );
-		System.out.println("Convenio: " + agendamento.getConvenio());
-		System.out.println(agendamento.getPaciente());
-		System.out.println("Data de agendamento" + agendamento.getDataAgendamento());
-		System.out.println("Hora de agendamento" + agendamento.getHoraAgendamento());
-		
 		validator.checking(new Validations(){{
 			that(agendamento.getPaciente() != null && agendamento.getPaciente().getId() != null, 
 					"agendamento.paciente.id", "campo.obrigatorio", "Paciente");
 			that(agendamento.getMedico() != null && agendamento.getMedico().getId() != null, 
 					"agendamento.medico.id", "campo.obrigatorio", "Medico");			
-			//that(agendamento.getDataAgendamento() != null, 
-			//		"agendamento.dataAgendamento", "campo.obrigatorio", "Data");
-//			that(!Strings.isNullOrEmpty(agendamento.getHora() ), 
-//					"agendamento.hora", "campo.obrigatorio", "Hora");			
+			that(agendamento.getDataAgendamento() != null, 
+					"agendamento.dataAgendamento", "campo.obrigatorio", "Data");
+			that(agendamento.getHoraAgendamento() != null, 
+					"agendamento.horaAgendamento", "campo.obrigatorio", "Hora");
 		}});
 		validator.onErrorForwardTo(this).cadastro();
 		
@@ -94,7 +88,6 @@ public class AgendamentosController {
 			agendamento.setConvenio(convenio);
 		}
 		
-		System.out.println("Paciente id:" + agendamento.getPaciente().getId());
 		daoAgendamento.adiciona(agendamento);
 		result.redirectTo(AgendamentosController.class).list();
 	}

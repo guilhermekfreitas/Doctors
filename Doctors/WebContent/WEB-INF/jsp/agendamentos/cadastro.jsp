@@ -45,36 +45,38 @@
 			<tr><td><label for="convenios">Convênio:</label></td>
 			<td><select id="convenios" name="agendamento.convenio.id" disabled="disabled">	</select>
 				<img id="loading" alt="Carregando" src="<c:url value="/img/loading.gif"/>">
-			</td></tr><br />
+			</td></tr>
 
-			<tr><td><label for="horaAgendamento">Hora:</label></td> <td><input id="horaAgendamento" type="text"
-				name="agendamento.horaAgendamento" value='${agendamento.horaAgendamento}'/></td></tr><br /> 
-			
-			<tr><td><label for="dataAgendamento">Data:</label></td> <td><input id="dataAgendamento" type="text"
-				name="agendamento.dataAgendamento" value='<joda:format value="${agendamento.dataAgendamento}"/>'  /></td></tr><br /> 
-			
-			<tr><td><label for="calendario">Calendário:</label></td> 
-				<td><div id="calendario"></div></td></tr><br /> 
-			
-			<tr><td><label for="horarios">Horários Disponíveis:</label></td><td><select id="horarios" size="10" type="text"
-				name="horarios">
-					<option value="08:30">08:30</option>
-					<option value="09:00">09:00</option>
-					<option value="09:30">09:30</option>
-					<option value="10:00">10:00</option>
-				</select></td></tr><br /> 
-			
 			<!--  Falta inserir:
 			    - paciente;
 			    - médico;
 			 -->
 			 </table>
+			<div id="dadosHorario">
+			<fieldset > <legend>Horário de Agendamento:</legend>
+			<input id="horaAgendamento" type="hidden"
+				name="agendamento.horaAgendamento" value='${agendamento.horaAgendamento}'/><br /> 
+			
+			<input id="dataAgendamento" type="hidden"
+				name="agendamento.dataAgendamento" value='<joda:format value="${agendamento.dataAgendamento}"/>'/><br /> 
+			
+			<label>Calendário:</label><br/>
+			<div id="calendario"></div><br /> 
+			
+			<label for="horarios">Horários Disponíveis:</label>
+			<select id="horarios" size="10" name="horarios"></select><br /> 
+			
+			</fieldset>	
+			</div>
 			<button id="enviar" type="submit">Enviar</button>
+			<a href="./"><button id="cancel-operation" type="submit" >Cancelar</button></a>
 		</fieldset>
 	</form>
 	
 	<script type="text/javascript">
 		$("#loading").hide();
+		$("#dadosHorario").hide();
+
 		$('#loading').ajaxStart(function() {
 		       $(this).show();
 		   });
@@ -102,6 +104,9 @@
 		
 		$("#medicos").change(function(){
 			var idMedico = $("#medicos").val();
+			if (idMedico == 0){
+				$("#dadosHorario").hide();
+			} else {
 			$.getJSON('<c:url value="/agenda/carregaHorarios/' + idMedico + '"/>', function(json){
 				$("#horarios").find("option").remove();
 				if (json.datas.length != 0){
@@ -133,12 +138,9 @@
 				} else {
 					$("#horarios").attr("disabled","disabled");
 				}
-				
+				$("#dadosHorario").show();
 			});
-			//var output = {};
-			// carregar todos os horários do médico, p/ cada data especifica.
-			//output['testKey'].testValue = 45;  
-			
+			}
 		});		
 		
 		$("#horarios").change(function(){
@@ -147,7 +149,7 @@
 			
 		});		
 		
-		$( "#calendario").datepicker({
+		$( "#calendario").datepicker({disabled: true,
 			autoSize:true,dateFormat:'dd/mm/yy', minDate: 1, maxDate: "+2M", onSelect: function(dateText, inst){
 				$("#dataAgendamento").attr("value",dateText);
 				
