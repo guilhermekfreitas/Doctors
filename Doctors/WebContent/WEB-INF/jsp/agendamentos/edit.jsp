@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Editar Agendamento</title>
+<title>Editar Agendamento - Paciente ${agendamento.paciente.nome}</title>
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 
 </head>

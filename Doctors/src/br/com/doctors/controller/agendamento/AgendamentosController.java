@@ -1,5 +1,6 @@
 package br.com.doctors.controller.agendamento;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -24,6 +25,8 @@ import br.com.doctors.dao.agendamento.AgendamentoDao;
 import br.com.doctors.modelo.administracao.Convenio;
 import br.com.doctors.modelo.administracao.PerfilUsuario;
 import br.com.doctors.modelo.agendamento.Agendamento;
+import br.com.doctors.services.AgendamentoService;
+import br.com.doctors.services.DataInner;
 
 /**
  * 
@@ -133,7 +136,7 @@ public class AgendamentosController {
 	
 	
 	@Get
-	@Path("/agenda/carregaConvenios/{idPaciente}")
+	@Path("/agenda/carregaConvenios/{idPaciente}") 
 	public void carregaConvenios(Long idPaciente){
 		List<Convenio> lista = daoConvenio.buscaPor(idPaciente);
 		result.use(Results.json()).from(lista).serialize();
@@ -143,19 +146,15 @@ public class AgendamentosController {
 	@Path("/agenda/carregaHorarios/{idMedico}")
 	public void carregaHorarios(Long idMedico){
 		
-		List<Agendamento> list = daoAgendamento.carregaPor(idMedico);
+		// carrega agendamentos entre [amanhã - +2 meses pra frente]
+		List<Agendamento> listAgendamentos = daoAgendamento.carregaPor(idMedico);
 		
+		AgendamentoService service = new AgendamentoService();
+		List<DataInner> listaHorarios = service.getHorariosDisponiveis(listAgendamentos);
 		
-		
-		// pegar horários preenchidos
-		
-		// pegar lista com todos os horários
-		// tirar os horários já preenchidos.
-		
-		// retornar lista de horários p/ jsp
-		
-		
+		result.use(Results.json()).from(listaHorarios, "datas").include("horarios").serialize();
 	}
 	
-	
 }
+
+

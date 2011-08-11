@@ -101,10 +101,43 @@
 		});
 		
 		$("#medicos").change(function(){
-			
-			var output = {};
+			var idMedico = $("#medicos").val();
+			$.getJSON('<c:url value="/agenda/carregaHorarios/' + idMedico + '"/>', function(json){
+				$("#horarios").find("option").remove();
+				if (json.datas.length != 0){
+					$("#horarios").attr("disabled","");
+					array = [];
+					for (var i in json.datas){
+						
+						var data = json.datas[i];
+						
+						// adiciona dia no array
+						var dia = new Dia(data.data, data.horarios);
+						array.push(dia);
+						
+					}
+					
+					var dataAtual = $( "#calendario").val();
+					$("#dataAgendamento").attr("value",dataAtual);
+					for (var i=0;i<array.length;i++)
+					{
+						// acertou o dia
+						if (array[i].data == dataAtual){
+							var horarios = array[i].horarios;
+							for (var j=0;j<horarios.length;j++)	{
+								var hora = criaOption(horarios[j]);
+								$("#horarios").append(hora);
+							}
+						}
+					}
+				} else {
+					$("#horarios").attr("disabled","disabled");
+				}
+				
+			});
+			//var output = {};
 			// carregar todos os horários do médico, p/ cada data especifica.
-			output['testKey'].testValue = 45;  
+			//output['testKey'].testValue = 45;  
 			
 		});		
 		
@@ -120,8 +153,32 @@
 				
 				// quando alterar aqui, deve apagar horários
 				// e preencher o #horarios com novos dados.
+				$("#horarios").find("option").remove();
+				
+				// posso acessar por aqui
+				for (var i=0;i<array.length;i++)
+				{
+					// acertou o dia
+					if (array[i].data == dateText){
+						var horarios = array[i].horarios;
+						for (var j=0;j<horarios.length;j++)	{
+							var hora = criaOption(horarios[j]);
+							$("#horarios").append(hora);
+						}
+					}
+				}
 				
 			}});
+		
+		function Dia(data,horarios) {
+			this.data = data;
+			this.horarios = horarios;
+		}
+		
+		function criaOption(valor){
+			return '<option value="'+ valor  + '">' + valor + '</option>';
+		}
+		
 	</script>
 </body>
 </html>
