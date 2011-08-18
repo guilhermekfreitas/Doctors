@@ -25,8 +25,9 @@
 	<a href="exames">Exame</a><br />
 	<a href="agenda">Agendamento</a><br /><br />
 	
-	Area administrativa:<br />
-	<a href="painel_admin">Administração</a><br />
+	<sec:authorize ifAllGranted="ROLE_ADMIN">
+		Area administrativa:<br /><a href="painel_admin">Administração</a><br />
+	</sec:authorize>
 	
 	[ Projeto de ES II ]<br />
 
