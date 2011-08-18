@@ -9,10 +9,12 @@
         <pattern>/*/*</pattern>
     </decorator>
     
-    <decorator name="usuario" page="usuario.jsp">
+  <!--
+  <decorator name="usuario" page="usuario.jsp">
         <pattern>/usuario.jsp</pattern>
-    </decorator>
+    </decorator>-->
+
  	<excludes>
- 	 	<pattern>/index2.jsp</pattern>	
+ 	 	<pattern>/WEB-INF/jsp/header.jsp</pattern>	
  	</excludes>
 </decorators>

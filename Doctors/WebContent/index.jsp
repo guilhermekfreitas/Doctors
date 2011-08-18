@@ -10,10 +10,10 @@
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/scripts.js'/>"></script>
-<link rel="stylesheet"  type="text/css" href="<c:url value="/css/ui-lightness/jquery-ui-1.8.14.custom.css"/>"/>
-<link rel="stylesheet"  type="text/css" href="<c:url value="/css/meucss.css"/>"/>  
+
 </head>
 <body>
+	<div id="content">
 	<br />Cadastros Básicos:<br/>
 	<a href="medicos">Médico</a><br />
 	<a href="funcionarios">Funcionário</a><br />
@@ -30,16 +30,6 @@
 	</sec:authorize>
 	
 	[ Projeto de ES II ]<br />
-
-	<script type="text/javascript">
-	
-		function abrirDialog(){
-			$( "#dialog-cadastro" ).dialog({
-				height: 140,
-				modal: true
-			});
-		}
-		
-	</script>
+	</div>
 </body>
 </html>

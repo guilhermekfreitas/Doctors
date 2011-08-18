@@ -62,7 +62,7 @@ body {background:#fff url(../img/bg.jpg) repeat-x; font: 11px Verdana, Arial, He
 #menus {background:url(../img/menu.jpg) no-repeat; width:936px; margin:0 auto 10px auto; height:88px;}#submenu ul {
 	list-style: none;
 }
-#submenu li {
+/* #submenu li {
 	display: inline;
 }
 #submenu a {
@@ -75,7 +75,7 @@ body {background:#fff url(../img/bg.jpg) repeat-x; font: 11px Verdana, Arial, He
 	padding-left: 15px;
 	color: #666666;
 	text-decoration: none;
-}
+} */
 #mainmenu {
 	height: 55px;
 	font: bold 14px "Trebuchet MS", halvetica, Verdana, sans-serif;
@@ -159,7 +159,7 @@ a:hover {
 	text-align: center;
 }
 #mainmenu ul {list-style:none;}
-#submenu a:visited, #submenu a:active {
+/* #submenu a:visited, #submenu a:active {
 	background: url(../img/submenudevider.png) no-repeat left;
 	display: block;
 	float: left;
@@ -181,7 +181,7 @@ a:hover {
 	padding-left: 15px;
 	color: #000000;
 	text-decoration: none;
-}
+} */
 #mainmenu .first a:visited, #mainmenu .first a:active {
 
 	background: none;
