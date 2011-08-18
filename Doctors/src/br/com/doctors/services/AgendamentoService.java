@@ -12,8 +12,10 @@ import org.joda.time.Minutes;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import br.com.caelum.vraptor.ioc.Component;
 import br.com.doctors.modelo.agendamento.Agendamento;
 
+@Component
 public class AgendamentoService {
 	private final LocalTime inicioAtendimento;
 	private final LocalTime fimAtendimento;

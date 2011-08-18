@@ -14,8 +14,6 @@
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/meucss.css"/>"/>  
 </head>
 <body>
-	<jsp:include page="WEB-INF/jsp/header.jsp"></jsp:include><br /> 
-	
 	<br />Cadastros Básicos:<br/>
 	<a href="medicos">Médico</a><br />
 	<a href="funcionarios">Funcionário</a><br />

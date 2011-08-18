@@ -11,8 +11,6 @@
 
 </head>
 <body>
-	<c:import url="../header.jsp"></c:import>
-
 	<ul>
 		<c:forEach var="error" items="${errors}">
 			<li>${error.category} - ${error.message}</li>

@@ -6,15 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Lista de Convênios</title>
-<script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/scripts.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
-<link rel="stylesheet"  type="text/css" href="<c:url value="/css/ui-lightness/jquery-ui-1.8.14.custom.css"/>"/>  
-<link rel="stylesheet"  type="text/css" href="<c:url value="/css/meucss.css"/>"/>
 </head>
-<body>
-	<c:import url="../header.jsp"></c:import>
-	
+<body id="corpo">
 	<div id="lista-regs" class="ui-widget">
 	<h1>Lista de Convênios</h1>
 	<table id="regList" class="ui-widget ui-widget-content">

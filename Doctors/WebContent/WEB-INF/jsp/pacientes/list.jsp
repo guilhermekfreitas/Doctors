@@ -40,8 +40,6 @@
 	</script>
 </head>
 <body>
-	<c:import url="../header.jsp"></c:import>
-
 	<div id="lista-regs" class="ui-widget">
 	<h1>Lista de Pacientes</h1>
 	<table class="tablesorter">

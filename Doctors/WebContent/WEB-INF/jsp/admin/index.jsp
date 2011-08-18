@@ -8,7 +8,6 @@
 <title>Painel do Administrador</title>
 </head>
 <body>
-	<jsp:include page="../header.jsp"></jsp:include><br />
 
     <h1>Painel Admin - Sessão iniciada</h1><br/>
     

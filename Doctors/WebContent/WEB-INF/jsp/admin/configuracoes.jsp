@@ -8,8 +8,5 @@
 <title>Configurações do Sistema</title>
 </head>
 <body>
-	<jsp:include page="../header.jsp"></jsp:include><br />
-	
-	
 </body>
 </html>

@@ -16,8 +16,6 @@
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/blue-tablesorter/style.css"/>"/>
 </head>
 <body>
-	<c:import url="../header.jsp"></c:import>
-	
 	<div id="lista-regs" class="ui-widget">
 	<h1>Lista de Médicos</h1>
 	<table class="tablesorter">

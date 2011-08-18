@@ -14,8 +14,6 @@
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/meucss.css"/>"/>
 </head>
 <body>
-	<c:import url="../header.jsp"></c:import>
-	
 	<ul>
 		<c:forEach var="error" items="${errors}">
 			<li>${error.category} - ${error.message}</li>

@@ -10,8 +10,6 @@
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 </head>
 <body>
-	<c:import url="../header.jsp"></c:import>
-
 	<h1>Lista de Consultas</h1>
 
 	<table>

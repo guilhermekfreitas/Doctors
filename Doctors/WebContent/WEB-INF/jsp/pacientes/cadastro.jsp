@@ -12,16 +12,18 @@
 <script type="text/javascript" src="<c:url value='/js/scripts.js'/>"></script>
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/ui-lightness/jquery-ui-1.8.14.custom.css"/>"/>  
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/meucss.css"/>"/>
+<link rel="stylesheet"  type="text/css" href="<c:url value="/css/frame.css"/>"/>
 </head>
 <body>
-	<c:import url="../header.jsp"></c:import>
-	
+	<div id="errors">
 	<ul>
 		<c:forEach var="error" items="${errors}">
 			<li>${error.category} - ${error.message}</li>
 		</c:forEach>
 	</ul>
-
+	</div>
+	
+	<div id="form">
 	<form name="form" action="<c:url value="/pacientes"/>" method="post">
 		<fieldset>
 			<legend>Adicionar Paciente:</legend>
@@ -92,6 +94,7 @@
 			<a href="./"><button id="cancel-operation" type="submit" >Cancelar</button></a>
 		</fieldset>
 	</form>
+	</div>
 	
 	<div style="display:none;" id="dialog-semconvenio" title="Confirmar cadastro?">
 		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>

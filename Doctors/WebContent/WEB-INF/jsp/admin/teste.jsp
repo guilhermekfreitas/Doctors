@@ -9,8 +9,6 @@
 		<title>Security - Admin</title>
 	</head>
 	<body>
-		<jsp:include page="../header.jsp"></jsp:include><br /> 
-	
 		<c:out value="Painel Admin - Sessão iniciada"/><br/>
 		
 		<a href="<c:url value='/' />" >Voltar a pagina principal</a>

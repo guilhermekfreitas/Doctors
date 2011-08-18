@@ -33,6 +33,7 @@ import br.com.doctors.services.DataInner;
  * @author Guilherme
  *
  */
+
 @Resource
 public class AgendamentosController {
 	private Result result;
@@ -42,10 +43,11 @@ public class AgendamentosController {
 	private MedicoDao daoMedico;
 	private ConvenioDao daoConvenio;
 	private FuncionarioDao daoFuncionario;
+	private AgendamentoService agendamentoService;
 
 	public AgendamentosController(AgendamentoDao daoAgendamento, Result result, 
 			Validator validator, PacienteDao daoPaciente, MedicoDao daoMedico,
-			ConvenioDao daoConvenio, FuncionarioDao daoFuncionario) {
+			ConvenioDao daoConvenio, FuncionarioDao daoFuncionario, AgendamentoService agendamentoService) {
 		this.daoAgendamento = daoAgendamento;
 		this.result = result;
 		this.validator = validator;
@@ -53,6 +55,7 @@ public class AgendamentosController {
 		this.daoMedico = daoMedico;
 		this.daoConvenio = daoConvenio;
 		this.daoFuncionario = daoFuncionario;
+		this.agendamentoService = agendamentoService;
 	}
 	
 	@Get @Path({"/agenda"})
@@ -142,8 +145,8 @@ public class AgendamentosController {
 		// carrega agendamentos entre [amanhã - +2 meses pra frente]
 		List<Agendamento> listAgendamentos = daoAgendamento.carregaPor(idMedico);
 		
-		AgendamentoService service = new AgendamentoService();
-		List<DataInner> listaHorarios = service.getHorariosDisponiveis(listAgendamentos);
+//		AgendamentoService service = new AgendamentoService();
+		List<DataInner> listaHorarios = agendamentoService.getHorariosDisponiveis(listAgendamentos);
 		
 		result.use(Results.json()).from(listaHorarios, "datas").include("horarios").serialize();
 	}
