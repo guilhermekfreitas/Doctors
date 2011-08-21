@@ -37,21 +37,21 @@ public class AgendamentoService {
 		minutosPorConsulta = Minutes.minutes(30);
 	}
 
-	public List<DataInner> getHorariosDisponiveis(List<Agendamento> horariosJaPreenchidos){
+	public List<AgendamentoCommand> getHorariosDisponiveis(List<Agendamento> horariosJaPreenchidos){
 
-		Map<LocalDate, DataInner> horariosOcupados = convertToDataInner(horariosJaPreenchidos);
+		Map<LocalDate, AgendamentoCommand> horariosOcupados = convertToDataInner(horariosJaPreenchidos);
 		
-		List<DataInner> todosHorarios = new ArrayList<DataInner>();
+		List<AgendamentoCommand> todosHorarios = new ArrayList<AgendamentoCommand>();
 		
 		LocalDate dataAtual = new LocalDate(dataInicial);
 		while (!dataAtual.isAfter(dataFinal)){
 			
 			// preenche os horários para esta data.     
-			DataInner horariosDoDia = getHorariosDoDia(dataAtual);
+			AgendamentoCommand horariosDoDia = getHorariosDoDia(dataAtual);
 			
 			// se tiver esta data no horariosOcupados, elimina os horarios em comum
 			if (horariosOcupados.containsKey(dataAtual)){
-				DataInner dataComHorariosOcupados = horariosOcupados.get(dataAtual);
+				AgendamentoCommand dataComHorariosOcupados = horariosOcupados.get(dataAtual);
 				horariosDoDia.removeHorariosOcupados(dataComHorariosOcupados.getHorarios());
 			}
 			
@@ -62,7 +62,7 @@ public class AgendamentoService {
 		}
 		
 		// debug
-//		for (DataInner horario : todosHorarios ){
+//		for (AgendamentoCommand horario : todosHorarios ){
 //			System.out.println(horario);
 //		}
 //		
@@ -71,13 +71,13 @@ public class AgendamentoService {
 
 	/***
 	 * 
-	 * Converte uma lista de Agendamento para um mapa de DataInner
+	 * Converte uma lista de Agendamento para um mapa de AgendamentoCommand
 	 * @param horariosJaPreenchidos
 	 * @return
 	 */
-	private Map<LocalDate, DataInner> convertToDataInner(List<Agendamento> horariosJaPreenchidos) {
+	private Map<LocalDate, AgendamentoCommand> convertToDataInner(List<Agendamento> horariosJaPreenchidos) {
 
-		Map<LocalDate,DataInner> horarios = new HashMap<LocalDate,DataInner>();
+		Map<LocalDate,AgendamentoCommand> horarios = new HashMap<LocalDate,AgendamentoCommand>();
 		
 		for (Agendamento agend : horariosJaPreenchidos){
 			
@@ -86,11 +86,11 @@ public class AgendamentoService {
 			
 			if (horarios.containsKey(dataAgendamento)){
 				// adiciona mais um horário
-				DataInner data = horarios.get(dataAgendamento);
+				AgendamentoCommand data = horarios.get(dataAgendamento);
 				data.addHorario(horaAgendamento.toString(fmtHora));
 			} else {
 				// deve adicionar mais uma data
-				DataInner newData = new DataInner(dataAgendamento.toString(fmtData));
+				AgendamentoCommand newData = new AgendamentoCommand(dataAgendamento.toString(fmtData));
 				newData.addHorario(horaAgendamento.toString(fmtHora));
 				horarios.put(dataAgendamento, newData);
 			}
@@ -98,11 +98,11 @@ public class AgendamentoService {
 		return horarios;
 	}
 
-	private DataInner getHorariosDoDia(LocalDate dataAtual) {
+	private AgendamentoCommand getHorariosDoDia(LocalDate dataAtual) {
 		
 		LocalTime horarioAtual = new LocalTime(inicioAtendimento);
 
-		DataInner diaAtual = new DataInner(dataAtual.toString(fmtData));
+		AgendamentoCommand diaAtual = new AgendamentoCommand(dataAtual.toString(fmtData));
 		while( !horarioAtual.isAfter(fimAtendimento)){
 			diaAtual.addHorario(horarioAtual.toString(fmtHora));
 			horarioAtual = new LocalTime(horarioAtual).plus(minutosPorConsulta);

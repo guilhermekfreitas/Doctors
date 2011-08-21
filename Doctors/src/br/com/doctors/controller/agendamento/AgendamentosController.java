@@ -29,7 +29,7 @@ import br.com.doctors.modelo.administracao.PerfilUsuario;
 import br.com.doctors.modelo.agendamento.Agendamento;
 //import br.com.doctors.services.AgendaCommand;
 import br.com.doctors.services.AgendamentoService;
-import br.com.doctors.services.DataInner;
+import br.com.doctors.services.AgendamentoCommand;
 
 /**
  * 
@@ -183,7 +183,7 @@ public class AgendamentosController {
 		List<Agendamento> listAgendamentos = daoAgendamento.carregaPor(idMedico);
 		
 //		AgendamentoService service = new AgendamentoService();
-		List<DataInner> listaHorarios = agendamentoService.getHorariosDisponiveis(listAgendamentos);
+		List<AgendamentoCommand> listaHorarios = agendamentoService.getHorariosDisponiveis(listAgendamentos);
 		
 		result.use(Results.json()).from(listaHorarios, "datas").include("horarios").serialize();
 	}

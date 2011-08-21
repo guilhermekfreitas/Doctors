@@ -3,16 +3,16 @@ package br.com.doctors.services;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataInner {
+public class AgendamentoCommand {
 	private String data;
 	private List<String> horarios;
 	
-	public DataInner(String data){
+	public AgendamentoCommand(String data){
 		this.data = data;
 		horarios = new ArrayList<String>();
 	}
 	
-	public DataInner(String data, List<String> horarios){
+	public AgendamentoCommand(String data, List<String> horarios){
 		this.data = data;
 		this.horarios = horarios;
 	}
@@ -56,9 +56,9 @@ public class DataInner {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof DataInner))
+		if (!(obj instanceof AgendamentoCommand))
 			return false;
-		DataInner other = (DataInner) obj;
+		AgendamentoCommand other = (AgendamentoCommand) obj;
 		if (data == null) {
 			if (other.data != null)
 				return false;
