@@ -66,5 +66,21 @@ public class PerfilUsuario {
 	public String toString() {
 		return String.format("Login: %s Senha: %s TipoPerfil:%s", login, senha, tipo);
 	}
+
+	public boolean isPaciente() {
+		return tipo == TipoPerfil.ROLE_PACIENTE;
+	}
+	
+	public boolean isMedico(){
+		return tipo == TipoPerfil.ROLE_MEDICO;
+	}
+	
+	public boolean isFuncionario(){
+		return tipo == TipoPerfil.ROLE_FUNCIONARIO;
+	}
+	
+	public boolean isAdmin(){
+		return tipo == TipoPerfil.ROLE_ADMIN;
+	}
 }
 

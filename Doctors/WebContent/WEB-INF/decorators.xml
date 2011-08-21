@@ -2,19 +2,11 @@
 <decorators defaultdir="/decorators">
  
     <decorator name="principal" page="principal.jsp">
-        <pattern>/*</pattern>
+        <pattern>/**</pattern>
     </decorator>
  
-    <decorator name="outros" page="principal.jsp">
-        <pattern>/*/*</pattern>
-    </decorator>
-    
-  <!--
-  <decorator name="usuario" page="usuario.jsp">
-        <pattern>/usuario.jsp</pattern>
-    </decorator>-->
-
  	<excludes>
- 	 	<pattern>/WEB-INF/jsp/header.jsp</pattern>	
+ 	 	<pattern>/WEB-INF/jsp/header.jsp</pattern>
+ 	 	<pattern>/WEB-INF/jsp/footer.jsp</pattern>	
  	</excludes>
 </decorators>

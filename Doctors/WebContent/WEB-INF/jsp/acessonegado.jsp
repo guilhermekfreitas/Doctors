@@ -8,9 +8,8 @@
 <title>Acesso Negado!</title>
 </head>
 <body>
-	<jsp:include page="WEB-INF/jsp/header.jsp"></jsp:include><br />
+	<h1>Acesso negado! Você não pode acessar esta página!</h1><br />
 	
-	Acesso negado!
 	<a href="<c:url value='/' />" >Voltar a pagina principal</a>
 </body>
 </html>

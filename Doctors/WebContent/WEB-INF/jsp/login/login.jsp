@@ -5,27 +5,31 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Doctor's - Login</title>
+<title>Página de Login</title>
 </head>
 <body>
-	<ul>
-		<c:forEach var="error" items="${errors}">
-			<li>${error.category} - ${error.message}</li>
-		</c:forEach>
-	</ul>
-
-	<form action="<c:url value='/login'/>" method="post">
-		<label for="login">Nome do Usuário:</label> <input id="login" 
-			type="text" name="perfilUsuario.login"/><br >
-		<label for="senha">Senha:</label> <input id="senha" 
-			type="password" name="perfilUsuario.senha" /><br />
-		<input type="submit" value="Logar"/><br />
+	<c:if test="${param.error eq 'invalido'}">
+	     <c:out value="Usuário e/ou senha inválido(s)" />
+	</c:if>
+	<c:if test="${!empty error}">
+	     <c:out value="Usuário e/ou senha inválido(s)" />
+	</c:if>
+	<form name="f" action="<c:url value="/logar"/>" method="POST">
+	  <table>
+	    <tr>
+	        <td><c:out value="Usuário:"/> </td>
+	        <td><input type='text' name='j_username'/></td>
+	    </tr>
+	    <tr>
+	        <td><c:out value="Senha:"/></td>
+	        <td><input type='password' name='j_password'></td>
+	    </tr>
+	    <tr><td colspan='2'><input name="submit" type="submit"></td>
+	    </tr>
+	    <tr>
+	        <td colspan='2'> <input name="reset" type="reset"> </td>
+	    </tr>
+	  </table>
 	</form>
-	
-	<div id="mensagem">
-		${message }
-	</div>
-	
-	Não tem login? <a href="<c:url value='/cadastro'/>">Cadastre-se (Link quebrado)</a>
 </body>
 </html>

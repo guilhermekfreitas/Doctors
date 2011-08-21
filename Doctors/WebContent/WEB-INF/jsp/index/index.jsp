@@ -10,7 +10,6 @@
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/scripts.js'/>"></script>
-
 </head>
 <body>
 	<div id="content">
@@ -28,8 +27,7 @@
 	<sec:authorize ifAllGranted="ROLE_ADMIN">
 		Area administrativa:<br /><a href="painel_admin">Administração</a><br />
 	</sec:authorize>
-	
-	[ Projeto de ES II ]<br />
+
 	</div>
 </body>
 </html>

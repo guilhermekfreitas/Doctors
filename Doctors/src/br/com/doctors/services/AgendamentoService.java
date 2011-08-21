@@ -6,9 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTimeFieldType;
+import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
+import org.joda.time.Partial;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -44,7 +47,7 @@ public class AgendamentoService {
 		while (!dataAtual.isAfter(dataFinal)){
 			
 			// preenche os horários para esta data.     
-			DataInner horariosDoDia = getHorariosDoDia(dataAtual,minutosPorConsulta);
+			DataInner horariosDoDia = getHorariosDoDia(dataAtual);
 			
 			// se tiver esta data no horariosOcupados, elimina os horarios em comum
 			if (horariosOcupados.containsKey(dataAtual)){
@@ -95,7 +98,7 @@ public class AgendamentoService {
 		return horarios;
 	}
 
-	private DataInner getHorariosDoDia(LocalDate dataAtual, Minutes minutosPorConsulta) {
+	private DataInner getHorariosDoDia(LocalDate dataAtual) {
 		
 		LocalTime horarioAtual = new LocalTime(inicioAtendimento);
 

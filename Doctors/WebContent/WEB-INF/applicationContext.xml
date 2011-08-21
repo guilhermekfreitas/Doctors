@@ -6,12 +6,13 @@
              >
 	<http auto-config="true">
 		<logout logout-url="/logout"></logout>
-		<access-denied-handler error-page="/acessonegado.jsp"></access-denied-handler>
-		<form-login always-use-default-target="true" login-processing-url="/logar" login-page="/login" authentication-failure-url="/login/index?error=invalido" default-target-url="/logado" />
+		<access-denied-handler error-page="/WEB-INF/jsp/acessonegado.jsp"></access-denied-handler>
+		<form-login always-use-default-target="true" login-processing-url="/logar" login-page="/login" authentication-failure-url="/login?error=invalido" default-target-url="/logado" />
 		<intercept-url  pattern="/painel_admin/**" access="ROLE_ADMIN" />
 		<intercept-url  pattern="/convenios/**" access="ROLE_ADMIN,ROLE_PACIENTE" />
 		<intercept-url  pattern="/funcionarios/**" access="ROLE_ADMIN,ROLE_FUNCIONARIO" />
 		<intercept-url  pattern="/medicos/**" access="ROLE_MEDICO,ROLE_ADMIN,ROLE_FUNCIONARIO" />
+		<intercept-url  pattern="/agenda/**" access="ROLE_MEDICO,ROLE_ADMIN,ROLE_FUNCIONARIO,ROLE_PACIENTE"  />
 	</http>
 
 	<authentication-manager>

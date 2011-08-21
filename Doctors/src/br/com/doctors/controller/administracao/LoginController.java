@@ -21,9 +21,9 @@ public class LoginController {
 		this.userSession = userSession;
 	}
 	
-	public void index(){
-		
-	}
+//	public void index(){
+//		
+//	}
 	
 	@Path("/teste")
 	public void teste(){
@@ -33,7 +33,7 @@ public class LoginController {
 	@Get
 	@Path("/login")
 	public void login(){
-		result.redirectTo(this).index();
+		//result.redirectTo(this).index();
 	}
 
 	@Post

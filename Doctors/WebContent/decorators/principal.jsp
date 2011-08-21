@@ -8,8 +8,8 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
-		<link type="text/css" rel="stylesheet" href="css/frame.css"/>
-		<link type="text/css" rel="stylesheet" href="css/style.css"/> <!-- Somente para exemplo. -->
+		<link type="text/css" rel="stylesheet" href="<c:url value="/css/frame.css"/>"/>
+		<link type="text/css" rel="stylesheet" href="<c:url value="/css/style.css"/>"/>
 		<title><sitemesh-decorator:title default="Projeto Doctors"/></title>
 		<sitemesh-decorator:head/>
 	</head>
