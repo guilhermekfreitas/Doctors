@@ -23,9 +23,6 @@
 	#lista-regs{
 		
 	}
-	#resto{
-		clear: both;
-	}
 </style>
 </head>
 <body>
@@ -54,110 +51,24 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>Teste</td>
-						<td>teste</td>
-						<td>mais um</td>
-						<td>outro</td>
-					</tr>
 				</tbody>
 			</table>
-			<button type="button" onclick="teste()">Teste</button>
 		</div>
 		
 	</div>
 	
-	<div id="resto">
-	<h1>Lista de Agendamentos</h1>
-
-	<table>
-		<thead>
-			<tr>
-				<th>Data</th>
-				<th>Hora</th>
-				<th>Confirmado</th>
-				<th>Cancelado</th>
-				<th>Nome do Paciente</th>
-				<th>Nome do Médico</th>
-				<th>Funcionário?</th>
-				<th>Consulta</th>
-				<th>Alterar</th>
-				<th>Excluir</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${agendamentos}" var="agendamento">
-				<tr>
-					<td><joda:format value="${agendamento.dataAgendamento}"/></td>
-					<td><joda:format value="${agendamento.horaAgendamento}" pattern="hh:mm"/></td>
-					<td>
-						<c:choose>
-							<c:when test="${agendamento.confirmado}">Sim</c:when>
-							<c:when test="${!agendamento.confirmado}">Não</c:when>
-						</c:choose>
-					</td>
-					<td>
-						<c:choose>
-							<c:when test="${agendamento.cancelado}">Sim</c:when>
-							<c:when test="${!agendamento.cancelado}">Não</c:when>
-						</c:choose>
-					</td>
-					<td>${agendamento.paciente.nome}</td>
-					<td>${agendamento.medico.nome}</td>
-					<td>${agendamento.funcionario.nome}</td>
-					<td>
-						${agendamento.consulta.id}
-						<c:if test="${agendamento.isConsultaDisponivel()}">
-							<c:choose>
-								<c:when test="${ empty agendamento.consulta}">
-									<a href="<c:url value="/consultas/novo/${agendamento.id}"/>">Iniciar Consulta</a>
-								</c:when>
-								<c:when test="${ !empty agendamento.consulta}">Já Efetuada</c:when>
-							</c:choose>
-						</c:if> 
-					</td>
-					<td><a href="<c:url value="/agenda/${agendamento.id}"/>">Alterar</a></td>
-					<td><a href="<c:url value="/agenda/remover/${agendamento.id}"/>">Remover</a></td>
-				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
-	<a href="<c:url value="/agenda/novo"/>">Adicionar novo Agendamento</a><br />
-	<a href="<c:url value="./"/>">Voltar à página inicial</a><br />
-	</div>
 	<script type="text/javascript">
 		$("#agenda").hide();
-		
-		$("#pacientes").change(function(){
-			var idPaciente = $("#pacientes").val();
-			$.getJSON('<c:url value="/agenda/carregaConvenios/' + idPaciente + '"/>', function(json){
-				$("#convenios").find("option").remove();
-				if (json.list.length != 0){
-					for (var i in json.list){
-						$("#convenios").attr("disabled","");
-						var convenio = json.list[i];
-						var novoItem = '<option value="'+ convenio.id + '">' + convenio.nome + '</option>';
-						$("#convenios").append(novoItem);
-					}
-				} else {
-					$("#convenios").append('<option value="0">Particular</option>');
-					$("#convenios").attr("disabled","disabled");
-				}
-			});
-		});
 		
 		$("#medicos").change(function(){
 			var idMedico = $("#medicos").val();
 			if (idMedico == 0){
-				$("#dadosHorario").hide();
 				$("#agenda").hide();
 			} else {
 				$("#agenda").show();
-			$.getJSON('<c:url value="/agenda/carregaAgenda/' + idMedico + '"/>', function(json){
-				//$("#horarios").find("option").remove();
+				$.getJSON('<c:url value="/agenda/carregaAgenda/' + idMedico + '"/>', function(json){
 				
 				if (json.datas.length != 0){
-					//$("#horarios").attr("disabled","");
 					array = [];
 					
 					// popula array que contém as datas, de cada dia do calendário.
@@ -169,12 +80,13 @@
 						var dia = new Dia(data.data, data.horarios);
 						array.push(dia);
 						
-						alert(data.data);
-						
 					}
 					
+					//minDate = $("#calendario").datepicker( "option", "minDate" );
+					//$( "#calendario" ).val = minDate;
+					
+					$("#lista-regs tr:gt(0)").remove();
 					var dataAtual = $( "#calendario").val();
-					//$("#dataAgendamento").attr("value",dataAtual);
 					for (var i=0;i<array.length;i++)
 					{
 						// acertou o dia
@@ -184,27 +96,22 @@
 								
 								addNovaLinha(horarios[j]);
 								
-								//var hora = criaOption(horarios[j]);
-								//$("#horarios").append(hora);
 							}
 						}
 					}
-				//} else {
-				//	$("#horarios").attr("disabled","disabled");
 				}
-				//$("#dadosHorario").show();
 			});
 			}
 		});		
 		
 		
-		$( "#calendario").datepicker({disabled: true,
-			autoSize:true,dateFormat:'dd/mm/yy', minDate: 1, maxDate: "+2M", onSelect: function(dateText, inst){
-				$("#dataAgendamento").attr("value",dateText);
+		$( "#calendario").datepicker({
+			autoSize:true,dateFormat:'dd/mm/yy', minDate: 0, maxDate: "+2M", onSelect: function(dateText, inst){
+				//$("#dataAgendamento").attr("value",dateText);
 				
 				// quando alterar aqui, deve apagar horários
-				// e preencher o #horarios com novos dados.
-				$("#horarios").find("option").remove();
+				// da tabela
+				$("#lista-regs tr:gt(0)").remove();
 				
 				// posso acessar por aqui
 				for (var i=0;i<array.length;i++)
@@ -213,8 +120,7 @@
 					if (array[i].data == dateText){
 						var horarios = array[i].horarios;
 						for (var j=0;j<horarios.length;j++)	{
-							var hora = criaOption(horarios[j]);
-							$("#horarios").append(hora);
+							addNovaLinha(horarios[j]);
 						}
 					}
 				}
@@ -227,7 +133,6 @@
 		}
 		
 		function addNovaLinha(horario,index){
-			alert("teste");
 			$("#lista-regs").find('tbody')
 		    .append($('<tr>')
 		        .append($('<td>').append(horario.horario))
@@ -242,16 +147,6 @@
 			return '<button type="button" onclick="verDetalhes(' + index + ')">Ver Detalhes</button>';
 		}
 		
-		function teste(){
-			alert("teste");
-			$("#lista-regs").find('tbody')
-		    .append($('<tr>')
-		        .append($('<td>').append('hello'))
-		        .append($('<td>').append('hello'))
-		       	.append($('<td>').append('hello'))
-		        .append($('<td>').append('hello'))
-		    );
-		}
 	</script>	
 </body>
 </html>

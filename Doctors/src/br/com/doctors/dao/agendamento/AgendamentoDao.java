@@ -20,7 +20,7 @@ public class AgendamentoDao extends DaoImpl<Agendamento>{
 	}
 	
 	public List<Agendamento> carregaPor(Long idMedico){
-		LocalDate dataInicial = new LocalDate().plusDays(1);
+		LocalDate dataInicial = new LocalDate();
 		LocalDate dataFinal = new LocalDate(dataInicial).plusMonths(2);
 		Criteria criteria = getSession().createCriteria(Agendamento.class)
 			.add(Restrictions.between("dataAgendamento", dataInicial, dataFinal))

@@ -194,23 +194,10 @@ public class AgendamentosController {
 	@Path("/agenda/carregaAgenda/{idMedico}")
 	public void carregaAgenda(Long idMedico){
 		
-		// carrega agendamentos entre [amanhã - +2 meses pra frente]
+		// carrega agendamentos entre [hoje - +2 meses pra frente]
 		List<Agendamento> listAgendamentos = daoAgendamento.carregaPor(idMedico);
-		
-		AgendamentoService service = new AgendamentoService();
+		agendamentoService.setDataInicial(new LocalDate());
 		List<AgendaCommand> listaHorarios = agendamentoService.getAgenda(listAgendamentos);
-		
-		// teste
-		AgendaCommand a1 = new AgendaCommand("22/08/2011");
-		List<RegistroCommand> horarios = new ArrayList<RegistroCommand>();
-		horarios.add(new RegistroCommand("08:30", "Guilherme Kamizake de Freitas", "Confirmado"));
-		horarios.add(new RegistroCommand("09:00", "", "LIVRE"));
-		horarios.add(new RegistroCommand("09:30", "Juliana", "A Confirmar"));
-		a1.setHorarios(horarios);
-		
-		listaHorarios = new ArrayList<AgendaCommand>();
-		listaHorarios.add(a1);
-		// fim teste
 		
 		result.use(Results.json()).from(listaHorarios, "datas").include("horarios").serialize();
 	}

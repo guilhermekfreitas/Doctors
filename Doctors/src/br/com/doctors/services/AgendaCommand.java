@@ -1,5 +1,6 @@
 package br.com.doctors.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AgendaCommand {
@@ -8,6 +9,7 @@ public class AgendaCommand {
 	
 	public AgendaCommand(String data){
 		this.data = data;
+		horarios = new ArrayList<RegistroCommand>();
 	}
 	
 	public String getData() {
@@ -27,4 +29,14 @@ public class AgendaCommand {
 	public void addHorario(RegistroCommand horario){
 		horarios.add(horario);
 	}
+	
+	public void addConsultas(List<RegistroCommand> horariosDisponiveis){
+		
+		for (RegistroCommand horario : horariosDisponiveis){
+			RegistroCommand registro = horarios.get(horarios.indexOf(horario));
+			registro.setNomePaciente(horario.getNomePaciente());
+			registro.setStatus(horario.getStatus());
+		}
+	}
+	
 }

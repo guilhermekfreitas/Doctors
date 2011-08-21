@@ -22,7 +22,7 @@ import br.com.doctors.modelo.agendamento.Agendamento;
 public class AgendamentoService {
 	private final LocalTime inicioAtendimento;
 	private final LocalTime fimAtendimento;
-	private final LocalDate dataInicial;
+	private LocalDate dataInicial;
 	private final DateTimeFormatter fmtHora = DateTimeFormat.forPattern("HH:mm");
 	private final DateTimeFormatter fmtData = DateTimeFormat.forPattern("dd/MM/yyyy");
 	private final LocalDate dataFinal;
@@ -37,6 +37,10 @@ public class AgendamentoService {
 		minutosPorConsulta = Minutes.minutes(30);
 	}
 
+	public void setDataInicial(LocalDate dataInicial){
+		this.dataInicial = dataInicial;
+	}
+	
 	public List<AgendamentoCommand> getHorariosDisponiveis(List<Agendamento> horariosJaPreenchidos){
 
 		Map<LocalDate, AgendamentoCommand> horariosOcupados = convertToDataInner(horariosJaPreenchidos);
@@ -113,7 +117,78 @@ public class AgendamentoService {
 
 	////////////////////////////////////////////////////////////////////////////////
 	
-	public List<AgendaCommand> getAgenda(List<Agendamento> listAgendamentos) {
-		return null;
+	/***
+	 * 
+	 * Pega uma lista de Agendamentos e converte para uma List<AgendaCommand>
+	 * @param horariosJaPreenchidos
+	 * @return
+	 */
+	public List<AgendaCommand> getAgenda(List<Agendamento> horariosJaPreenchidos) {
+		
+		Map<LocalDate, AgendaCommand> horariosOcupados = convertToAgendaCommand(horariosJaPreenchidos);
+		
+		List<AgendaCommand> todosHorarios = new ArrayList<AgendaCommand>();
+		
+		LocalDate dataAtual = new LocalDate(dataInicial);
+		while (!dataAtual.isAfter(dataFinal)){
+			
+			// preenche os horários para esta data. (TODOS LIVRES)     
+			AgendaCommand horariosDoDia = getAgendaDoDia(dataAtual);
+			
+			// se tiver esta data no horariosOcupados, preenche com os horários já ocupados
+			if (horariosOcupados.containsKey(dataAtual)){
+				AgendaCommand dataComHorariosOcupados = horariosOcupados.get(dataAtual);
+				horariosDoDia.addConsultas(dataComHorariosOcupados.getHorarios());
+			}
+			
+			// adiciona novos horários
+			todosHorarios.add(horariosDoDia);
+			dataAtual = dataAtual.plusDays(1); // vai p/ próximo dia
+		}
+		
+		return todosHorarios;
+	}
+
+	private AgendaCommand getAgendaDoDia(LocalDate dataAtual) {
+		LocalTime horarioAtual = new LocalTime(inicioAtendimento);
+
+		AgendaCommand diaAtual = new AgendaCommand(dataAtual.toString(fmtData));
+		while( !horarioAtual.isAfter(fimAtendimento)){
+			RegistroCommand registro = new RegistroCommand(getHorarioAtendimento(horarioAtual), "", "Livre");
+			diaAtual.addHorario(registro);
+			horarioAtual = new LocalTime(horarioAtual).plus(minutosPorConsulta);
+		}
+		
+		return diaAtual;
+	}
+
+	private Map<LocalDate, AgendaCommand> convertToAgendaCommand(
+			List<Agendamento> horariosJaPreenchidos) {
+		
+		Map<LocalDate,AgendaCommand> horarios = new HashMap<LocalDate,AgendaCommand>();
+		
+		for (Agendamento horario : horariosJaPreenchidos){
+			
+			LocalDate dataAgendamento = horario.getDataAgendamento();
+			LocalTime horaAgendamento = horario.getHoraAgendamento();
+			RegistroCommand registro = new RegistroCommand(getHorarioAtendimento(horaAgendamento), horario.getNomePaciente(), horario.getStatus());
+			
+			if (horarios.containsKey(dataAgendamento)){
+				// adiciona mais um horário
+				AgendaCommand data = horarios.get(dataAgendamento);
+				data.addHorario(registro);
+			} else {
+				// deve adicionar mais uma data
+				AgendaCommand newData = new AgendaCommand(dataAgendamento.toString(fmtData));
+				newData.addHorario(registro);
+				horarios.put(dataAgendamento, newData);
+			}
+		}
+		return horarios;
+	}
+
+	private String getHorarioAtendimento(LocalTime horaAgendamento) {
+		String horarioAtendimento = horaAgendamento.toString(fmtHora) + " - " + horaAgendamento.plus(minutosPorConsulta).toString(fmtHora);
+		return horarioAtendimento;
 	}
 }

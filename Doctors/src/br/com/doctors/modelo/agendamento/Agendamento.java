@@ -156,4 +156,20 @@ public class Agendamento {
 		this.horaAgendamento = horaAgendamento;
 	}
 
+	public String getNomePaciente(){
+		return paciente.getNome();
+	}
+
+	public String getStatus() {
+		String status = "ERRO";
+		
+		if (!confirmado && !cancelado)
+			status = "A Confirmar";
+		else if (confirmado)
+			status = "Confirmado";
+		if (cancelado)
+			status = "Cancelado";
+		return status;
+	}
+	
 }
