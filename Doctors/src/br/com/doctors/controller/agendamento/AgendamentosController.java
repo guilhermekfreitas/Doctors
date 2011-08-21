@@ -28,8 +28,10 @@ import br.com.doctors.modelo.administracao.Paciente;
 import br.com.doctors.modelo.administracao.PerfilUsuario;
 import br.com.doctors.modelo.agendamento.Agendamento;
 //import br.com.doctors.services.AgendaCommand;
+import br.com.doctors.services.AgendaCommand;
 import br.com.doctors.services.AgendamentoService;
 import br.com.doctors.services.AgendamentoCommand;
+import br.com.doctors.services.RegistroCommand;
 
 /**
  * 
@@ -195,10 +197,22 @@ public class AgendamentosController {
 		// carrega agendamentos entre [amanhã - +2 meses pra frente]
 		List<Agendamento> listAgendamentos = daoAgendamento.carregaPor(idMedico);
 		
-//		AgendamentoService service = new AgendamentoService();
-		//List<AgendaCommand> listaHorarios = agendamentoService.getAgenda(listAgendamentos);
+		AgendamentoService service = new AgendamentoService();
+		List<AgendaCommand> listaHorarios = agendamentoService.getAgenda(listAgendamentos);
 		
-		//result.use(Results.json()).from(listaHorarios, "datas").include("horarios").serialize();
+		// teste
+		AgendaCommand a1 = new AgendaCommand("22/08/2011");
+		List<RegistroCommand> horarios = new ArrayList<RegistroCommand>();
+		horarios.add(new RegistroCommand("08:30", "Guilherme Kamizake de Freitas", "Confirmado"));
+		horarios.add(new RegistroCommand("09:00", "", "LIVRE"));
+		horarios.add(new RegistroCommand("09:30", "Juliana", "A Confirmar"));
+		a1.setHorarios(horarios);
+		
+		listaHorarios = new ArrayList<AgendaCommand>();
+		listaHorarios.add(a1);
+		// fim teste
+		
+		result.use(Results.json()).from(listaHorarios, "datas").include("horarios").serialize();
 	}
 	
 	

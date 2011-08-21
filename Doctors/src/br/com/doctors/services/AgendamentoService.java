@@ -110,4 +110,10 @@ public class AgendamentoService {
 		
 		return diaAtual;
 	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	
+	public List<AgendaCommand> getAgenda(List<Agendamento> listAgendamentos) {
+		return null;
+	}
 }
