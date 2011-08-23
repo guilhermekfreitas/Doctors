@@ -48,13 +48,12 @@ public class AgendamentosController {
 	private MedicoDao daoMedico;
 	private ConvenioDao daoConvenio;
 	private FuncionarioDao daoFuncionario;
-	private AgendamentoService agendamentoService;
 	private UserSession userSession;
 
 	public AgendamentosController(AgendamentoDao daoAgendamento, Result result, 
 			Validator validator, PacienteDao daoPaciente, MedicoDao daoMedico,
 			ConvenioDao daoConvenio, FuncionarioDao daoFuncionario, 
-			AgendamentoService agendamentoService, UserSession userSession) {
+			UserSession userSession) {
 		this.daoAgendamento = daoAgendamento;
 		this.result = result;
 		this.validator = validator;
@@ -62,7 +61,6 @@ public class AgendamentosController {
 		this.daoMedico = daoMedico;
 		this.daoConvenio = daoConvenio;
 		this.daoFuncionario = daoFuncionario;
-		this.agendamentoService = agendamentoService;
 		this.userSession = userSession;
 	}
 	
@@ -184,8 +182,8 @@ public class AgendamentosController {
 		// carrega agendamentos entre [amanhã - +2 meses pra frente]
 		List<Agendamento> listAgendamentos = daoAgendamento.carregaPor(idMedico);
 		
-//		AgendamentoService service = new AgendamentoService();
-		List<AgendamentoCommand> listaHorarios = agendamentoService.getHorariosDisponiveis(listAgendamentos);
+		AgendamentoService converter = new AgendamentoService();
+		List<AgendamentoCommand> listaHorarios = converter.getHorariosDisponiveis(listAgendamentos);
 		
 		result.use(Results.json()).from(listaHorarios, "datas").include("horarios").serialize();
 	}
@@ -196,8 +194,10 @@ public class AgendamentosController {
 		
 		// carrega agendamentos entre [hoje - +2 meses pra frente]
 		List<Agendamento> listAgendamentos = daoAgendamento.carregaPor(idMedico);
-		agendamentoService.setDataInicial(new LocalDate());
-		List<AgendaCommand> listaHorarios = agendamentoService.getAgenda(listAgendamentos);
+		
+		AgendamentoService converter = new AgendamentoService();
+		converter.setDataInicial(new LocalDate());
+		List<AgendaCommand> listaHorarios = converter.getAgenda(listAgendamentos);
 		
 		result.use(Results.json()).from(listaHorarios, "datas").include("horarios").serialize();
 	}
