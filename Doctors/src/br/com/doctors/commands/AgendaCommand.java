@@ -1,7 +1,8 @@
-package br.com.doctors.services;
+package br.com.doctors.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class AgendaCommand implements AgendamentoCommand {
 	private String data;

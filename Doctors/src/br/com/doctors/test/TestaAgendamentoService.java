@@ -8,6 +8,7 @@ import org.hibernate.cfg.Configuration;
 
 import br.com.doctors.dao.agendamento.AgendamentoDao;
 import br.com.doctors.modelo.agendamento.Agendamento;
+import br.com.doctors.services.AgendamentoForPacienteService;
 import br.com.doctors.services.AgendamentoService;
 
 public class TestaAgendamentoService {
@@ -26,8 +27,8 @@ public class TestaAgendamentoService {
 //		}
 //		System.out.println();
 //		
-		AgendamentoService service = new AgendamentoService(dao);
-		service.getHorariosDisponiveis(1L);
+		AgendamentoService service = new AgendamentoForPacienteService(dao);
+		service.getAgenda(1L);
 		
 	}
 }

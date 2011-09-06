@@ -1,4 +1,4 @@
-package br.com.doctors.services;
+package br.com.doctors.commands;
 
 public class RegistroCommand {
 	private String horario;

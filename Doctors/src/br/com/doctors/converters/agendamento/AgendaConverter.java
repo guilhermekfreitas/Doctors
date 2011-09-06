@@ -1,8 +1,10 @@
-package br.com.doctors.services;
+package br.com.doctors.converters.agendamento;
 
 import java.util.List;
 import java.util.Map;
 import org.joda.time.LocalDate;
+
+import br.com.doctors.commands.AgendamentoCommand;
 import br.com.doctors.modelo.agendamento.Agendamento;
 
 public interface AgendaConverter {

@@ -1,4 +1,4 @@
-package br.com.doctors.services;
+package br.com.doctors.converters.agendamento;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +9,8 @@ import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
 import org.joda.time.format.DateTimeFormatter;
 
+import br.com.doctors.commands.AgendamentoCommand;
+import br.com.doctors.commands.PreAgendamentoCommand;
 import br.com.doctors.modelo.agendamento.Agendamento;
 
 public class PreAgendamentoCommandConverter implements AgendaConverter {
@@ -58,26 +60,6 @@ public class PreAgendamentoCommandConverter implements AgendaConverter {
 		}
 		return horarios;
 	}
-
-//	public PreAgendamentoCommand preencheHorariosDoDia(LocalDate dataAtual, 
-//			Map<LocalDate, ? extends AgendamentoCommand> horariosOcupados) {
-//
-//		LocalTime horarioAtual = new LocalTime(inicioAtendimento);
-//
-//		PreAgendamentoCommand diaAtual = new PreAgendamentoCommand(dataAtual.toString(fmtData));
-//		while( !horarioAtual.isAfter(fimAtendimento)){
-//			diaAtual.addHorario(horarioAtual.toString(fmtHora));
-//			horarioAtual = new LocalTime(horarioAtual).plus(minutosPorConsulta);
-//		}
-//		
-//		// 	se tiver esta data no horariosOcupados, elimina os horarios em comum
-//		if (horariosOcupados.containsKey(dataAtual)){
-//			PreAgendamentoCommand dataComHorariosOcupados = horariosOcupados.get(dataAtual);
-//			diaAtual.removeHorariosOcupados(dataComHorariosOcupados.getHorarios());
-//		}
-//
-//		return diaAtual;
-//	}
 
 	@Override
 	public <T extends AgendamentoCommand> T preencheHorariosDoDia(

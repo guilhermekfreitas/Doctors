@@ -1,4 +1,4 @@
-package br.com.doctors.services;
+package br.com.doctors.converters.agendamento;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +9,9 @@ import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
 import org.joda.time.format.DateTimeFormatter;
 
+import br.com.doctors.commands.AgendaCommand;
+import br.com.doctors.commands.AgendamentoCommand;
+import br.com.doctors.commands.RegistroCommand;
 import br.com.doctors.modelo.agendamento.Agendamento;
 
 public class AgendaCommandConverter implements AgendaConverter{
