@@ -11,7 +11,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import br.com.doctors.modelo.agendamento.Agendamento;
 
-public class PreAgendamentoCommandConverter {
+public class PreAgendamentoCommandConverter implements AgendaConverter {
 
 	private DateTimeFormatter fmtData;
 	private DateTimeFormatter fmtHora;
@@ -36,8 +36,7 @@ public class PreAgendamentoCommandConverter {
 	 * @param fmtData 
 	 * @return
 	 */
-	public Map<LocalDate, PreAgendamentoCommand> convertToMap(List<Agendamento> horariosJaPreenchidos, 
-			DateTimeFormatter fmtData, DateTimeFormatter fmtHora) {
+	public Map<LocalDate, PreAgendamentoCommand> convertToMap(List<Agendamento> horariosJaPreenchidos) {
 
 		Map<LocalDate,PreAgendamentoCommand> horarios = new HashMap<LocalDate,PreAgendamentoCommand>();
 
@@ -60,9 +59,29 @@ public class PreAgendamentoCommandConverter {
 		return horarios;
 	}
 
-	public PreAgendamentoCommand preencheHorariosDoDia(LocalDate dataAtual, 
-			Map<LocalDate, PreAgendamentoCommand> horariosOcupados) {
+//	public PreAgendamentoCommand preencheHorariosDoDia(LocalDate dataAtual, 
+//			Map<LocalDate, ? extends AgendamentoCommand> horariosOcupados) {
+//
+//		LocalTime horarioAtual = new LocalTime(inicioAtendimento);
+//
+//		PreAgendamentoCommand diaAtual = new PreAgendamentoCommand(dataAtual.toString(fmtData));
+//		while( !horarioAtual.isAfter(fimAtendimento)){
+//			diaAtual.addHorario(horarioAtual.toString(fmtHora));
+//			horarioAtual = new LocalTime(horarioAtual).plus(minutosPorConsulta);
+//		}
+//		
+//		// 	se tiver esta data no horariosOcupados, elimina os horarios em comum
+//		if (horariosOcupados.containsKey(dataAtual)){
+//			PreAgendamentoCommand dataComHorariosOcupados = horariosOcupados.get(dataAtual);
+//			diaAtual.removeHorariosOcupados(dataComHorariosOcupados.getHorarios());
+//		}
+//
+//		return diaAtual;
+//	}
 
+	@Override
+	public <T extends AgendamentoCommand> T preencheHorariosDoDia(
+			LocalDate dataAtual, Map<LocalDate, T> horariosOcupados) {
 		LocalTime horarioAtual = new LocalTime(inicioAtendimento);
 
 		PreAgendamentoCommand diaAtual = new PreAgendamentoCommand(dataAtual.toString(fmtData));
@@ -73,11 +92,11 @@ public class PreAgendamentoCommandConverter {
 		
 		// 	se tiver esta data no horariosOcupados, elimina os horarios em comum
 		if (horariosOcupados.containsKey(dataAtual)){
-			PreAgendamentoCommand dataComHorariosOcupados = horariosOcupados.get(dataAtual);
+			PreAgendamentoCommand dataComHorariosOcupados = (PreAgendamentoCommand) horariosOcupados.get(dataAtual);
 			diaAtual.removeHorariosOcupados(dataComHorariosOcupados.getHorarios());
 		}
 
-		return diaAtual;
+		return (T) diaAtual;
 	}
 	
 	

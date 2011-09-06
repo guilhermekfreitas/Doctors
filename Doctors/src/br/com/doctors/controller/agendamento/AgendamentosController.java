@@ -183,8 +183,8 @@ public class AgendamentosController {
 		// carrega agendamentos entre [amanhã - +2 meses pra frente]
 //		List<Agendamento> listAgendamentos = daoAgendamento.carregaPor(idMedico);
 		
-		AgendamentoService converter = new AgendamentoService(daoAgendamento);
-		List<PreAgendamentoCommand> listaHorarios = converter.getHorariosDisponiveis(idMedico);
+		AgendamentoService service = new AgendamentoService(daoAgendamento);
+		List<? extends AgendamentoCommand> listaHorarios = service.getHorariosDisponiveis(idMedico);
 		
 		result.use(Results.json()).from(listaHorarios, "datas").include("horarios").serialize();
 	}
@@ -199,7 +199,7 @@ public class AgendamentosController {
 		
 		AgendamentoService converter = new AgendamentoService(daoAgendamento);
 		converter.setDataInicial(new LocalDate());
-		List<AgendamentoCommand> listaHorarios = (List<AgendamentoCommand>) converter.getAgenda(idMedico);
+		List<? extends AgendamentoCommand> listaHorarios = converter.getAgenda(idMedico);
 		
 		result.use(Results.json()).from(listaHorarios, "datas").include("horarios").serialize();
 	}
