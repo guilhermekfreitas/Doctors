@@ -20,14 +20,14 @@ public class TestaAgendamentoService {
 		Session session = factory.openSession();
 		
 		AgendamentoDao dao = new AgendamentoDao(session);
-		List<Agendamento> horariosJaPreenchidos = dao.carregaPor(1L);
-		for( Agendamento a : horariosJaPreenchidos ){
-			System.out.println(a);
-		}
-		System.out.println();
-		
-		AgendamentoService service = new AgendamentoService();
-		service.getHorariosDisponiveis(horariosJaPreenchidos );
+//		List<Agendamento> horariosJaPreenchidos = dao.carregaPor(1L);
+//		for( Agendamento a : horariosJaPreenchidos ){
+//			System.out.println(a);
+//		}
+//		System.out.println();
+//		
+		AgendamentoService service = new AgendamentoService(dao);
+		service.getHorariosDisponiveis(1L);
 		
 	}
 }

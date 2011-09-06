@@ -3,7 +3,7 @@ package br.com.doctors.services;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AgendaCommand {
+public class AgendaCommand implements AgendamentoCommand {
 	private String data;
 	private List<RegistroCommand> horarios;
 	

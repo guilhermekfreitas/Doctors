@@ -1,13 +1,9 @@
 package br.com.doctors.services;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.joda.time.DateTimeFieldType;
-import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
@@ -15,6 +11,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import br.com.caelum.vraptor.ioc.Component;
+import br.com.doctors.dao.agendamento.AgendamentoDao;
 import br.com.doctors.modelo.agendamento.Agendamento;
 
 @Component
@@ -26,33 +23,41 @@ public class AgendamentoService {
 	private final DateTimeFormatter fmtData = DateTimeFormat.forPattern("dd/MM/yyyy");
 	private final LocalDate dataFinal;
 	private final Minutes minutosPorConsulta;
+	private AgendamentoDao daoAgendamento;
 
-	public AgendamentoService() {
+	public AgendamentoService(AgendamentoDao daoAgendamento) {
 		// pode vir parametrizado
 		inicioAtendimento = new LocalTime(8, 0);
 		fimAtendimento = new LocalTime(17, 30);
 		dataInicial = new LocalDate().plusDays(1);
 		dataFinal = new LocalDate(dataInicial).plusMonths(2);
 		minutosPorConsulta = Minutes.minutes(30);
+		this.daoAgendamento = daoAgendamento;
 	}
 
 	public void setDataInicial(LocalDate dataInicial){
 		this.dataInicial = dataInicial;
 	}
 	
-	public List<AgendamentoCommand> getHorariosDisponiveis(List<Agendamento> horariosJaPreenchidos){
+	public List<PreAgendamentoCommand> getHorariosDisponiveis(Long idMedico){
+		return getHorarios(idMedico);
+	}
 
-		AgendamentoCommandConverter converter = new AgendamentoCommandConverter(inicioAtendimento,fimAtendimento,
-				minutosPorConsulta,fmtData,fmtHora);
-		Map<LocalDate, AgendamentoCommand> horariosOcupados = converter.convertToMap(horariosJaPreenchidos,fmtData,fmtHora);
+	private List<PreAgendamentoCommand> getHorarios(Long idMedico) {
+		// carrega agendamentos entre [amanhã - +2 meses pra frente]
+		List<Agendamento> horariosConfirmados = daoAgendamento.carregaPor(idMedico);
 		
-		List<AgendamentoCommand> todosHorarios = new ArrayList<AgendamentoCommand>();
+		PreAgendamentoCommandConverter converter = new PreAgendamentoCommandConverter(inicioAtendimento,fimAtendimento,
+				minutosPorConsulta,fmtData,fmtHora);
+		Map<LocalDate, PreAgendamentoCommand> horariosOcupados = converter.convertToMap(horariosConfirmados,fmtData,fmtHora);
+		
+		List<PreAgendamentoCommand> todosHorarios = new ArrayList<PreAgendamentoCommand>();
 		
 		LocalDate dataAtual = new LocalDate(dataInicial);
 		while (!dataAtual.isAfter(dataFinal)){
 			
 			// preenche os horários para esta data.     
-			AgendamentoCommand horariosDoDia = converter.preencheHorariosDoDia(dataAtual,horariosOcupados);
+			PreAgendamentoCommand horariosDoDia = converter.preencheHorariosDoDia(dataAtual,horariosOcupados);
 			
 			// adiciona novos horários
 			todosHorarios.add(horariosDoDia);
@@ -60,7 +65,7 @@ public class AgendamentoService {
 		}
 		
 		// debug
-//		for (AgendamentoCommand horario : todosHorarios ){
+//		for (PreAgendamentoCommand horario : todosHorarios ){
 //			System.out.println(horario);
 //		}
 //		
@@ -76,16 +81,19 @@ public class AgendamentoService {
 	/***
 	 * 
 	 * Pega uma lista de Agendamentos e converte para uma List<AgendaCommand>
-	 * @param horariosJaPreenchidos
+	 * @param idMedico
 	 * @return
 	 */
-	public List<AgendaCommand> getAgenda(List<Agendamento> horariosJaPreenchidos) {
+	public List<? super AgendaCommand> getAgenda(Long idMedico) {
+		
+		// carrega agendamentos entre [hoje - +2 meses pra frente]
+		List<Agendamento> horariosConfirmados = daoAgendamento.carregaPor(idMedico);
 		
 		AgendaCommandConverter converter = new AgendaCommandConverter(inicioAtendimento, fimAtendimento,
 				minutosPorConsulta, fmtData, fmtHora);
-		Map<LocalDate, AgendaCommand> horariosOcupados = converter.convertToMap(horariosJaPreenchidos);
+		Map<LocalDate, AgendaCommand> horariosOcupados = converter.convertToMap(horariosConfirmados);
 		
-		List<AgendaCommand> todosHorarios = new ArrayList<AgendaCommand>();
+		List<? super AgendaCommand> todosHorarios = new ArrayList<AgendaCommand>();
 		
 		LocalDate dataAtual = new LocalDate(dataInicial);
 		while (!dataAtual.isAfter(dataFinal)){

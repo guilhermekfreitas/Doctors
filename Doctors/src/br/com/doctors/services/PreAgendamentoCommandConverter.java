@@ -11,7 +11,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import br.com.doctors.modelo.agendamento.Agendamento;
 
-public class AgendamentoCommandConverter {
+public class PreAgendamentoCommandConverter {
 
 	private DateTimeFormatter fmtData;
 	private DateTimeFormatter fmtHora;
@@ -19,7 +19,7 @@ public class AgendamentoCommandConverter {
 	private LocalTime fimAtendimento;
 	private Minutes minutosPorConsulta;
 
-	public AgendamentoCommandConverter(LocalTime inicioAtendimento, LocalTime fimAtendimento, 
+	public PreAgendamentoCommandConverter(LocalTime inicioAtendimento, LocalTime fimAtendimento, 
 			Minutes minutosPorConsulta, DateTimeFormatter fmtData, DateTimeFormatter fmtHora) {
 		this.fmtData = fmtData;
 		this.fmtHora = fmtHora;
@@ -30,16 +30,16 @@ public class AgendamentoCommandConverter {
 
 	/***
 	 * 
-	 * Converte uma lista de Agendamento para um mapa de AgendamentoCommand
+	 * Converte uma lista de Agendamento para um mapa de PreAgendamentoCommand
 	 * @param horariosJaPreenchidos
 	 * @param fmtHora 
 	 * @param fmtData 
 	 * @return
 	 */
-	public Map<LocalDate, AgendamentoCommand> convertToMap(List<Agendamento> horariosJaPreenchidos, 
+	public Map<LocalDate, PreAgendamentoCommand> convertToMap(List<Agendamento> horariosJaPreenchidos, 
 			DateTimeFormatter fmtData, DateTimeFormatter fmtHora) {
 
-		Map<LocalDate,AgendamentoCommand> horarios = new HashMap<LocalDate,AgendamentoCommand>();
+		Map<LocalDate,PreAgendamentoCommand> horarios = new HashMap<LocalDate,PreAgendamentoCommand>();
 
 		for (Agendamento agend : horariosJaPreenchidos){
 
@@ -48,11 +48,11 @@ public class AgendamentoCommandConverter {
 
 			if (horarios.containsKey(dataAgendamento)){
 				// adiciona mais um horário
-				AgendamentoCommand data = horarios.get(dataAgendamento);
+				PreAgendamentoCommand data = horarios.get(dataAgendamento);
 				data.addHorario(horaAgendamento.toString(fmtHora));
 			} else {
 				// deve adicionar mais uma data
-				AgendamentoCommand newData = new AgendamentoCommand(dataAgendamento.toString(fmtData));
+				PreAgendamentoCommand newData = new PreAgendamentoCommand(dataAgendamento.toString(fmtData));
 				newData.addHorario(horaAgendamento.toString(fmtHora));
 				horarios.put(dataAgendamento, newData);
 			}
@@ -60,12 +60,12 @@ public class AgendamentoCommandConverter {
 		return horarios;
 	}
 
-	public AgendamentoCommand preencheHorariosDoDia(LocalDate dataAtual, 
-			Map<LocalDate, AgendamentoCommand> horariosOcupados) {
+	public PreAgendamentoCommand preencheHorariosDoDia(LocalDate dataAtual, 
+			Map<LocalDate, PreAgendamentoCommand> horariosOcupados) {
 
 		LocalTime horarioAtual = new LocalTime(inicioAtendimento);
 
-		AgendamentoCommand diaAtual = new AgendamentoCommand(dataAtual.toString(fmtData));
+		PreAgendamentoCommand diaAtual = new PreAgendamentoCommand(dataAtual.toString(fmtData));
 		while( !horarioAtual.isAfter(fimAtendimento)){
 			diaAtual.addHorario(horarioAtual.toString(fmtHora));
 			horarioAtual = new LocalTime(horarioAtual).plus(minutosPorConsulta);
@@ -73,7 +73,7 @@ public class AgendamentoCommandConverter {
 		
 		// 	se tiver esta data no horariosOcupados, elimina os horarios em comum
 		if (horariosOcupados.containsKey(dataAtual)){
-			AgendamentoCommand dataComHorariosOcupados = horariosOcupados.get(dataAtual);
+			PreAgendamentoCommand dataComHorariosOcupados = horariosOcupados.get(dataAtual);
 			diaAtual.removeHorariosOcupados(dataComHorariosOcupados.getHorarios());
 		}
 

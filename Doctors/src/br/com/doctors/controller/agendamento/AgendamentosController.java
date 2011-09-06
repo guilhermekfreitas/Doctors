@@ -29,8 +29,9 @@ import br.com.doctors.modelo.administracao.PerfilUsuario;
 import br.com.doctors.modelo.agendamento.Agendamento;
 //import br.com.doctors.services.AgendaCommand;
 import br.com.doctors.services.AgendaCommand;
-import br.com.doctors.services.AgendamentoService;
 import br.com.doctors.services.AgendamentoCommand;
+import br.com.doctors.services.AgendamentoService;
+import br.com.doctors.services.PreAgendamentoCommand;
 import br.com.doctors.services.RegistroCommand;
 
 /**
@@ -180,24 +181,25 @@ public class AgendamentosController {
 	public void carregaHorarios(Long idMedico){
 		
 		// carrega agendamentos entre [amanhã - +2 meses pra frente]
-		List<Agendamento> listAgendamentos = daoAgendamento.carregaPor(idMedico);
+//		List<Agendamento> listAgendamentos = daoAgendamento.carregaPor(idMedico);
 		
-		AgendamentoService converter = new AgendamentoService();
-		List<AgendamentoCommand> listaHorarios = converter.getHorariosDisponiveis(listAgendamentos);
+		AgendamentoService converter = new AgendamentoService(daoAgendamento);
+		List<PreAgendamentoCommand> listaHorarios = converter.getHorariosDisponiveis(idMedico);
 		
 		result.use(Results.json()).from(listaHorarios, "datas").include("horarios").serialize();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Get
 	@Path("/agenda/carregaAgenda/{idMedico}")
 	public void carregaAgenda(Long idMedico){
 		
 		// carrega agendamentos entre [hoje - +2 meses pra frente]
-		List<Agendamento> listAgendamentos = daoAgendamento.carregaPor(idMedico);
+//		List<Agendamento> listAgendamentos = daoAgendamento.carregaPor(idMedico);
 		
-		AgendamentoService converter = new AgendamentoService();
+		AgendamentoService converter = new AgendamentoService(daoAgendamento);
 		converter.setDataInicial(new LocalDate());
-		List<AgendaCommand> listaHorarios = converter.getAgenda(listAgendamentos);
+		List<AgendamentoCommand> listaHorarios = (List<AgendamentoCommand>) converter.getAgenda(idMedico);
 		
 		result.use(Results.json()).from(listaHorarios, "datas").include("horarios").serialize();
 	}
