@@ -3,13 +3,16 @@ package br.com.doctors.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormatter;
+
 
 public class AgendaCommand implements AgendamentoCommand {
 	private String data;
 	private List<RegistroCommand> horarios;
 	
-	public AgendaCommand(String data){
-		this.data = data;
+	public AgendaCommand(LocalDate data, DateTimeFormatter formatterData){
+		this.data = data.toString(formatterData);
 		horarios = new ArrayList<RegistroCommand>();
 	}
 	
@@ -33,11 +36,15 @@ public class AgendaCommand implements AgendamentoCommand {
 	
 	public void addConsultas(List<RegistroCommand> horariosDisponiveis){
 		
-		for (RegistroCommand horario : horariosDisponiveis){
-			RegistroCommand registro = horarios.get(horarios.indexOf(horario));
-			registro.setNomePaciente(horario.getNomePaciente());
-			registro.setStatus(horario.getStatus());
+		for (RegistroCommand horarioAtual : horariosDisponiveis){
+			RegistroCommand registro = getHorario(horarioAtual);
+			registro.setNomePaciente(horarioAtual.getNomePaciente());
+			registro.setStatus(horarioAtual.getStatus());
 		}
+	}
+
+	private RegistroCommand getHorario(RegistroCommand horario) {
+		return horarios.get(horarios.indexOf(horario));
 	}
 	
 }

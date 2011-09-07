@@ -12,22 +12,14 @@ import org.joda.time.format.DateTimeFormatter;
 import br.com.doctors.commands.AgendamentoCommand;
 import br.com.doctors.commands.PreAgendamentoCommand;
 import br.com.doctors.modelo.agendamento.Agendamento;
+import br.com.doctors.modelo.util.ParametrosAgendamento;
 
 public class PreAgendamentoCommandConverter implements AgendaConverter {
 
-	private DateTimeFormatter fmtData;
-	private DateTimeFormatter fmtHora;
-	private LocalTime inicioAtendimento;
-	private LocalTime fimAtendimento;
-	private Minutes minutosPorConsulta;
+	private ParametrosAgendamento parametros;
 
-	public PreAgendamentoCommandConverter(LocalTime inicioAtendimento, LocalTime fimAtendimento, 
-			Minutes minutosPorConsulta, DateTimeFormatter fmtData, DateTimeFormatter fmtHora) {
-		this.fmtData = fmtData;
-		this.fmtHora = fmtHora;
-		this.inicioAtendimento = inicioAtendimento;
-		this.fimAtendimento = fimAtendimento;
-		this.minutosPorConsulta = minutosPorConsulta;
+	public PreAgendamentoCommandConverter(ParametrosAgendamento parametros) {
+		this.parametros = parametros;
 	}
 
 	/***
@@ -50,11 +42,11 @@ public class PreAgendamentoCommandConverter implements AgendaConverter {
 			if (horarios.containsKey(dataAgendamento)){
 				// adiciona mais um horário
 				PreAgendamentoCommand data = horarios.get(dataAgendamento);
-				data.addHorario(horaAgendamento.toString(fmtHora));
+				data.addHorario(horaAgendamento.toString(parametros.getHoraFormatter()));
 			} else {
 				// deve adicionar mais uma data
-				PreAgendamentoCommand newData = new PreAgendamentoCommand(dataAgendamento.toString(fmtData));
-				newData.addHorario(horaAgendamento.toString(fmtHora));
+				PreAgendamentoCommand newData = new PreAgendamentoCommand(dataAgendamento.toString(parametros.getDataFormatter()));
+				newData.addHorario(horaAgendamento.toString(parametros.getHoraFormatter()));
 				horarios.put(dataAgendamento, newData);
 			}
 		}
@@ -64,12 +56,12 @@ public class PreAgendamentoCommandConverter implements AgendaConverter {
 	@Override
 	public <T extends AgendamentoCommand> T preencheHorariosDoDia(
 			LocalDate dataAtual, Map<LocalDate, T> horariosOcupados) {
-		LocalTime horarioAtual = new LocalTime(inicioAtendimento);
+		LocalTime horarioAtual = new LocalTime(parametros.getHoraInicioAtendimento());
 
-		PreAgendamentoCommand diaAtual = new PreAgendamentoCommand(dataAtual.toString(fmtData));
-		while( !horarioAtual.isAfter(fimAtendimento)){
-			diaAtual.addHorario(horarioAtual.toString(fmtHora));
-			horarioAtual = new LocalTime(horarioAtual).plus(minutosPorConsulta);
+		PreAgendamentoCommand diaAtual = new PreAgendamentoCommand(dataAtual.toString(parametros.getDataFormatter()));
+		while( !horarioAtual.isAfter(parametros.getHoraFimAtendimento())){
+			diaAtual.addHorario(horarioAtual.toString(parametros.getHoraFormatter()));
+			horarioAtual = new LocalTime(horarioAtual).plus(parametros.getMinutosPorConsulta());
 		}
 		
 		// 	se tiver esta data no horariosOcupados, elimina os horarios em comum

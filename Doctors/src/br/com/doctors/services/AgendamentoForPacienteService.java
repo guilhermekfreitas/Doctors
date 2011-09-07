@@ -12,8 +12,7 @@ public class AgendamentoForPacienteService extends AgendamentoService {
 
 	@Override
 	protected AgendaConverter getAgendaConverter() {
-		return new PreAgendamentoCommandConverter(horaInicioAtendimento,horaFimAtendimento,
-					minutosPorConsulta,fmtData,fmtHora);
+		return new PreAgendamentoCommandConverter(getParametros());
 	}
 
 }
