@@ -23,38 +23,29 @@ public class AgendaCommandConverter implements AgendaConverter{
 		this.parametros = parametros;
 	}
 	
-	private String getHorarioAtendimento(LocalTime horaAgendamento) {
-		String horarioAtendimento = horaAgendamento.toString(parametros.getHoraFormatter()) + " - " 
-										+ horaAgendamento.plus(parametros.getMinutosPorConsulta()).toString(parametros.getHoraFormatter());
-		return horarioAtendimento;
-	}
-
 	@Override
 	public Map<LocalDate, ? extends AgendamentoCommand> converteHorariosParaMap(List<Agendamento> horariosConfirmados) {
 		
 		Map<LocalDate,AgendaCommand> horarios = new HashMap<LocalDate,AgendaCommand>();
 		
 		for (Agendamento horario : horariosConfirmados){
-			LocalDate dataAgendamento = horario.getDataAgendamento();
-			LocalTime horaAgendamento = horario.getHoraAgendamento();
-			RegistroCommand registro = new RegistroCommand(getHorarioAtendimento(horaAgendamento), horario.getNomePaciente(), horario.getStatus());
-			insereNovoRegistro(horarios, dataAgendamento, registro);
+			RegistroCommand registro = new RegistroCommand(horario, parametros);
+			insereNovoRegistro(horarios, registro);
 		}
 		return horarios;
 	}
 
-	private void insereNovoRegistro(Map<LocalDate, AgendaCommand> horarios,
-			LocalDate dataAgendamento, RegistroCommand registro) {
+	private void insereNovoRegistro(Map<LocalDate, AgendaCommand> horarios, RegistroCommand registro) {
 		
-		if (horarios.containsKey(dataAgendamento)){
+		if (horarios.containsKey(registro.getData())){
 			// adiciona mais um horário
-			AgendaCommand agendaExistente = horarios.get(dataAgendamento);
+			AgendaCommand agendaExistente = horarios.get(registro.getData());
 			agendaExistente.addHorario(registro);
 		} else {
 			// deve adicionar mais uma data
-			AgendaCommand novaAgenda = new AgendaCommand(dataAgendamento,parametros.getDataFormatter());
+			AgendaCommand novaAgenda = new AgendaCommand(registro.getData(),parametros.getDataFormatter());
 			novaAgenda.addHorario(registro);
-			horarios.put(dataAgendamento, novaAgenda);
+			horarios.put(registro.getData(), novaAgenda);
 		}
 	}
 
@@ -67,7 +58,7 @@ public class AgendaCommandConverter implements AgendaConverter{
 		AgendaCommand diaAtual = new AgendaCommand(dataAtual,parametros.getDataFormatter());
 		
 		while( !horarioAtual.isAfter(parametros.getHoraFimAtendimento())){
-			RegistroCommand registro = RegistroCommand.criaRegistroLivre(getHorarioAtendimento(horarioAtual));
+			RegistroCommand registro = RegistroCommand.criaRegistroLivre(horarioAtual,parametros);
 			diaAtual.addHorario(registro);
 			horarioAtual = new LocalTime(horarioAtual).plus(parametros.getMinutosPorConsulta());
 		}

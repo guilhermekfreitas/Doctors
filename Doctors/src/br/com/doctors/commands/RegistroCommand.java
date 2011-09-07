@@ -1,25 +1,43 @@
 package br.com.doctors.commands;
 
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+
+import br.com.doctors.modelo.agendamento.Agendamento;
+import br.com.doctors.modelo.util.ParametrosAgendamento;
+
 public class RegistroCommand {
+	private LocalDate data;
 	private String horario;
 	private String nomePaciente;
 	private String status;
+	private ParametrosAgendamento parametros;
 	
-	public RegistroCommand(){
+	private RegistroCommand(ParametrosAgendamento parametros){
+		this.parametros = parametros;
+	}
+	
+	public RegistroCommand(Agendamento horarioDeAgendamento,
+			ParametrosAgendamento parametros) {
+		this.parametros = parametros;
+		this.data = horarioDeAgendamento.getDataAgendamento();
+		this.horario = formataHorarioAtendimento(horarioDeAgendamento.getHoraAgendamento());
+		this.nomePaciente = horarioDeAgendamento.getNomePaciente();
+		this.status = horarioDeAgendamento.getStatus();
+	}
+
+	public static RegistroCommand criaRegistroLivre(LocalTime horario, ParametrosAgendamento parametros){
+		RegistroCommand registro = new RegistroCommand(parametros);
 		
+		String horarioAsString = horario.toString(parametros.getHoraFormatter()) + " - " 
+							+ horario.plus(parametros.getMinutosPorConsulta()).toString(parametros.getHoraFormatter());
+		
+		registro.setHorario(horarioAsString);
+		registro.setStatus("Livre");
+		registro.setNomePaciente("");
+		return registro;
 	}
 	
-	public RegistroCommand(String horario, String nomePaciente, String status){
-		this.horario = horario;
-		this.nomePaciente = nomePaciente;
-		this.status = status;
-	}
-	
-	public static RegistroCommand criaRegistroLivre(String horario){
-		return new RegistroCommand(horario, "", "Livre");
-	}
-	
-	// outros membros (ver detalhes)
 	
 	public String getHorario() {
 		return horario;
@@ -70,4 +88,16 @@ public class RegistroCommand {
 		return true;
 	}
 	
+	private String formataHorarioAtendimento(LocalTime horaAgendamento) {
+		parametros.getHoraFormatter();
+		horaAgendamento.toString();
+		String horarioAtendimento = horaAgendamento.toString(parametros.getHoraFormatter()) + " - " 
+										+ horaAgendamento.plus(parametros.getMinutosPorConsulta()).toString(parametros.getHoraFormatter());
+		return horarioAtendimento;
+	}
+
+	public LocalDate getData() {
+		return data;
+	}
+
 }

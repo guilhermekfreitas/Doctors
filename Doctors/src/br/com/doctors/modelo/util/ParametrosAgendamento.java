@@ -18,7 +18,7 @@ public class ParametrosAgendamento {
 	public ParametrosAgendamento() {
 	}
 	
-	public static ParametrosAgendamento parametrosDefault(){
+	public static ParametrosAgendamento getParametrosDefault(){
 		
 		ParametrosAgendamento padrao = new ParametrosAgendamento();
 		padrao.setHoraInicioAtendimento(new LocalTime(8, 0));

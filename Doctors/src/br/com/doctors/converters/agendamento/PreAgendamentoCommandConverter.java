@@ -34,23 +34,26 @@ public class PreAgendamentoCommandConverter implements AgendaConverter {
 
 		Map<LocalDate,PreAgendamentoCommand> horarios = new HashMap<LocalDate,PreAgendamentoCommand>();
 
-		for (Agendamento agend : horariosJaPreenchidos){
-
-			LocalDate dataAgendamento = agend.getDataAgendamento();
-			LocalTime horaAgendamento = agend.getHoraAgendamento();
-
-			if (horarios.containsKey(dataAgendamento)){
-				// adiciona mais um horário
-				PreAgendamentoCommand data = horarios.get(dataAgendamento);
-				data.addHorario(horaAgendamento.toString(parametros.getHoraFormatter()));
+		for (Agendamento agendamento : horariosJaPreenchidos){
+			if (horarios.containsKey(agendamento.getDataAgendamento())){
+				addEmDataExistente(horarios, agendamento);
 			} else {
-				// deve adicionar mais uma data
-				PreAgendamentoCommand newData = new PreAgendamentoCommand(dataAgendamento.toString(parametros.getDataFormatter()));
-				newData.addHorario(horaAgendamento.toString(parametros.getHoraFormatter()));
-				horarios.put(dataAgendamento, newData);
+				addEmNovaData(horarios, agendamento);
 			}
 		}
+		
 		return horarios;
+	}
+
+	private void addEmDataExistente(Map<LocalDate, PreAgendamentoCommand> horarios, Agendamento agendamento) {
+		PreAgendamentoCommand data = horarios.get(agendamento.getDataAgendamento());
+		data.addHorario(agendamento.getHoraAgendamento());
+	}
+
+	private void addEmNovaData(Map<LocalDate, PreAgendamentoCommand> horarios, Agendamento agendamento) {
+		PreAgendamentoCommand novaData = new PreAgendamentoCommand(agendamento.getDataAgendamento(), parametros);
+		novaData.addHorario(agendamento.getHoraAgendamento());
+		horarios.put(agendamento.getDataAgendamento(), novaData);
 	}
 
 	@Override
@@ -58,9 +61,9 @@ public class PreAgendamentoCommandConverter implements AgendaConverter {
 			LocalDate dataAtual, Map<LocalDate, T> horariosOcupados) {
 		LocalTime horarioAtual = new LocalTime(parametros.getHoraInicioAtendimento());
 
-		PreAgendamentoCommand diaAtual = new PreAgendamentoCommand(dataAtual.toString(parametros.getDataFormatter()));
+		PreAgendamentoCommand diaAtual = new PreAgendamentoCommand(dataAtual, parametros);
 		while( !horarioAtual.isAfter(parametros.getHoraFimAtendimento())){
-			diaAtual.addHorario(horarioAtual.toString(parametros.getHoraFormatter()));
+			diaAtual.addHorario(horarioAtual);
 			horarioAtual = new LocalTime(horarioAtual).plus(parametros.getMinutosPorConsulta());
 		}
 		

@@ -25,7 +25,7 @@ public abstract class AgendamentoService {
 	private AgendamentoDao daoAgendamento;
 
 	public AgendamentoService(AgendamentoDao daoAgendamento) {
-		this.parametros = ParametrosAgendamento.parametrosDefault();
+		this.parametros = ParametrosAgendamento.getParametrosDefault();
 		this.daoAgendamento = daoAgendamento;
 	}
 	

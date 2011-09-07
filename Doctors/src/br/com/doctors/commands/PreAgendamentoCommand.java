@@ -3,18 +3,26 @@ package br.com.doctors.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+
+import br.com.doctors.modelo.util.ParametrosAgendamento;
+
 
 public class PreAgendamentoCommand implements AgendamentoCommand {
 	private String data;
 	private List<String> horarios;
+	private ParametrosAgendamento parametros;
 	
-	public PreAgendamentoCommand(String data){
-		this.data = data;
-		horarios = new ArrayList<String>();
+	public PreAgendamentoCommand(LocalDate dataAgendamento, ParametrosAgendamento parametros){
+		this.parametros = parametros;
+		this.data = dataAgendamento.toString(parametros.getDataFormatter());
+		this.horarios = new ArrayList<String>();
 	}
 	
-	public PreAgendamentoCommand(String data, List<String> horarios){
+	public PreAgendamentoCommand(String data, List<String> horarios, ParametrosAgendamento parametros){
 		this.data = data;
+		this.parametros = parametros;
 		this.horarios = horarios;
 	}
 
@@ -26,6 +34,10 @@ public class PreAgendamentoCommand implements AgendamentoCommand {
 		horarios.add(horario);
 	}
 
+	public void addHorario(LocalTime horario){
+		horarios.add(horario.toString(parametros.getHoraFormatter()));
+	}
+	
 	public List<String> getHorarios() {
 		return horarios;
 	}
