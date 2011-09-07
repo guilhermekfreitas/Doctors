@@ -192,8 +192,8 @@ public class AgendamentosController {
 	@Path("/agenda/carregaAgenda/{idMedico}")
 	public void carregaAgenda(Long idMedico){
 		
-		AgendamentoService service = new AgendamentoForFuncionarioService(daoAgendamento);
-		service.setDataInicial(new LocalDate());
+		AgendamentoService service = new AgendamentoForFuncionarioService(daoAgendamento).comDataInicial(new LocalDate());
+//		service.setDataInicial(new LocalDate());
 		List<? extends AgendamentoCommand> listaHorarios = service.getAgenda(idMedico);
 		
 		result.use(Results.json()).from(listaHorarios, "datas").include("horarios").serialize();

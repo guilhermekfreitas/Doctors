@@ -16,18 +16,18 @@ import br.com.doctors.modelo.agendamento.Agendamento;
 
 public class AgendaCommandConverter implements AgendaConverter{
 
-	private final LocalTime inicioAtendimento;
-	private final LocalTime fimAtendimento;
+	private final LocalTime horaInicioAtendimento;
+	private final LocalTime horaFimAtendimento;
 	private final Minutes minutosPorConsulta;
 	private DateTimeFormatter fmtData;
 	private DateTimeFormatter fmtHora;
 	
 	public AgendaCommandConverter(LocalTime inicioAtendimento, LocalTime fimAtendimento, 
 			Minutes minutosPorConsulta, DateTimeFormatter fmtData, DateTimeFormatter fmtHora) {
-		this.fmtData = fmtData;
-		this.inicioAtendimento = inicioAtendimento;
-		this.fimAtendimento = fimAtendimento;
+		this.horaInicioAtendimento = inicioAtendimento;
+		this.horaFimAtendimento = fimAtendimento;
 		this.minutosPorConsulta = minutosPorConsulta;
+		this.fmtData = fmtData;
 		this.fmtHora = fmtHora;
 	}
 	
@@ -37,7 +37,7 @@ public class AgendaCommandConverter implements AgendaConverter{
 	}
 
 	@Override
-	public Map<LocalDate, ? extends AgendamentoCommand> convertToMap(List<Agendamento> horariosConfirmados) {
+	public Map<LocalDate, ? extends AgendamentoCommand> converteHorariosParaMap(List<Agendamento> horariosConfirmados) {
 		
 		Map<LocalDate,AgendaCommand> horarios = new HashMap<LocalDate,AgendaCommand>();
 		
@@ -49,13 +49,13 @@ public class AgendaCommandConverter implements AgendaConverter{
 			
 			if (horarios.containsKey(dataAgendamento)){
 				// adiciona mais um horário
-				AgendaCommand data = horarios.get(dataAgendamento);
-				data.addHorario(registro);
+				AgendaCommand agendaExistente = horarios.get(dataAgendamento);
+				agendaExistente.addHorario(registro);
 			} else {
 				// deve adicionar mais uma data
-				AgendaCommand newData = new AgendaCommand(dataAgendamento.toString(fmtData));
-				newData.addHorario(registro);
-				horarios.put(dataAgendamento, newData);
+				AgendaCommand novaAgenda = new AgendaCommand(dataAgendamento.toString(fmtData));
+				novaAgenda.addHorario(registro);
+				horarios.put(dataAgendamento, novaAgenda);
 			}
 		}
 		return horarios;
@@ -63,20 +63,21 @@ public class AgendaCommandConverter implements AgendaConverter{
 
 	@Override
 	public <T extends AgendamentoCommand> T preencheHorariosDoDia(
-			LocalDate dataAtual, Map<LocalDate, T> horariosOcupados) {
+			LocalDate dataAtual, Map<LocalDate, T> horariosConfirmados) {
 		
-		LocalTime horarioAtual = new LocalTime(inicioAtendimento);
+		LocalTime horarioAtual = new LocalTime(horaInicioAtendimento);
 
 		AgendaCommand diaAtual = new AgendaCommand(dataAtual.toString(fmtData));
-		while( !horarioAtual.isAfter(fimAtendimento)){
-			RegistroCommand registro = new RegistroCommand(getHorarioAtendimento(horarioAtual), "", "Livre");
+		while( !horarioAtual.isAfter(horaFimAtendimento)){
+//			RegistroCommand registro = new RegistroCommand(getHorarioAtendimento(horarioAtual), "", "Livre");
+			RegistroCommand registro = RegistroCommand.criaRegistroLivre(getHorarioAtendimento(horarioAtual));
 			diaAtual.addHorario(registro);
 			horarioAtual = new LocalTime(horarioAtual).plus(minutosPorConsulta);
 		}
 		
 		// se tiver esta data no horariosOcupados, preenche com os horários já ocupados
-		if (horariosOcupados.containsKey(dataAtual)){
-			AgendaCommand dataComHorariosOcupados = (AgendaCommand) horariosOcupados.get(dataAtual);
+		if (horariosConfirmados.containsKey(dataAtual)){
+			AgendaCommand dataComHorariosOcupados = (AgendaCommand) horariosConfirmados.get(dataAtual);
 			diaAtual.addConsultas(dataComHorariosOcupados.getHorarios());
 		}
 		

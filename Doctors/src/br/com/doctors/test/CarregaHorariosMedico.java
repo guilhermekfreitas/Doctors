@@ -17,7 +17,7 @@ public class CarregaHorariosMedico {
 		Session session = factory.openSession();
 		
 		AgendamentoDao dao = new AgendamentoDao(session);
-		dao.carregaPor(1L);
+		dao.agendamentosPara(1L);
 		
 	}
 }

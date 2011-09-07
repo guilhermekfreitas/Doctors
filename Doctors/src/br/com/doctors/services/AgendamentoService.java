@@ -20,53 +20,58 @@ import br.com.doctors.modelo.agendamento.Agendamento;
 
 @Component
 public abstract class AgendamentoService {
-	protected final LocalTime inicioAtendimento;
-	protected final LocalTime fimAtendimento;
-	protected final DateTimeFormatter fmtHora = DateTimeFormat.forPattern("HH:mm");
-	protected final DateTimeFormatter fmtData = DateTimeFormat.forPattern("dd/MM/yyyy");
-	protected final Minutes minutosPorConsulta;
+	protected LocalTime horaInicioAtendimento;
+	protected LocalTime horaFimAtendimento;
+	protected DateTimeFormatter fmtHora;
+	protected DateTimeFormatter fmtData;
+	protected Minutes minutosPorConsulta;
 	private LocalDate dataInicial;
 	private LocalDate dataFinal;
 	private AgendamentoDao daoAgendamento;
 
 	public AgendamentoService(AgendamentoDao daoAgendamento) {
 		// pode vir parametrizado
-		inicioAtendimento = new LocalTime(8, 0);
-		fimAtendimento = new LocalTime(17, 30);
+		setPropriedadesDefault();
+		this.daoAgendamento = daoAgendamento;
+	}
+
+	private void setPropriedadesDefault() {
+		horaInicioAtendimento = new LocalTime(8, 0);
+		horaFimAtendimento = new LocalTime(17, 30);
 		dataInicial = new LocalDate().plusDays(1);
 		dataFinal = new LocalDate(dataInicial).plusMonths(2);
 		minutosPorConsulta = Minutes.minutes(30);
-		this.daoAgendamento = daoAgendamento;
+		fmtHora = DateTimeFormat.forPattern("HH:mm");
+		fmtData = DateTimeFormat.forPattern("dd/MM/yyyy");
 	}
 
 	public void setDataInicial(LocalDate dataInicial){
 		this.dataInicial = dataInicial;
 	}
 
+	public AgendamentoService comDataInicial(LocalDate dataInicial){
+		this.dataInicial = dataInicial;
+		return this;
+	}
+
+	
 	public List<? extends AgendamentoCommand> getAgenda(Long idMedico){
 		
-		// carrega agendamentos entre [amanhã - +2 meses pra frente]
-		List<Agendamento> horariosConfirmados = daoAgendamento.carregaPor(idMedico);
+		List<Agendamento> horariosConfirmados = daoAgendamento.agendamentosPara(idMedico);
 
 		AgendaConverter converter = getAgendaConverter();
-		Map<LocalDate, ? extends AgendamentoCommand> horariosOcupados = converter.convertToMap(horariosConfirmados);
+		Map<LocalDate, ? extends AgendamentoCommand> horariosAgrupadosPorDia = converter.converteHorariosParaMap(horariosConfirmados);
 
-		List<AgendamentoCommand> todosHorarios = new ArrayList<AgendamentoCommand>();
+		List<AgendamentoCommand> agenda = new ArrayList<AgendamentoCommand>();
 
 		LocalDate dataAtual = new LocalDate(dataInicial);
 		while (!dataAtual.isAfter(dataFinal)){
-			// preenche os horários para esta data.     
-			AgendamentoCommand horariosDoDia = converter.preencheHorariosDoDia(dataAtual,horariosOcupados);
-			// adiciona novos horários
-			todosHorarios.add(horariosDoDia);
+			AgendamentoCommand registroDoDiaAtual = converter.preencheHorariosDoDia(dataAtual,horariosAgrupadosPorDia);
+			agenda.add(registroDoDiaAtual);
 			dataAtual = dataAtual.plusDays(1); // vai p/ próximo dia
 		}
-
-		// debug
-		//				for (PreAgendamentoCommand horario : todosHorarios ){
-		//					System.out.println(horario);
-		//				}
-		return todosHorarios;
+		
+		return agenda;
 	}
 
 	protected abstract AgendaConverter getAgendaConverter();

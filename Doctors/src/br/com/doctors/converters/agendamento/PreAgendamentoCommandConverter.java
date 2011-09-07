@@ -38,7 +38,7 @@ public class PreAgendamentoCommandConverter implements AgendaConverter {
 	 * @param fmtData 
 	 * @return
 	 */
-	public Map<LocalDate, PreAgendamentoCommand> convertToMap(List<Agendamento> horariosJaPreenchidos) {
+	public Map<LocalDate, PreAgendamentoCommand> converteHorariosParaMap(List<Agendamento> horariosJaPreenchidos) {
 
 		Map<LocalDate,PreAgendamentoCommand> horarios = new HashMap<LocalDate,PreAgendamentoCommand>();
 

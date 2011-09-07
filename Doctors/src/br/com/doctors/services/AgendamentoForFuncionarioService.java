@@ -12,7 +12,7 @@ public class AgendamentoForFuncionarioService extends AgendamentoService {
 
 	@Override
 	protected AgendaConverter getAgendaConverter() {
-		return new AgendaCommandConverter(inicioAtendimento, fimAtendimento,
+		return new AgendaCommandConverter(horaInicioAtendimento, horaFimAtendimento,
 					minutosPorConsulta, fmtData, fmtHora);
 	}
 

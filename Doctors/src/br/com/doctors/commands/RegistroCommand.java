@@ -15,6 +15,10 @@ public class RegistroCommand {
 		this.status = status;
 	}
 	
+	public static RegistroCommand criaRegistroLivre(String horario){
+		return new RegistroCommand(horario, "", "Livre");
+	}
+	
 	// outros membros (ver detalhes)
 	
 	public String getHorario() {

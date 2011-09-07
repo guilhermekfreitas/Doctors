@@ -19,7 +19,12 @@ public class AgendamentoDao extends DaoImpl<Agendamento>{
 		super(session, Agendamento.class);
 	}
 	
-	public List<Agendamento> carregaPor(Long idMedico){
+	/***
+	 * Carrega agendamentos entre [amanhã - +2 meses pra frente]
+	 * @param idMedico
+	 * @return
+	 */
+	public List<Agendamento> agendamentosPara(Long idMedico){
 		LocalDate dataInicial = new LocalDate();
 		LocalDate dataFinal = new LocalDate(dataInicial).plusMonths(2);
 		Criteria criteria = getSession().createCriteria(Agendamento.class)
