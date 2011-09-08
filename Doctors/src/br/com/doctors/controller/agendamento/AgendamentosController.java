@@ -92,7 +92,7 @@ public class AgendamentosController {
 		switch(usuario.getTipo()){
 			case ROLE_PACIENTE:
 				Paciente paciente = daoPaciente.carregaPorPerfil(usuario);
-				System.out.println("Pega id:" + paciente.getId());
+//				System.out.println("Pega id:" + paciente.getId());
 				result.forwardTo(this).cadastro_paciente(paciente,daoConvenio.buscaPor(paciente.getId()));
 				break;
 			default:
@@ -118,6 +118,13 @@ public class AgendamentosController {
 		validator.checking(getValidations(agendamento));
 		validator.onErrorForwardTo(this).cadastro();
 		
+		atribueConvenio(agendamento);
+		
+		daoAgendamento.adiciona(agendamento);
+		result.redirectTo(AgendamentosController.class).list();
+	}
+
+	private void atribueConvenio(final Agendamento agendamento) {
 		// verifica se não é particular
 		Convenio conv = agendamento.getConvenio(); 
 		if (conv != null && conv.getId() != 0){
@@ -126,9 +133,6 @@ public class AgendamentosController {
 		} else {
 			agendamento.setConvenio(null);
 		}
-		
-		daoAgendamento.adiciona(agendamento);
-		result.redirectTo(AgendamentosController.class).list();
 	}
 
 	private Validations getValidations(final Agendamento agendamento) {
@@ -180,7 +184,7 @@ public class AgendamentosController {
 	
 	@Get
 	@Path("/agenda/carregaHorarios/{idMedico}")
-	public void carregaHorarios(Long idMedico){
+	public void carregaHorariosLivres(Long idMedico){
 		
 		AgendamentoService service = new AgendamentoForPacienteService(daoAgendamento);
 		List<? extends AgendamentoCommand> listaHorarios = service.getAgenda(idMedico);

@@ -50,10 +50,19 @@ public class MedicosController {
 	@Post @Path("/medicos")
 	public void adiciona(final Medico medico){
 		
-		System.out.println("-======================================");
-		System.out.println("Medico:" + medico + medico.getUfRegistro());
+//		System.out.println("-======================================");
+//		System.out.println("Medico:" + medico + medico.getUfRegistro());
 		
-		validator.checking(new Validations(){{
+		validator.checking(getCadastroValidations(medico));
+		validator.onErrorUsePageOf(this).cadastro();
+		
+		daoPerfil.adiciona(medico.getPerfil());
+		daoMedico.adiciona(medico);
+		result.redirectTo(MedicosController.class).list();
+	}
+
+	private Validations getCadastroValidations(final Medico medico) {
+		return new Validations(){{
 			that(medico.getNome() != null && medico.getNome().length() >= 3, 
 					"medico.nome", "nome.obrigatorio");
 			that(medico.getCrm() != null, 
@@ -68,12 +77,7 @@ public class MedicosController {
 					"medico.perfil.senha", "campo.obrigatorio", "Senha");
 			that(!daoPerfil.loginJaExiste(medico.getPerfil().getLogin()),
 					"medico.perfil.login", "login.ja.existe", medico.getPerfil().getLogin());
-		}});
-		validator.onErrorUsePageOf(this).cadastro();
-		
-		daoPerfil.adiciona(medico.getPerfil());
-		daoMedico.adiciona(medico);
-		result.redirectTo(MedicosController.class).list();
+		}};
 	}
 	
 	@Get @Path("/medicos/{id}")
@@ -84,7 +88,16 @@ public class MedicosController {
 	@Put @Path("/medicos/{medico.id}")
 	public void alterar(final Medico medico){
 		
-		validator.checking(new Validations(){{
+		validator.checking(getEdicaoValidations(medico));
+		validator.onErrorUsePageOf(this).edit(medico.getId());
+		
+		medico.setPerfil(daoPerfil.carrega(medico.getPerfil().getId()));
+		daoMedico.atualiza(medico);
+		result.redirectTo(MedicosController.class).list();
+	}
+
+	private Validations getEdicaoValidations(final Medico medico) {
+		return new Validations(){{
 			that(medico.getNome() != null && medico.getNome().length() >= 3, 
 					"medico.nome", "nome.obrigatorio");
 			that(medico.getCrm() != null, 
@@ -93,12 +106,7 @@ public class MedicosController {
 					"medico.ufRegistro", "campo.obrigatorio", "relacionado ao UF de registro do médico");
 			that(!Strings.isNullOrEmpty(medico.getEspecialidade()), 
 					"medico.especialidade", "campo.obrigatorio", "Especialidade");
-		}});
-		validator.onErrorUsePageOf(this).edit(medico.getId());
-		
-		medico.setPerfil(daoPerfil.carrega(medico.getPerfil().getId()));
-		daoMedico.atualiza(medico);
-		result.redirectTo(MedicosController.class).list();
+		}};
 	}
 	
 	@Path("/medicos/remover/{id}")

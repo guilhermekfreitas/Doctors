@@ -8,6 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import br.com.caelum.vraptor.ioc.Component;
 import br.com.doctors.dao.util.DaoImpl;
 import br.com.doctors.modelo.administracao.PerfilUsuario;
+import br.com.doctors.modelo.administracao.UsuarioInvalidoException;
 
 @Component
 public class PerfilUsuarioDao extends DaoImpl<PerfilUsuario>{
@@ -17,7 +18,7 @@ public class PerfilUsuarioDao extends DaoImpl<PerfilUsuario>{
 	}
 
 	// mudar p/ UsuarioInvalidoException.
-	public PerfilUsuario logar(PerfilUsuario usuario) throws Exception {
+	public PerfilUsuario logar(PerfilUsuario usuario) throws UsuarioInvalidoException {
 		
 		Criteria criteria = getSession().createCriteria(PerfilUsuario.class)
 				.add(Restrictions.ilike("login", usuario.getLogin(), MatchMode.EXACT))
@@ -25,7 +26,7 @@ public class PerfilUsuarioDao extends DaoImpl<PerfilUsuario>{
 		PerfilUsuario user = (PerfilUsuario) criteria.uniqueResult();
 		
 		if (user == null){
-			throw new Exception("Usuário Inválido!");
+			throw new UsuarioInvalidoException("Usuário Inválido!");
 		}
 		return user;
 	}

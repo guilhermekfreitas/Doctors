@@ -2,6 +2,7 @@ package br.com.doctors.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -29,6 +30,42 @@ public class PreAgendamentoCommand implements AgendamentoCommand {
 	public String getData() {
 		return data;
 	}
+	
+	public <T extends AgendamentoCommand> void preencheComHorarios( LocalDate dataAtual, 
+														Map<LocalDate, T> horariosOcupados){
+		preencheDiaComTodosHorarios();
+		
+		eliminaHorariosOcupados(dataAtual, horariosOcupados);
+	}
+
+	private void preencheDiaComTodosHorarios() {
+		LocalTime horarioAtual = getHoraInicioAtendimento();
+		while( !horarioAtendimentoTerminou(horarioAtual)){
+			addHorario(horarioAtual);
+			horarioAtual = proximoHorarioApos(horarioAtual);
+		}
+	}
+	
+	private <T> void eliminaHorariosOcupados(LocalDate dataAtual, Map<LocalDate, T> horariosOcupados) {
+		if (horariosOcupados.containsKey(dataAtual)){
+			PreAgendamentoCommand dataComHorariosOcupados = (PreAgendamentoCommand) horariosOcupados.get(dataAtual);
+			removeHorariosOcupados(dataComHorariosOcupados.getHorarios());
+		}
+	}
+	
+	
+	private boolean horarioAtendimentoTerminou(LocalTime horarioAtual) {
+		return horarioAtual.isAfter(parametros.getHoraFimAtendimento());
+	}
+
+	private LocalTime proximoHorarioApos(LocalTime horarioAtual) {
+		return new LocalTime(horarioAtual).plus(parametros.getMinutosPorConsulta());
+	}
+
+	private LocalTime getHoraInicioAtendimento() {
+		return new LocalTime(parametros.getHoraInicioAtendimento());
+	}
+	
 	
 	public void addHorario(String horario){
 		horarios.add(horario);

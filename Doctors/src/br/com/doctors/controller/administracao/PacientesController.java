@@ -62,13 +62,27 @@ public class PacientesController {
 		
 		if (conveniosId != null && opcaoConvenios.equalsIgnoreCase("conveniado")){
 			// recuperar cada id, e adicionar ao paciente
-			List<Convenio> conveniosList = new ArrayList<Convenio>();
-			for( Long id : conveniosId ){
-				conveniosList.add(daoConvenio.carrega(id));
-			}
+			List<Convenio> conveniosList = carregaConvenios(conveniosId);
 			paciente.setConvenios(conveniosList);
 		}
-		validator.checking(new Validations(){{
+		validator.checking(getCadastroValidations(paciente));
+		validator.onErrorUsePageOf(this).cadastro();
+		
+		daoPerfilUsuario.adiciona(paciente.getPerfil());
+		daoPacientes.adiciona(paciente);
+		result.redirectTo(PacientesController.class).list();
+	}
+
+	private List<Convenio> carregaConvenios(Collection<Long> conveniosId) {
+		List<Convenio> conveniosList = new ArrayList<Convenio>();
+		for( Long id : conveniosId ){
+			conveniosList.add(daoConvenio.carrega(id));
+		}
+		return conveniosList;
+	}
+
+	private Validations getCadastroValidations(final Paciente paciente) {
+		return new Validations(){{
 			that(paciente.getNome() != null && paciente.getNome().length() >= 3, 
 					"paciente.nome", "nome.obrigatorio");
 			that(!Strings.isNullOrEmpty(paciente.getPerfil().getLogin() ), 
@@ -77,12 +91,7 @@ public class PacientesController {
 					"paciente.perfil.senha", "campo.obrigatorio", "Senha");
 			that(!daoPerfilUsuario.loginJaExiste(paciente.getPerfil().getLogin()),
 					"paciente.perfil.login", "login.ja.existe", paciente.getPerfil().getLogin());
-		}});
-		validator.onErrorUsePageOf(this).cadastro();
-		
-		daoPerfilUsuario.adiciona(paciente.getPerfil());
-		daoPacientes.adiciona(paciente);
-		result.redirectTo(PacientesController.class).list();
+		}};
 	}
 	
 	@Get @Path("/pacientes/{id}")
@@ -95,26 +104,26 @@ public class PacientesController {
 	public void alterar(final Paciente paciente, Collection<Long> conveniosId, String opcaoConvenios){
 
 		if (conveniosId != null && opcaoConvenios.equalsIgnoreCase("conveniado")){
-			// recuperar cada id, e adicionar ao paciente
-			List<Convenio> convenios = new ArrayList<Convenio>();
-			for( Long id : conveniosId ){
-				convenios.add(daoConvenio.carrega(id));
-			}
+			List<Convenio> convenios = carregaConvenios(conveniosId);
 			paciente.setConvenios(convenios);
 		}
 		
-		validator.checking(new Validations(){{
-			that(paciente.getNome() != null && paciente.getNome().length() >= 3, 
-					"paciente.nome", "nome.obrigatorio");
-		}});
+		validator.checking(getEdicaoValidations(paciente));
 		validator.onErrorUsePageOf(this).edit(paciente.getId());
 		
-		System.out.println(paciente.getPerfil());
-		System.out.println("---------------------------------");
+//		System.out.println(paciente.getPerfil());
+//		System.out.println("---------------------------------");
 		
 		paciente.setPerfil(daoPerfilUsuario.carrega(paciente.getPerfil().getId()));
 		daoPacientes.atualiza(paciente);
 		result.redirectTo(PacientesController.class).list();
+	}
+
+	private Validations getEdicaoValidations(final Paciente paciente) {
+		return new Validations(){{
+			that(paciente.getNome() != null && paciente.getNome().length() >= 3, 
+					"paciente.nome", "nome.obrigatorio");
+		}};
 	}
 	
 	@Path("/pacientes/remover/{id}")

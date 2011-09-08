@@ -48,7 +48,16 @@ public class FuncionariosController {
 		System.out.println("-======================================");
 		System.out.println("Funcionario:" + funcionario );
 		
-		validator.checking(new Validations(){{
+		validator.checking(getCadastroValidations(funcionario));
+		validator.onErrorUsePageOf(this).cadastro();
+		
+		daoPerfil.adiciona(funcionario.getPerfil());
+		daoFuncionario.adiciona(funcionario);
+		result.redirectTo(FuncionariosController.class).list();
+	}
+
+	private Validations getCadastroValidations(final Funcionario funcionario) {
+		return new Validations(){{
 			that(funcionario.getNome() != null && funcionario.getNome().length() >= 3, 
 					"funcionario.nome", "nome.obrigatorio");
 			that(funcionario.getMatricula() != null, 
@@ -61,12 +70,7 @@ public class FuncionariosController {
 					"funcionario.perfil.senha", "campo.obrigatorio", "Senha");
 			that(!daoPerfil.loginJaExiste(funcionario.getPerfil().getLogin()),
 					"funcionario.perfil.login", "login.ja.existe", funcionario.getPerfil().getLogin());
-		}});
-		validator.onErrorUsePageOf(this).cadastro();
-		
-		daoPerfil.adiciona(funcionario.getPerfil());
-		daoFuncionario.adiciona(funcionario);
-		result.redirectTo(FuncionariosController.class).list();
+		}};
 	}
 	
 	@Get @Path("/funcionarios/{id}")
@@ -80,19 +84,23 @@ public class FuncionariosController {
 		System.out.println("-======================================");
 		System.out.println("Funcionario:" + funcionario.getPerfil() );
 		
-		validator.checking(new Validations(){{
+		validator.checking(getEdicaoValidations(funcionario));
+		validator.onErrorUsePageOf(this).edit(funcionario.getId());
+		
+		funcionario.setPerfil(daoPerfil.carrega(funcionario.getPerfil().getId()));
+		daoFuncionario.atualiza(funcionario);
+		result.redirectTo(FuncionariosController.class).list();
+	}
+
+	private Validations getEdicaoValidations(final Funcionario funcionario) {
+		return new Validations(){{
 			that(funcionario.getNome() != null && funcionario.getNome().length() >= 3, 
 					"funcionario.nome", "nome.obrigatorio");
 			that(funcionario.getMatricula() != null, 
 					"funcionario.matricula", "campo.obrigatorio", "número de matrícula");
 			that(!Strings.isNullOrEmpty(funcionario.getDataAdmissao()), 
 					"funcionario.dataAdmissao", "campo.obrigatorio", "data de admissão");
-		}});
-		validator.onErrorUsePageOf(this).edit(funcionario.getId());
-		
-		funcionario.setPerfil(daoPerfil.carrega(funcionario.getPerfil().getId()));
-		daoFuncionario.atualiza(funcionario);
-		result.redirectTo(FuncionariosController.class).list();
+		}};
 	}
 	
 	@Path("/funcionarios/remover/{id}")

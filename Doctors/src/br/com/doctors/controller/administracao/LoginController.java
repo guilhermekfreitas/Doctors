@@ -4,6 +4,7 @@ import br.com.caelum.vraptor.*;
 import br.com.doctors.UserSession;
 import br.com.doctors.dao.administracao.PerfilUsuarioDao;
 import br.com.doctors.modelo.administracao.PerfilUsuario;
+import br.com.doctors.modelo.administracao.UsuarioInvalidoException;
 
 @Resource
 public class LoginController {
@@ -52,7 +53,7 @@ public class LoginController {
 
 			userSession.setUsuario(user);
 			result.redirectTo("/");      // redireciona página principal
-		} catch (Exception e) {
+		} catch (UsuarioInvalidoException e) {
 			e.printStackTrace();
 			// adicionando temporariamente
 			//result.include("errors",new Object[]{"Login e/ou senha inválidos."});
