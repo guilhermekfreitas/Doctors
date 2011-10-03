@@ -73,7 +73,8 @@ public class AgendamentosController {
 		switch (usuario.getTipo()){
 		case ROLE_FUNCIONARIO:
 			result.include("medicos", daoMedico.listaTudo());
-			result.forwardTo(this).agendaDoFuncionario();
+			result.forwardTo(this).veragenda(); // teste
+//			result.forwardTo(this).agendaDoFuncionario();
 			break;
 		default:
 			result.include("agendamentos", daoAgendamento.listaTudo());
@@ -83,6 +84,9 @@ public class AgendamentosController {
 	public void agendaDoFuncionario() {
 	}
 	
+	public void veragenda(){
+		
+	}
 
 	@Get @Path("/agenda/novo")
 	public void cadastro() {

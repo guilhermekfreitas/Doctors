@@ -129,4 +129,9 @@ public class ConsultasController {
 		daoConsulta.remove(consulta);
 		result.redirectTo(ConsultasController.class).list();
 	}
+	
+	public void consulta(){
+		
+	}
+	
 }
