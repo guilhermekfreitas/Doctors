@@ -17,7 +17,6 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.validator.Validations;
 import br.com.caelum.vraptor.view.Results;
-import br.com.doctors.UserSession;
 import br.com.doctors.commands.AgendaCommand;
 import br.com.doctors.commands.AgendamentoCommand;
 import br.com.doctors.commands.PreAgendamentoCommand;
@@ -35,6 +34,7 @@ import br.com.doctors.modelo.agendamento.Agendamento;
 import br.com.doctors.services.AgendamentoForFuncionarioService;
 import br.com.doctors.services.AgendamentoForPacienteService;
 import br.com.doctors.services.AgendamentoService;
+import br.com.doctors.util.UserSession;
 
 /**
  * 
@@ -198,11 +198,33 @@ public class AgendamentosController {
 		
 		AgendamentoService service = new AgendamentoForFuncionarioService(daoAgendamento).comDataInicial(new LocalDate());
 //		service.setDataInicial(new LocalDate());
-		List<? extends AgendamentoCommand> listaHorarios = service.getAgenda(idMedico);
+		List<? extends AgendamentoCommand> agenda = service.getAgenda(idMedico);
 		
-		result.use(Results.json()).from(listaHorarios, "datas").include("horarios").serialize();
+		result.use(Results.json()).from(agenda, "datas").include("horarios").include("horarios.id").serialize();
 	}
 	
+	@Get
+	@Path("/agenda/confirmaAgendamento/{idAgendamento}")
+	public void confirmaAgendamento(Long idAgendamento){
+		
+		System.out.println("Confirma agendamento id=" + idAgendamento);
+		
+		// carrega agendamento
+		// seta confirmado=true ou false??    boolean foiConfirmado, como parametro?
+		// atualiza banco
+		
+		result.redirectTo(this).agendaDoFuncionario();
+	}
+	
+	@Get
+	@Path("/agenda/transferirHorario/{idAgendamento}")
+	public void transferirHorario(Long idAgendamento, String novaData, String novaHora){
+		
+		// carrega agendamento
+		// alterar data e hora.
+		// campo 'confirmado' = false
+		
+	}
 	
 	
 }

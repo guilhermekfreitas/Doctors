@@ -138,6 +138,7 @@
 		        .append($('<td>').append(horario.horario))
 		        .append($('<td>').append(horario.nomePaciente))
 		       	.append($('<td>').append(horario.status))
+		        .append($('<td>').append(criaLinkConfirmacao(horario)))
 		        .append($('<td>').append(criaBotao(index)))
 		    );
 		}
@@ -145,6 +146,12 @@
 		function criaBotao(index){
 			// cria botao verDetalhes
 			return '<button type="button" onclick="verDetalhes(' + index + ')">Ver Detalhes</button>';
+		}
+		
+		function criaLinkConfirmacao(horario){
+			
+			return '<a href="<c:url value="/agenda/confirmaAgendamento/' + horario.id + '"/>">Confirmar Agendamento</a>';
+			
 		}
 		
 	</script>	

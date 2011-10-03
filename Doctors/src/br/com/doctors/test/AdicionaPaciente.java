@@ -24,7 +24,7 @@ public class AdicionaPaciente {
 		Session session = factory.openSession();
 		
 		Paciente p = new Paciente();
-		p.setLogin("guilhermekfreitas");
+		p.getPerfil().setLogin("guilhermekfreitas");
 		p.setCpf("06526257976");
 		p.setDataDeNascimento(new Date());
 		p.setEmail("email@email.com");

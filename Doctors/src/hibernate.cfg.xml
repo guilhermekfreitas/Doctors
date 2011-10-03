@@ -25,5 +25,6 @@
 <mapping class="br.com.doctors.modelo.consultas.Receita"/>
 <mapping class="br.com.doctors.modelo.agendamento.Agendamento"/>
 <mapping class="br.com.doctors.modelo.administracao.Convenio"/>
+<mapping class="br.com.doctors.modelo.util.Notificacao"/>
 </session-factory>
 </hibernate-configuration>

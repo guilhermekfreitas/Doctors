@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
 
 import br.com.doctors.commands.AgendamentoCommand;
 import br.com.doctors.commands.PreAgendamentoCommand;
@@ -20,7 +19,7 @@ public class PreAgendamentoCommandConverter implements AgendaConverter {
 		this.parametros = parametros;
 	}
 
-	public Map<LocalDate, PreAgendamentoCommand> converteHorariosParaMap(List<Agendamento> agendamentos) {
+	public Map<LocalDate, PreAgendamentoCommand> agrupaHorariosPorDia(List<Agendamento> agendamentos) {
 
 		Map<LocalDate,PreAgendamentoCommand> horarios = new HashMap<LocalDate,PreAgendamentoCommand>();
 
@@ -45,43 +44,12 @@ public class PreAgendamentoCommandConverter implements AgendaConverter {
 
 		PreAgendamentoCommand diaDeAgendamentos = new PreAgendamentoCommand(dataAtual, parametros);
 
-//		diaAtual = preencheDiaComTodosHorarios(diaAtual);
-//		diaAtual = eliminaHorariosOcupados(dataAtual, horariosOcupados, diaAtual);
 
 		diaDeAgendamentos.preencheComHorarios(dataAtual,horariosOcupados);
 		
 		return (T) diaDeAgendamentos;
 	}
 
-//	private PreAgendamentoCommand preencheDiaComTodosHorarios(PreAgendamentoCommand diaAtual) {
-//		LocalTime horarioAtual = getHoraInicioAtendimento();
-//		while( !horarioAtendimentoTerminou(horarioAtual)){
-//			diaAtual.addHorario(horarioAtual);
-//			horarioAtual = proximoHorarioApos(horarioAtual);
-//		}
-//		return diaAtual;
-//	}
-
-//	private <T> PreAgendamentoCommand eliminaHorariosOcupados(LocalDate dataAtual, Map<LocalDate, T> horariosOcupados, 
-//																			PreAgendamentoCommand diaAtual) {
-//		if (horariosOcupados.containsKey(dataAtual)){
-//			PreAgendamentoCommand dataComHorariosOcupados = (PreAgendamentoCommand) horariosOcupados.get(dataAtual);
-//			diaAtual.removeHorariosOcupados(dataComHorariosOcupados.getHorarios());
-//		}
-//		return diaAtual;
-//	}
-
-//	private boolean horarioAtendimentoTerminou(LocalTime horarioAtual) {
-//		return horarioAtual.isAfter(parametros.getHoraFimAtendimento());
-//	}
-//
-//	private LocalTime proximoHorarioApos(LocalTime horarioAtual) {
-//		return new LocalTime(horarioAtual).plus(parametros.getMinutosPorConsulta());
-//	}
-//
-//	private LocalTime getHoraInicioAtendimento() {
-//		return new LocalTime(parametros.getHoraInicioAtendimento());
-//	}
 	
 	private void addEmDataExistente(Map<LocalDate, PreAgendamentoCommand> horarios, Agendamento agendamento) {
 		PreAgendamentoCommand data = horarios.get(agendamento.getDataAgendamento());

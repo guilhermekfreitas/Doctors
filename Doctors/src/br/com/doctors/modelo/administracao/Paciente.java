@@ -78,10 +78,6 @@ public class Paciente extends Pessoa {
 		this.agendamentos = agendamentos;
 	}
 	
-	public Validations getValidations() {
-		return null;
-	}
-
 	@Override
 	public void setPerfil(PerfilUsuario perfil) {
 		perfil.setTipo(TipoPerfil.ROLE_PACIENTE);

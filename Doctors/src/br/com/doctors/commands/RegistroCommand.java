@@ -7,6 +7,7 @@ import br.com.doctors.modelo.agendamento.Agendamento;
 import br.com.doctors.modelo.util.ParametrosAgendamento;
 
 public class RegistroCommand {
+	private Long id;
 	private LocalDate data;
 	private String horario;
 	private String nomePaciente;
@@ -20,6 +21,7 @@ public class RegistroCommand {
 	public RegistroCommand(Agendamento horarioDeAgendamento,
 			ParametrosAgendamento parametros) {
 		this.parametros = parametros;
+		this.id = horarioDeAgendamento.getId();
 		this.data = horarioDeAgendamento.getDataAgendamento();
 		this.horario = formataHorarioAtendimento(horarioDeAgendamento.getHoraAgendamento());
 		this.nomePaciente = horarioDeAgendamento.getNomePaciente();
@@ -35,6 +37,7 @@ public class RegistroCommand {
 		registro.setHorario(horarioAsString);
 		registro.setStatus("Livre");
 		registro.setNomePaciente("");
+		registro.setId(0L);
 		return registro;
 	}
 	
@@ -98,6 +101,14 @@ public class RegistroCommand {
 
 	public LocalDate getData() {
 		return data;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

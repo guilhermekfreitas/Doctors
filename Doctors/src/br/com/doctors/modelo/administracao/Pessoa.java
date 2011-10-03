@@ -28,8 +28,6 @@ public abstract class Pessoa {
 	private String email;
 	@Temporal(TemporalType.DATE)
 	private Date dataDeNascimento;
-	private String login;
-	private String senha;
 	
 	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}) @JoinColumn(name="perfil_id")
 	private PerfilUsuario perfil;
@@ -52,12 +50,7 @@ public abstract class Pessoa {
 	public Date getDataDeNascimento() {
 		return dataDeNascimento;
 	}
-	public String getLogin() {
-		return login;
-	}
-	public String getSenha() {
-		return senha;
-	}
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
@@ -76,13 +69,7 @@ public abstract class Pessoa {
 	public void setDataDeNascimento(Date dataDeNascimento) {
 		this.dataDeNascimento = dataDeNascimento;
 	}
-	public void setLogin(String login) {
-		this.login = login;
-	}
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-	
+
 	public void format(String date){
 		DateFormat df = DateFormat.getDateInstance();
 		try {

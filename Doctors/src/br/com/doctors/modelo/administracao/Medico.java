@@ -69,11 +69,7 @@ public class Medico extends Pessoa {
 		return String.format("%s: %s - %s (Login:%s|Senha:%s)", getNome(), crm, especialidade, 
 				getPerfil().getLogin(),getPerfil().getSenha());
 	}
-	
-	public Validations getValidations() {
-		return null;
-	}
-	
+
 	@Override
 	public void setPerfil(PerfilUsuario perfil) {
 		perfil.setTipo(TipoPerfil.ROLE_MEDICO);

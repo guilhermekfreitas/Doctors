@@ -5,16 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-import org.joda.time.Minutes;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import br.com.caelum.vraptor.ioc.Component;
 import br.com.doctors.commands.AgendamentoCommand;
-import br.com.doctors.converters.agendamento.AgendaCommandConverter;
 import br.com.doctors.converters.agendamento.AgendaConverter;
-import br.com.doctors.converters.agendamento.PreAgendamentoCommandConverter;
 import br.com.doctors.dao.agendamento.AgendamentoDao;
 import br.com.doctors.modelo.agendamento.Agendamento;
 import br.com.doctors.modelo.util.ParametrosAgendamento;
@@ -34,24 +28,18 @@ public abstract class AgendamentoService {
 		this.daoAgendamento = daoAgendamento;
 	}
 
-
-	public AgendamentoService comDataInicial(LocalDate dataInicial){
-		parametros.setDataInicial(dataInicial);
-		return this;
-	}
-
+	protected abstract AgendaConverter getAgendaConverter();
 	
 	public List<? extends AgendamentoCommand> getAgenda(Long idMedico){
 		
 		List<Agendamento> horariosConfirmados = daoAgendamento.agendamentosPara(idMedico);
-
 		AgendaConverter converter = getAgendaConverter();
-		Map<LocalDate, ? extends AgendamentoCommand> horariosAgrupadosPorDia = converter.converteHorariosParaMap(horariosConfirmados);
+		Map<LocalDate, ? extends AgendamentoCommand> horariosAgrupadosPorDia = converter.agrupaHorariosPorDia(horariosConfirmados);
 
 		List<AgendamentoCommand> agenda = new ArrayList<AgendamentoCommand>();
 
 		LocalDate dataAtual = new LocalDate(parametros.getDataInicial());
-		while (!dataAtual.isAfter(parametros.getDataFinal())){
+		while (!diasDaAgendaTerminou(dataAtual)){
 			AgendamentoCommand registroDoDiaAtual = converter.preencheHorariosDoDia(dataAtual,horariosAgrupadosPorDia);
 			agenda.add(registroDoDiaAtual);
 			dataAtual = dataAtual.plusDays(1); 
@@ -59,8 +47,15 @@ public abstract class AgendamentoService {
 		
 		return agenda;
 	}
+	
+	private boolean diasDaAgendaTerminou(LocalDate dataAtual) {
+		return dataAtual.isAfter(parametros.getDataFinal());
+	}
 
-	protected abstract AgendaConverter getAgendaConverter();
+	public AgendamentoService comDataInicial(LocalDate dataInicial){
+		parametros.setDataInicial(dataInicial);
+		return this;
+	}
 
 	public ParametrosAgendamento getParametros() {
 		return parametros;

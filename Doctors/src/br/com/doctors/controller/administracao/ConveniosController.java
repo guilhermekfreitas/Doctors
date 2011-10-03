@@ -1,7 +1,6 @@
 package br.com.doctors.controller.administracao;
 
 
-import br.com.caelum.vraptor.Delete;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
@@ -10,10 +9,12 @@ import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.validator.Validations;
-import br.com.caelum.vraptor.view.Results;
 
 import br.com.doctors.dao.administracao.ConvenioDao;
 import br.com.doctors.modelo.administracao.Convenio;
+import br.com.doctors.util.DoctorsValidation;
+import br.com.doctors.util.ValidationFactory;
+import br.com.doctors.util.validations.ConvenioValidation;
 
 /***
  * 
@@ -30,6 +31,8 @@ public class ConveniosController {
 		this.dao = dao;
 		this.result = result;
 		this.validator = validator;
+		
+		
 	}
 	
 	public void index(){
@@ -48,7 +51,7 @@ public class ConveniosController {
 	@Post @Path("/convenios")
 	public void adiciona(final Convenio convenio){
 		
-		validator.checking(convenio.getValidations());
+		validator.checking(getValidations(convenio));
 		validator.onErrorUsePageOf(this).cadastro();
 		
 		dao.adiciona(convenio);
@@ -65,7 +68,7 @@ public class ConveniosController {
 	
 	@Put @Path("/convenios/{convenio.id}")
 	public void alterar(final Convenio convenio){
-		validator.checking(convenio.getValidations());
+		validator.checking(getValidations(convenio));
 		validator.onErrorUsePageOf(this).edit(convenio.getId());
 		
 		dao.atualiza(convenio);
@@ -87,5 +90,13 @@ public class ConveniosController {
 		result.include("nome", nome);
 		result.include("resultados", dao.busca(nome) );
 	}
+
+	private Validations getValidations(final Convenio convenio) {
+		return new Validations(){{
+			that(convenio.getNome() != null && convenio.getNome().length() >= 3, 
+					"convenio.nome", "nome.obrigatorio");
+		}};
+	}
+	
 	
 }

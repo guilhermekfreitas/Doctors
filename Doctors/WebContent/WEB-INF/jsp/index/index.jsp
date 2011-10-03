@@ -27,7 +27,6 @@
 	<sec:authorize ifAllGranted="ROLE_ADMIN">
 		Area administrativa:<br /><a href="painel_admin">Administração</a><br />
 	</sec:authorize>
-
 	</div>
 </body>
 </html>

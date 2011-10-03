@@ -6,13 +6,12 @@ import br.com.caelum.vraptor.*;
 import br.com.caelum.vraptor.core.InterceptorStack;
 import br.com.caelum.vraptor.interceptor.Interceptor;
 import br.com.caelum.vraptor.ioc.RequestScoped;
-import br.com.caelum.vraptor.ioc.SessionScoped;
 import br.com.caelum.vraptor.resource.ResourceMethod;
-import br.com.doctors.UserSession;
 import br.com.doctors.dao.administracao.PerfilUsuarioDao;
 import br.com.doctors.modelo.administracao.PerfilUsuario;
+import br.com.doctors.util.UserSession;
 
-@Deprecated
+//@Deprecated ??
 @Intercepts
 @RequestScoped
 public class UsuarioInterceptor implements Interceptor {
@@ -36,20 +35,23 @@ public class UsuarioInterceptor implements Interceptor {
 	@Override
 	public void intercept(InterceptorStack stack, ResourceMethod method,
 			Object resourceInstance) throws InterceptionException {
-		// TODO Auto-generated method stub
 		
-		if (request.getUserPrincipal() != null && !userSession.hasUsuario()){
+		if (naoTemUsuarioLogado()){
 			PerfilUsuario usuario = dao.carrega(request.getUserPrincipal().getName()) ;
-			userSession.setUsuario(usuario);
+			userSession.carregaUsuario(usuario);
 			System.out.printf("Adicionando usuario [%s] a sessao.", usuario);
 		} else {
-			System.out.println("Interceptando -->" + request.getUserPrincipal());
+//			System.out.println("Interceptando -->" + request.getUserPrincipal());
 			if (!userSession.hasUsuario()){
-				System.out.println("SEM USUARIO NA SESSÃO");
+//				System.out.println("SEM USUARIO NA SESSÃO");
 			} else {
 				System.out.println("USUARIO:" + userSession.getUsuario());
 			}
 		}
 		stack.next(method, resourceInstance);
+	}
+
+	private boolean naoTemUsuarioLogado() {
+		return request.getUserPrincipal() != null && !userSession.hasUsuario();
 	}
 }

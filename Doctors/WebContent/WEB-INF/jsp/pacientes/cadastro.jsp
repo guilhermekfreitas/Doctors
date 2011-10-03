@@ -122,7 +122,7 @@
 					firstIndex	= $convenios.first().data('index'),
 					lastIndex	= $convenios.last().data('index');
 
-				alert('hello');
+				//alert('hello');
 				
 				if (firstIndex === undefined) {
 					firstIndex = 0;
@@ -143,10 +143,10 @@
 				.data('index', index)
 				.appendTo($container);
 				
-				$("#lista-convenios").append($('<td><input></input></td>')
-											  .attr("type", "text")
-											  .attr("name", "teste[" + index + "]")
-											  .attr("value", "10"));
+				//$("#lista-convenios").append($('<td><input></input></td>')
+				//							  .attr("type", "text")
+				//							  .attr("name", "teste[" + index + "]")
+				//							  .attr("value", "10"));
 				
 			};
 		</script>

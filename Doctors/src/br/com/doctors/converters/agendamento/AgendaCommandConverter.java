@@ -24,7 +24,7 @@ public class AgendaCommandConverter implements AgendaConverter{
 	}
 	
 	@Override
-	public Map<LocalDate, ? extends AgendamentoCommand> converteHorariosParaMap(List<Agendamento> horariosConfirmados) {
+	public Map<LocalDate, ? extends AgendamentoCommand> agrupaHorariosPorDia(List<Agendamento> horariosConfirmados) {
 		
 		Map<LocalDate,AgendaCommand> horarios = new HashMap<LocalDate,AgendaCommand>();
 		

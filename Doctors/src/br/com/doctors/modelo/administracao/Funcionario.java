@@ -62,10 +62,6 @@ public class Funcionario extends Pessoa{
 		return getNome() + ": " + matricula;
 	}
 	
-	public Validations getValidations() {
-		return null;
-	}
-	
 	@Override
 	public void setPerfil(PerfilUsuario perfil) {
 		perfil.setTipo(TipoPerfil.ROLE_FUNCIONARIO);

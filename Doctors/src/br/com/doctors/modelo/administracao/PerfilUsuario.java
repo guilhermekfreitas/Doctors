@@ -45,15 +45,6 @@ public class PerfilUsuario {
 		this.tipo = tipo;
 	}
 	
-	public Validations getValidations(){
-		return new Validations(){{
-			that(!Strings.isNullOrEmpty(PerfilUsuario.this.login ), 
-					"perfilUsuario.login", "campo.obrigatorio", "Login");
-			that(!Strings.isNullOrEmpty(PerfilUsuario.this.senha ), 
-					"perfilUsuario.senha", "campo.obrigatorio", "Senha");
-		}};
-	}
-
 	public Long getId() {
 		return id;
 	}

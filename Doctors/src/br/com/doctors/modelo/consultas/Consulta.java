@@ -29,8 +29,6 @@ public class Consulta {
 	
 	@Id @GeneratedValue
 	private Long id;
-	private String data; // retirar
-	private String hora;
 	private String queixaPrincipal;
 	private String observacoes;
 	
@@ -85,12 +83,6 @@ public class Consulta {
 	public Long getId() {
 		return id;
 	}
-	public String getData() {
-		return data;
-	}
-	public String getHora() {
-		return hora;
-	}
 	public String getQueixaPrincipal() {
 		return queixaPrincipal;
 	}
@@ -99,12 +91,6 @@ public class Consulta {
 	}
 	public void setId(Long id) {
 		this.id = id;
-	}
-	public void setData(String data) {
-		this.data = data;
-	}
-	public void setHora(String hora) {
-		this.hora = hora;
 	}
 	public void setQueixaPrincipal(String queixaPrincipal) {
 		this.queixaPrincipal = queixaPrincipal;

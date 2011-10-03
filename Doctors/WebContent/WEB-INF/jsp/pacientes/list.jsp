@@ -30,9 +30,11 @@
 					"Apagar": function() {
 						$( this ).dialog( "close" );
 						location.href = location.href + "/remover/"+idPaciente
+						return true;
 					},
 					Cancel: function() {
 						$( this ).dialog( "close" );
+						return false;
 					}
 				}
 			});
@@ -61,7 +63,7 @@
 					<td>${paciente.telefone}</td>
 					<td>${paciente.perfil.login}</td>
 					<td><a class="btn-layout" href="<c:url value="/pacientes/${paciente.id}"/>">Alterar</a></td>
-					<td><button class="btn-layout" onclick="javascript:apagarPaciente(${paciente.id})">Remover</button></td>
+					<td><a type="button" class="btn-layout" onclick="return apagarPaciente(${paciente.id});">Remover</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>

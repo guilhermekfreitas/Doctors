@@ -28,8 +28,8 @@ public class ConsultaTest {
 		System.out.println(medico);
 		
 		Consulta consulta = new Consulta();
-		consulta.setData("10/06/2010");
-		consulta.setHora("08:50");
+//		consulta.setData("10/06/2010");
+//		consulta.setHora("08:50");
 		consulta.setObservacoes("nada a declarar");
 		consulta.setQueixaPrincipal("DOr de estomago");
 

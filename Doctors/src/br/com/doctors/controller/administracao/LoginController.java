@@ -1,10 +1,10 @@
 package br.com.doctors.controller.administracao;
 
 import br.com.caelum.vraptor.*;
-import br.com.doctors.UserSession;
 import br.com.doctors.dao.administracao.PerfilUsuarioDao;
 import br.com.doctors.modelo.administracao.PerfilUsuario;
 import br.com.doctors.modelo.administracao.UsuarioInvalidoException;
+import br.com.doctors.util.UserSession;
 
 @Resource
 public class LoginController {
@@ -37,21 +37,23 @@ public class LoginController {
 		//result.redirectTo(this).index();
 	}
 
+	// deprecated???
 	@Post
 	@Path("/logar")
 	public void logar(PerfilUsuario perfilUsuario, String j_username, String j_password){ // convencao spring security
 		
 		System.out.println("Logou.." + j_username);
+		System.out.println(perfilUsuario);
 		
-		validator.checking(perfilUsuario.getValidations());
-		validator.onErrorUsePageOf(this).login();
+//		validator.checking(perfilUsuario.getValidations());
+//		validator.onErrorUsePageOf(this).login();
 		
 		// procura por usuário
 		PerfilUsuario user = null;
 		try {
 			user = usuarioDao.logar(perfilUsuario);
 
-			userSession.setUsuario(user);
+			userSession.carregaUsuario(user);
 			result.redirectTo("/");      // redireciona página principal
 		} catch (UsuarioInvalidoException e) {
 			e.printStackTrace();
@@ -70,7 +72,7 @@ public class LoginController {
 	@Get
 	@Path("/logout")
 	public void logout(){
-		userSession.setUsuario(null);
+		userSession.carregaUsuario(null);
 		result.redirectTo("/");
 	}
 	

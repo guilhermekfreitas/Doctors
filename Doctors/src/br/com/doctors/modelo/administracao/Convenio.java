@@ -58,15 +58,8 @@ public class Convenio {
 		this.id = id;
 	}
 
-	public List<Paciente> getConvenios() {
+	public List<Paciente> getPacientes() {
 		return pacientes;
-	}
-	
-	public Validations getValidations() {
-		return new Validations(){{
-			that(Convenio.this.getNome() != null && Convenio.this.getNome().length() >= 3, 
-					"convenio.nome", "nome.obrigatorio");
-		}};
 	}
 
 }
