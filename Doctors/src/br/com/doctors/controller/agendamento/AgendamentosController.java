@@ -1,12 +1,8 @@
 package br.com.doctors.controller.agendamento;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
-
-import com.google.common.base.Strings;
 
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
@@ -17,10 +13,7 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.validator.Validations;
 import br.com.caelum.vraptor.view.Results;
-import br.com.doctors.commands.AgendaCommand;
 import br.com.doctors.commands.AgendamentoCommand;
-import br.com.doctors.commands.PreAgendamentoCommand;
-import br.com.doctors.commands.RegistroCommand;
 import br.com.doctors.dao.administracao.ConvenioDao;
 import br.com.doctors.dao.administracao.FuncionarioDao;
 import br.com.doctors.dao.administracao.MedicoDao;

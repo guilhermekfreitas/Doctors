@@ -34,8 +34,8 @@
 		</c:forEach>
 	</select>
 	
-	<table id="flex1">
-	</table>
+	<table id="list2"></table>
+	<div id="pager2"></div>
 	
 	<div id="agenda"  >
 		Agenda do Médico:
@@ -62,37 +62,6 @@
 	
 	<script type="text/javascript">
 
-		$("#flex1").flexigrid({
-			url: 'post2.php',
-			dataType: 'json',
-			colModel : [
-				{display: 'ISO', name : 'horario', width : 40, sortable : true, align: 'center'},
-				{display: 'Name', name : 'name', width : 180, sortable : true, align: 'left'},
-				{display: 'Printable Name', name : 'printable_name', width : 120, sortable : true, align: 'left'},
-				{display: 'ISO3', name : 'iso3', width : 130, sortable : true, align: 'left', hide: true},
-				{display: 'Number Code', name : 'numcode', width : 80, sortable : true, align: 'right'}
-				],
-			buttons : [
-				{name: 'Add', bclass: 'add', onpress : test},
-				{name: 'Delete', bclass: 'delete', onpress : test},
-				{separator: true}
-				],
-			searchitems : [
-				{display: 'ISO', name : 'iso'},
-				{display: 'Name', name : 'name', isdefault: true}
-				],
-			sortname: "iso",
-			sortorder: "asc",
-			usepager: true,
-			title: 'Countries',
-			useRp: true,
-			rp: 15,
-			showTableToggleBtn: true,
-			width: 700,
-			height: 200
-		});   
-	
-	
 		$("#agenda").hide();
 		
 		
@@ -189,6 +158,32 @@
 			return '<a href="<c:url value="/agenda/confirmaAgendamento/' + horario.id + '"/>">Confirmar Agendamento</a>';
 			
 		}
+		
+		
+		jQuery("#list2").jqGrid({
+		   	url:'server.php?q=2',
+			datatype: "json",
+		   	colNames:['Inv No','Date', 'Client', 'Amount','Tax','Total','Notes'],
+		   	colModel:[
+		   		{name:'id',index:'id', width:55},
+		   		{name:'invdate',index:'invdate', width:90},
+		   		{name:'name',index:'name asc, invdate', width:100},
+		   		{name:'amount',index:'amount', width:80, align:"right"},
+		   		{name:'tax',index:'tax', width:80, align:"right"},		
+		   		{name:'total',index:'total', width:80,align:"right"},		
+		   		{name:'note',index:'note', width:150, sortable:false}		
+		   	],
+		   	rowNum:10,
+		   	rowList:[10,20,30],
+		   	pager: '#pager2',
+		   	sortname: 'id',
+		    viewrecords: true,
+		    sortorder: "desc",
+		    caption:"JSON Example"
+		});
+		jQuery("#list2").jqGrid('navGrid','#pager2',{edit:false,add:false,del:false});
+		
+		
 		
 	</script>	
 </body>
