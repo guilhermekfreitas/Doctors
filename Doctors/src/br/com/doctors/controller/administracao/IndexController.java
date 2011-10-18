@@ -10,4 +10,9 @@ public class IndexController {
 	public void index(){
 		
 	}
+	
+	@Path("/contato")
+	public void contato(){
+		
+	}
 }

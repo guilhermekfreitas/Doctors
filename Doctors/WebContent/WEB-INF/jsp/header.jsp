@@ -16,7 +16,6 @@
 			<h2 class="description">Sistema de Gerenciamento de Consultório Médico</h2>
 		</div>
 		<div id="headercontent">
-			<h2>Adicionar controle de acesso aqui</h2>
 			<c:if test="${empty userSession.usuario }">
 				Olá, Visitante. <a href="<c:url value='/login'/>">Logar</a><br />
 				Ainda não é usuário? <button type="button" onclick="abrirDialog()">Cadastre-se</button>
@@ -28,8 +27,7 @@
 			<p>&nbsp;</p>
 		</div>
 		<div id="sitecption">
-			Doctors: Sistema para seu Consultório Médico
-			<span class="bigger">Descrição</span> aqui
+			Doctors: Sistema para seu <span class="bigger">Consultório Médico</span>
 		</div>
 	</div>
 	<div id="main">
@@ -40,7 +38,7 @@
 				<li><a href="#">Quem Somos</a></li>
 				<li><a href="#">Corpo Clínico</a></li>
 				<li><a href="#">Convênios de Cobertura</a></li>
-				<li><a href="#">Contato</a></li>
+				<li><a href="<c:url value='/contato'/>">Contato</a></li>
 				</ul>
 			</div>
 			<!-- <div id="submenu">

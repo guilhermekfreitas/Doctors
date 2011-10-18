@@ -13,19 +13,23 @@
 </head>
 <body>
 	<div id="content">
-	<br />Cadastros Básicos:<br/>
-	<a href="medicos">Médico</a><br />
-	<a href="funcionarios">Funcionário</a><br />
-	<a href="pacientes">Paciente</a><br />
-	<a href="convenios">Convênio</a><br/><br/><br/>
-
-	Outros (em desenvolvimento):<br/>
-	<a href="consultas">Consulta</a><br />
-	<a href="exames">Exame</a><br />
-	<a href="agenda">Agendamento</a><br /><br />
-	
+	<sec:authorize ifAnyGranted="ROLE_PACIENTE,ROLE_FUNCIONARIO,ROLE_MEDICO,ROLE_ADMIN">
+		Ações: <br />
+		<a href="#">Meus Dados</a><br />
+	</sec:authorize>
+	<sec:authorize ifAnyGranted="ROLE_PACIENTE,ROLE_ADMIN">
+		<a href="agenda/novo">Pré-Agendar Consulta</a><br />
+		<a href="#">Ver Histórico de Consultas</a><br />
+	</sec:authorize>
+	<sec:authorize ifAnyGranted="ROLE_FUNCIONARIO,ROLE_MEDICO,ROLE_ADMIN">
+		<a href="agenda">Ver Agenda</a><br />
+		<a href="pacientes">Controle de Pacientes</a><br />
+		<a href="convenios">Controle de Convênios</a><br />
+	</sec:authorize>				
 	<sec:authorize ifAllGranted="ROLE_ADMIN">
-		Area administrativa:<br /><a href="painel_admin">Administração</a><br />
+		<a href="medicos">Controle de Médicos</a><br />
+		<a href="funcionarios">Controle de Funcionários</a><br />
+		<br />Area administrativa:<br /><a href="painel_admin">Administração</a><br />
 	</sec:authorize>
 	</div>
 </body>
