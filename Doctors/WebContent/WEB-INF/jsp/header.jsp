@@ -37,7 +37,7 @@
 				<li class="first" id="active"><a href="/Doctors">Home</a></li>
 				<li><a href="#">Quem Somos</a></li>
 				<li><a href="#">Corpo Clínico</a></li>
-				<li><a href="#">Convênios de Cobertura</a></li>
+				<li><a href="<c:url value='/conveniosassoc'/>">Convênios de Cobertura</a></li>
 				<li><a href="<c:url value='/contato'/>">Contato</a></li>
 				</ul>
 			</div>

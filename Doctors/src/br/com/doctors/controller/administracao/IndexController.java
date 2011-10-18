@@ -15,4 +15,10 @@ public class IndexController {
 	public void contato(){
 		
 	}
+	
+	@Path("/conveniosassoc")
+	public void conveniosAssociados(){
+		
+	}
+	
 }
