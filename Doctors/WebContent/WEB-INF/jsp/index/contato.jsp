@@ -8,5 +8,7 @@
 </head>
 <body>
 	<h1>Página de Contato</h1>
+	
+	<h2>Nosso email de contato é: ..@gmail.com</h2>
 </body>
 </html>
