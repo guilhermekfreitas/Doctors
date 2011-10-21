@@ -11,17 +11,19 @@
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/scripts.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery.tablesorter.min.js'/>"></script>
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/ui-lightness/jquery-ui-1.8.14.custom.css"/>"/>  
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/meucss.css"/>"/>
+<link rel="stylesheet"  type="text/css" href="<c:url value="/css/blue-tablesorter/style.css"/>"/>
 <style type="text/css">
 	#agenda{
+	}
+	#lista-regs{
+		width: 300px;
 	}
 	#calendario{
 		float:left;
 		margin-right: 10px;
-	}
-	#lista-regs{
-		
 	}
 </style>
 </head>
@@ -34,9 +36,7 @@
 		</c:forEach>
 	</select>
 	
-	<div id="agenda"  >
-		Agenda do Médico:
-		
+	<div id="agenda">
 		<div class="calendario" id="calendario">
 		</div>
 		
@@ -54,11 +54,21 @@
 				</tbody>
 			</table>
 		</div>
-		
+	</div>
+	
+	<div id="dialog-detalhes" title="Detalhes da Consulta">
+		<p>
+			<span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+			Your files have downloaded successfully into the My Downloads folder.
+		</p>
+		<p>
+			Currently using <b>36% of your storage space</b>.
+		</p>
 	</div>
 	
 	<script type="text/javascript">
 		$("#agenda").hide();
+		$("#dialog-detalhes").hide();
 		
 		$("#medicos").change(function(){
 			var idMedico = $("#medicos").val();
@@ -79,6 +89,8 @@
 						// adiciona dia no array
 						var dia = new Dia(data.data, data.horarios);
 						array.push(dia);
+						
+						//alert(data.horario[0].horario + " " + data.horario[0].nomePaciente + " " + data.horario[0].id);
 						
 					}
 					
@@ -138,20 +150,31 @@
 		        .append($('<td>').append(horario.horario))
 		        .append($('<td>').append(horario.nomePaciente))
 		       	.append($('<td>').append(horario.status))
-		        .append($('<td>').append(criaLinkConfirmacao(horario)))
-		        .append($('<td>').append(criaBotao(index)))
+		        .append($('<td>').append(criaBotao(horario.id)))
 		    );
 		}
 		
 		function criaBotao(index){
 			// cria botao verDetalhes
-			return '<button type="button" onclick="verDetalhes(' + index + ')">Ver Detalhes</button>';
+			return '<a class="btn-layout" href="javascript:verDetalhes(' + index + ')">Ver Detalhes</a>'
 		}
 		
 		function criaLinkConfirmacao(horario){
 			
 			return '<a href="<c:url value="/agenda/confirmaAgendamento/' + horario.id + '"/>">Confirmar Agendamento</a>';
 			
+		}
+		
+		function verDetalhes(id){
+			alert(id);
+			$("#dialog-detalhes").dialog({
+				modal:true,
+				buttons: {
+					Ok : function(){
+						$("#dialog-detalhes").dialog("close");
+					}
+				}
+			});
 		}
 		
 	</script>	

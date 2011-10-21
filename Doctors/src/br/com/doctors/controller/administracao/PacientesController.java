@@ -15,6 +15,7 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.util.hibernate.extra.Load;
 import br.com.caelum.vraptor.validator.Validations;
 import br.com.doctors.controller.administracao.PacientesController;
 import br.com.doctors.dao.administracao.ConvenioDao;

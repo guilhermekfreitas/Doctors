@@ -12,9 +12,6 @@ import br.com.caelum.vraptor.validator.Validations;
 
 import br.com.doctors.dao.administracao.ConvenioDao;
 import br.com.doctors.modelo.administracao.Convenio;
-import br.com.doctors.util.DoctorsValidation;
-import br.com.doctors.util.ValidationFactory;
-import br.com.doctors.util.validations.ConvenioValidation;
 
 /***
  * 

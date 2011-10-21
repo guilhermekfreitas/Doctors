@@ -55,7 +55,7 @@
 		</tbody>
 	</table>
 	</div>
-	<a id="submit-button" href="<c:url value="/medicos/novo"/>">Adicionar novo Médico</a>
+	<a id="submit-button" class="btn-layout" href="<c:url value="/medicos/novo"/>">Adicionar novo Médico</a>
 	<a id="cancel-operation" href="<c:url value="./"/>">Voltar à página inicial</a><br />
 </body>
 </html>

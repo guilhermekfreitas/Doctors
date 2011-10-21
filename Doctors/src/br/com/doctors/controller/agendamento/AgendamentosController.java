@@ -66,14 +66,19 @@ public class AgendamentosController {
 		switch (usuario.getTipo()){
 		case ROLE_FUNCIONARIO:
 			result.include("medicos", daoMedico.listaTudo());
-			result.forwardTo(this).veragenda(); // teste
+//			result.forwardTo(this).veragenda(); // teste
 //			result.forwardTo(this).agendaDoFuncionario();
+			result.forwardTo(this).agenda();
 			break;
 		default:
 			result.include("agendamentos", daoAgendamento.listaTudo());
 		}
 	}
 	
+	public void agenda() {
+		
+	}
+
 	public void agendaDoFuncionario() {
 	}
 	

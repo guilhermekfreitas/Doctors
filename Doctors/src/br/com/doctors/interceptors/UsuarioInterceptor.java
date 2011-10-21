@@ -39,7 +39,8 @@ public class UsuarioInterceptor implements Interceptor {
 		if (naoTemUsuarioLogado()){
 			PerfilUsuario usuario = dao.carrega(request.getUserPrincipal().getName()) ;
 			userSession.carregaUsuario(usuario);
-			System.out.printf("Adicionando usuario [%s] a sessao.", usuario);
+			System.out.printf("Adicionando usuario [%s] a sessao.\n", usuario);
+			System.out.println(userSession.getUsuario());
 		} else {
 //			System.out.println("Interceptando -->" + request.getUserPrincipal());
 			if (!userSession.hasUsuario()){

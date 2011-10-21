@@ -11,7 +11,6 @@
 <div id="wrap">
 <div id="footer">
 Doctors.com.br 2011 &copy; Todos os direitos reservados. <br />
-<a href="http://ramblingsoul.com" title="high quality free css templates">CSS template</a> by ramblingsoul 
 </div>
 </div>
 </body>

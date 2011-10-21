@@ -7,12 +7,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Cadastrar novo Agendamento:</title>
+<title>Pré-Agendar Consulta:</title>
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/scripts.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery.tablesorter.min.js'/>"></script>
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/ui-lightness/jquery-ui-1.8.14.custom.css"/>"/>  
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/meucss.css"/>"/>
+<link rel="stylesheet"  type="text/css" href="<c:url value="/css/blue-tablesorter/style.css"/>"/>
 </head>
 <body>
 	<ul>
@@ -23,7 +25,7 @@
 
 	<form name="form" action="<c:url value="/agenda"/>" method="post">
 		<fieldset>
-			<legend>Adicionar Agendamento:</legend>
+			<legend>Pré-Agendar Consulta:</legend>
 			
 			<table>
 			<tr><td><label for="pacientes">Paciente:</label></td> 
@@ -68,7 +70,7 @@
 			
 			</fieldset>	
 			</div>
-			<button id="enviar" type="submit">Enviar</button>
+			<button id="enviar" class="btn-layout" type="submit">Enviar</button>
 			<a href="./"><button id="cancel-operation" type="submit" >Cancelar</button></a>
 		</fieldset>
 	</form>

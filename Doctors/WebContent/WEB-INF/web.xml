@@ -20,14 +20,18 @@
         	<param-name>br.com.caelum.vraptor.provider</param-name>
 	        <param-value>br.com.caelum.vraptor.util.hibernate.HibernateCustomProvider</param-value>
     </context-param>
+ 
+	<context-param>  
+		<param-name>br.com.caelum.vraptor.packages</param-name>  
+		<param-value>br.com.caelum.vraptor.util.hibernate</param-value>  
+	</context-param> 
     
 	<filter>
    		<filter-name>sitemesh</filter-name>
     	<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
 	</filter>
- 
 
-		<filter>
+	<filter>
 		<filter-name>vraptor</filter-name>
 		<filter-class>br.com.caelum.vraptor.VRaptor</filter-class>
 	</filter>
