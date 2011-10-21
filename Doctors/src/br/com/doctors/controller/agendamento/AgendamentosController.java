@@ -31,7 +31,7 @@ import br.com.doctors.util.UserSession;
 
 /**
  * 
- * @author Guilherme
+ * @author Guilherme, Jonathan, Renato
  *
  */
 
@@ -207,15 +207,10 @@ public class AgendamentosController {
 	
 	@Get
 	@Path("/agenda/confirmaAgendamento/{idAgendamento}")
-	public void confirmaAgendamento(Long idAgendamento){
-		
-		System.out.println("Confirma agendamento id=" + idAgendamento);
-		
-		// carrega agendamento
-		// seta confirmado=true ou false??    boolean foiConfirmado, como parametro?
-		// atualiza banco
-		
-		result.redirectTo(this).agendaDoFuncionario();
+	public void confirmaAgendamento(Long idAgendamento){		
+		Agendamento agendamento = daoAgendamento.carrega(idAgendamento);
+		agendamento.confirmarPreAgendamento();
+		daoAgendamento.atualiza(agendamento);		
 	}
 	
 	@Get
