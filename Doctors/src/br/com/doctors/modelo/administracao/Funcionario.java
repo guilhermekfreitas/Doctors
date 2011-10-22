@@ -9,9 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.google.common.base.Strings;
-
-import br.com.caelum.vraptor.validator.Validations;
 import br.com.doctors.modelo.agendamento.Agendamento;
 import br.com.doctors.modelo.util.TipoPerfil;
 

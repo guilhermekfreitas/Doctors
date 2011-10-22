@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
-
-import com.google.common.base.Strings;
-
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
@@ -15,14 +11,14 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
-import br.com.caelum.vraptor.util.hibernate.extra.Load;
 import br.com.caelum.vraptor.validator.Validations;
-import br.com.doctors.controller.administracao.PacientesController;
 import br.com.doctors.dao.administracao.ConvenioDao;
 import br.com.doctors.dao.administracao.PacienteDao;
 import br.com.doctors.dao.administracao.PerfilUsuarioDao;
 import br.com.doctors.modelo.administracao.Convenio;
 import br.com.doctors.modelo.administracao.Paciente;
+
+import com.google.common.base.Strings;
 
 /***
  * 

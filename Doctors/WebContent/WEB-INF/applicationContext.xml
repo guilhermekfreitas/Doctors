@@ -28,6 +28,6 @@
 		<beans:property name="url" value="jdbc:mysql://localhost/doctors" />
 		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<beans:property name="username" value="root" />
-		<beans:property name="password" value="admin" />
+		<beans:property name="password" value="KalEl1221" />
 	</beans:bean>
 </beans:beans>

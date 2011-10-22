@@ -1,10 +1,12 @@
 package br.com.doctors.modelo.administracao;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import com.google.common.base.Strings;
-
-import br.com.caelum.vraptor.validator.Validations;
 import br.com.doctors.modelo.util.TipoPerfil;
 
 @Entity
