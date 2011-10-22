@@ -30,6 +30,8 @@ public class NotificacoesController {
 	@Path("/notificacoes/notifica")
 	public void notificarMedico(Notificacao notificacao){
 		// TO-DO
+		daoNotificacao.adiciona(notificacao);
+		
 	}
 	
 	@Get

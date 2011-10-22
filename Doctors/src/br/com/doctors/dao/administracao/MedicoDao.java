@@ -30,8 +30,8 @@ public class MedicoDao extends DaoImpl<Medico>{
 	}
 	
 	public Medico buscaPorPerfil(Long idPerfil){
-		Criteria criteria = getSession().createCriteria(Medico.class).
-				add(Restrictions.eq("perfil", idPerfil));
+		Criteria criteria = getSession().createCriteria(Medico.class).createCriteria("perfil").
+				add(Restrictions.idEq(idPerfil));
 		
 		return (Medico) criteria.uniqueResult();
 	}

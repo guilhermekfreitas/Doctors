@@ -17,10 +17,4 @@ public class ConsultaDao extends DaoImpl<Consulta>{
 		super(session, Consulta.class);
 	}
 
-	// pesquisa por médico
-	// pesquisa por paciente
-	public List<Consulta> buscarConsultas(Medico medico, Paciente paciente) {
-		return null;
-	}
-	
 }

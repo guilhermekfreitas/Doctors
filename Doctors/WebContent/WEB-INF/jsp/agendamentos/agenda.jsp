@@ -38,6 +38,7 @@
 		<div id="divesq">
 			<div class="calendario" id="calendario"></div>
 			<br /><input type="checkbox" id="showPreAgendam" /><label for="showPreAgendam">Visualizar apenas consultas a confirmar</label>
+			<br /><button id="novaConsulta" disabled="disabled">Nova Consulta</button>
 		</div>
 		<div id="lista">
 			<table id="agendamentos"></table>
@@ -57,7 +58,7 @@
 		<br /><h3>Ações:</h3><br />
 		<button id="btnConfirmar">Confirmar Pré-Agendamento</button>
 		<button id="btnNotificar">Notificar Chegada do Paciente</button>
-		<button id="btnEfetuar">Efetuar Consulta</button>
+		<button id="btnIniciar">Iniciar Consulta</button>
 	</div>
 	
 	<script type="text/javascript">
@@ -65,9 +66,10 @@
 		$("#dialog-detalhes").hide();
 		
 		$( "#showPreAgendam" ).button();
+		$( "#novaConsulta").button();
 		$( "#btnConfirmar").button();
 		$( "#btnNotificar").button();
-		$( "#btnEfetuar" ).button();
+		$( "#btnIniciar" ).button();
 
 		$( "#btnConfirmar" ).click(function(){
 			alert("Falta implementar");
@@ -75,7 +77,7 @@
 		$( "#btnNotificar" ).click(function(){
 			alert("Falta implementar");
 		});
-		$( "#btnEfetuar" ).click(function(){
+		$( "#btnIniciar" ).click(function(){
 			alert("Falta implementar");
 		});
 		
@@ -84,9 +86,12 @@
 			if (idMedico == 0){
 				$("#agenda").hide();
 			} else {
-				$("#agenda").show();
+				$("#agenda").show();                      // passar a data tbm.
+				
+				// 20/10/2011
 				$.getJSON('<c:url value="/agenda/carregaAgenda/' + idMedico + '"/>', function(json){
 				
+					
 				if (json.datas.length != 0){
 					
 					// popula array que contém as datas, de cada dia do calendário.
@@ -122,6 +127,8 @@
 					agenda.push(consulta);
 					//$("#agendamentos").jqGrid('addRowData',1,agenda[0]);
 					
+					$("#agendamentos").jqGrid('setCaption',showCaption());
+					
 				}
 			});
 			}
@@ -133,7 +140,7 @@
 				//$("#dataAgendamento").attr("value",dateText);
 				$("#agendamentos").jqGrid('clearGridData');
 				
-				$("#agendamentos").jqGrid('setCaption',"Agenda do dia: " + $("#calendario").attr("value"));
+				$("#agendamentos").jqGrid('setCaption',showCaption());
 				for (var i=0;i<=agenda.length;i++ ){
 					$("#agendamentos").jqGrid('addRowData',i+1,agenda[i]);
 				}
@@ -173,7 +180,11 @@
 		   		$("#nomeConvenio").text(registro.convenio);
 		   		$("#nomeFuncionario").text(registro.funcionario);
 		   		
-		   	    $("#dialog-detalhes").dialog();
+		   	    $("#dialog-detalhes").dialog({
+		   	    	width: 540,
+		   	    	resizable: false,
+		   	    	modal: true
+		   	    });
 		   	},
 		   	rowNum:16,
 		   	rowList:[16],
@@ -183,7 +194,7 @@
 		    sortorder: "desc",
 		    width: 640,
 		    height: 380,
-		    caption:"Agenda do dia: " + $("#calendario").attr("value"),
+		    caption:showCaption(),
 		    jsonReader : {
 	     		root: "rows",
 	     		page: "page",
@@ -200,6 +211,23 @@
 		});
 		jQuery("#agendamentos2").jqGrid('navGrid','#pager2',{edit:false,add:false,del:false});
 		
+		
+	function showCaption(){
+		return "Agenda do dia: " + $("#calendario").attr("value") + " para médico: " + $("#medicos option:selected").text(); 
+	}	
+	
+	function postjson(url,data,bS,s,e){
+		$.ajax({
+			type:"POST",
+			url:url,
+			data:data,
+			dataType:"json",
+			beforeSend:bS,
+			success:s,
+			error:e
+		});
+	}
+	
 	</script>	
 </body>
 </html>

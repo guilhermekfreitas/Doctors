@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.joda.time.LocalDate;
+
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
@@ -11,9 +13,11 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.view.Results;
 import br.com.doctors.dao.agendamento.AgendamentoDao;
 import br.com.doctors.dao.consultas.ConsultaDao;
 import br.com.doctors.dao.consultas.ExameDao;
+import br.com.doctors.modelo.agendamento.Agendamento;
 import br.com.doctors.modelo.consultas.Consulta;
 import br.com.doctors.modelo.consultas.Exame;
 
@@ -133,5 +137,31 @@ public class ConsultasController {
 	public void consulta(){
 		
 	}
+	
+	@Path("/consulta/consultarHistorico")
+	public void consultarHistorico(Long idPaciente, Long idMedico, 
+				LocalDate dataInicial, LocalDate dataFinal){
+		
+		List<Agendamento> listaAgendamentos;
+		if (idMedico == 0){
+			// busca p/ todos os medicos
+			listaAgendamentos = daoAgendamento.agendamentosPara(idPaciente, dataInicial, dataFinal);
+		} else {
+		    // busca medico especifico
+			listaAgendamentos = daoAgendamento.agendamentosPara(idMedico, idPaciente, dataInicial, dataFinal);
+		}
+			
+			List<Consulta> listaConsultas = new ArrayList<Consulta>();
+			for (Agendamento agendamento : listaAgendamentos){
+				listaConsultas.add(agendamento.getConsulta());
+			}
+			
+			// falta converter a lista
+			
+			result.use(Results.json()).from(listaConsultas).serialize();
+		
+	}
+	
+	
 	
 }

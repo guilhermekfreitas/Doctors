@@ -198,6 +198,16 @@ public class AgendamentosController {
 	@Path("/agenda/carregaAgenda/{idMedico}")
 	public void carregaAgenda(Long idMedico){
 		
+//		System.out.println(ano+mes+dia);
+		
+//		LocalDate data;
+//		if (dia != null)
+//			data = new LocalDate(ano,mes,dia);
+//		else
+//			data = new LocalDate();
+//		
+//		System.out.println(data);
+		
 		AgendamentoService service = new AgendamentoForFuncionarioService(daoAgendamento).comDataInicial(new LocalDate());
 //		service.setDataInicial(new LocalDate());
 		List<? extends AgendamentoCommand> agenda = service.getAgenda(idMedico);
