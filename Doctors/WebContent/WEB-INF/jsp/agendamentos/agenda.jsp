@@ -88,63 +88,75 @@
 			} else {
 				$("#agenda").show();                      // passar a data tbm.
 				
-				// 20/10/2011
-				$.getJSON('<c:url value="/agenda/carregaAgenda/' + idMedico + '"/>', function(json){
-				
-					
-				if (json.datas.length != 0){
-					
-					// popula array que contém as datas, de cada dia do calendário.
-					agenda = [];
-					
-					consulta = {
-						id:"1",
-						idAgendamento:"123",
-						dataConsulta:"21/10/2011",
-						horario:"08:00-08:30",
-						nomePaciente: "Guilherme Kamizake de Freitas",
-						status: "Não Confirmado",
-						convenio: "Cassi",
-						medico: "Dr. Paulo José",
-						funcionario: "Silvana"
-					};
-					
-					agenda.push(consulta);
-					agenda.push(consulta);
-					agenda.push(consulta);
-					agenda.push(consulta);
-					agenda.push(consulta);
-					agenda.push(consulta);
-					agenda.push(consulta);
-					agenda.push(consulta);
-					agenda.push(consulta);
-					agenda.push(consulta);
-					agenda.push(consulta);
-					agenda.push(consulta);
-					agenda.push(consulta);
-					agenda.push(consulta);
-					agenda.push(consulta);
-					agenda.push(consulta);
-					//$("#agendamentos").jqGrid('addRowData',1,agenda[0]);
-					
-					$("#agendamentos").jqGrid('setCaption',showCaption());
-					
-				}
+				jQuery("#agendamentos").jqGrid({
+			   	url:'agenda/carregaAgenda',
+			   	mtype: 'POST',
+			   	postData: {idMedico: $("#medicos").val(), data: $("#calendario").attr("value")},
+				datatype: "json",
+			   	colNames:['ID','ID do Agendamento','Data','Horário','Nome do Paciente', 'Status','Convenio','Médico','Funcionário'],
+			   	colModel:[
+					{name:'id',index:'id',hidden:true, width:60},
+					{name:'idAgendamento',index:'idAgendamento',hidden:true, width:60},
+					{name:'data',index:'dataConsulta',hidden:true, width:60},
+			   		{name:'horario',index:'horario', width:60, align:"center"},
+			   		{name:'nomePaciente',index:'nomePaciente', width:280},
+			   		{name:'status',index:'status', width:120, align:"right"},
+			   		{name:'convenio',index:'convenio',hidden:true, width:50, align:"right"},
+			   		{name:'medico',index:'medico',hidden:true, width:50, align:"right"},
+			   		{name:'funcionario',index:'funcionario',hidden:true, width:50, align:"right"},
+			   	],
+			   	onSelectRow: function(id){
+			   		
+			   		//getRowData >> para JSON
+			   		
+			   		var registro = $("#agendamentos").jqGrid('getLocalRow',id);
+			   		$("#idAgendamento").text(registro.idAgendamento);
+			   		$("#nomePaciente").text(registro.nomePaciente);
+			   		$("#nomeMedico").text(registro.medico);
+			   		$("#dataConsulta").text(registro.dataConsulta);
+			   		$("#horaConsulta").text(registro.horario);
+			   		$("#nomeConvenio").text(registro.convenio);
+			   		$("#nomeFuncionario").text(registro.funcionario);
+			   		
+			   	    $("#dialog-detalhes").dialog({
+			   	    	width: 540,
+			   	    	resizable: false,
+			   	    	modal: true
+			   	    });
+			   	},
+			   	rowNum:16,
+			   	rowList:[16],
+			   	sortname: 'id',
+			   	pager: "#pager2",
+			    viewrecords: true,
+			    sortorder: "desc",
+			    width: 640,
+			    height: 380,
+			    caption:showCaption(),
+			    jsonReader : {
+		     		root: "rows",
+		     		page: "page",
+		     		total: "total",
+		    		records: "records",
+		   		    repeatitems: true,
+		   		    cell: "cells",
+		   		    id: "id",
+		   		    userdata: "userdata",
+		   		    subgrid: {root:"rows", 
+		    		    repeatitems: true, 
+		    	         cell:"cells"
+		             }}
 			});
+			$("#agendamentos2").jqGrid('navGrid','#pager2',{edit:false,add:false,del:false});
+			
+			atualizaGrid();
 			}
 		});		
 		
 		
 		$( "#calendario").datepicker({
 			autoSize:true,dateFormat:'dd/mm/yy', minDate: 0, maxDate: "+2M", onSelect: function(dateText, inst){
-				//$("#dataAgendamento").attr("value",dateText);
-				$("#agendamentos").jqGrid('clearGridData');
-				
-				$("#agendamentos").jqGrid('setCaption',showCaption());
-				for (var i=0;i<=agenda.length;i++ ){
-					$("#agendamentos").jqGrid('addRowData',i+1,agenda[i]);
-				}
-				
+				atualizaGrid();
 			}});	
 		
 		function Dia(data,horarios) {
@@ -152,82 +164,17 @@
 			this.horarios = horarios;
 		}
 		
-		jQuery("#agendamentos").jqGrid({
-		   	//url:'getLista',
-			datatype: "local",
-		   	colNames:['ID','ID do Agendamento','Data','Horário','Nome do Paciente', 'Status','Convenio','Médico','Funcionário'],
-		   	colModel:[
-				{name:'id',index:'id',hidden:true, width:60},
-				{name:'idAgendamento',index:'idAgendamento',hidden:true, width:60},
-				{name:'data',index:'dataConsulta',hidden:true, width:60},
-		   		{name:'horario',index:'horario', width:60, align:"center"},
-		   		{name:'nomePaciente',index:'nomePaciente', width:280},
-		   		{name:'status',index:'status', width:120, align:"right"},
-		   		{name:'convenio',index:'convenio',hidden:true, width:50, align:"right"},
-		   		{name:'medico',index:'medico',hidden:true, width:50, align:"right"},
-		   		{name:'funcionario',index:'funcionario',hidden:true, width:50, align:"right"},
-		   	],
-		   	onSelectRow: function(id){
-		   		
-		   		//getRowData >> para JSON
-		   		
-		   		var registro = $("#agendamentos").jqGrid('getLocalRow',id);
-		   		$("#idAgendamento").text(registro.idAgendamento);
-		   		$("#nomePaciente").text(registro.nomePaciente);
-		   		$("#nomeMedico").text(registro.medico);
-		   		$("#dataConsulta").text(registro.dataConsulta);
-		   		$("#horaConsulta").text(registro.horario);
-		   		$("#nomeConvenio").text(registro.convenio);
-		   		$("#nomeFuncionario").text(registro.funcionario);
-		   		
-		   	    $("#dialog-detalhes").dialog({
-		   	    	width: 540,
-		   	    	resizable: false,
-		   	    	modal: true
-		   	    });
-		   	},
-		   	rowNum:16,
-		   	rowList:[16],
-		   	sortname: 'id',
-		   	pager: "#pager2",
-		    viewrecords: true,
-		    sortorder: "desc",
-		    width: 640,
-		    height: 380,
-		    caption:showCaption(),
-		    jsonReader : {
-	     		root: "rows",
-	     		page: "page",
-	     		total: "total",
-	    		records: "records",
-	   		    repeatitems: true,
-	   		    cell: "cells",
-	   		    id: "id",
-	   		    userdata: "userdata",
-	   		    subgrid: {root:"rows", 
-	    		    repeatitems: true, 
-	    	         cell:"cells"
-	             }}
-		});
-		jQuery("#agendamentos2").jqGrid('navGrid','#pager2',{edit:false,add:false,del:false});
-		
 		
 	function showCaption(){
 		return "Agenda do dia: " + $("#calendario").attr("value") + " para médico: " + $("#medicos option:selected").text(); 
 	}	
 	
-	function postjson(url,data,bS,s,e){
-		$.ajax({
-			type:"POST",
-			url:url,
-			data:data,
-			dataType:"json",
-			beforeSend:bS,
-			success:s,
-			error:e
-		});
+	function atualizaGrid(){
+		$("#agendamentos").jqGrid('clearGridData');
+		$("#agendamentos").jqGrid().setGridParam({postData: {idMedico: $("#medicos").val(), data: $("#calendario").attr("value")}});
+		$("#agendamentos").jqGrid('setCaption',showCaption());
+		$("#agendamentos").trigger("reloadGrid");
 	}
-	
 	</script>	
 </body>
 </html>

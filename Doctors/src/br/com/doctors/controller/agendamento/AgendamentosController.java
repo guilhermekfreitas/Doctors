@@ -194,10 +194,11 @@ public class AgendamentosController {
 		result.use(Results.json()).from(listaHorarios, "datas").include("horarios").serialize();
 	}
 	
-	@Get
-	@Path("/agenda/carregaAgenda/{idMedico}")
-	public void carregaAgenda(Long idMedico){
+	@Post
+	@Path("/agenda/carregaAgenda")
+	public void carregaAgenda(Long idMedico, LocalDate data){
 		
+		System.out.println(idMedico + " " + data);
 //		System.out.println(ano+mes+dia);
 		
 //		LocalDate data;

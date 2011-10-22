@@ -133,4 +133,23 @@ public class IndexController {
 		result.use(Results.json()).withoutRoot().from(jqgrid).
 			include("rows").include("rows.cells").include("total").serialize();
 	}
+	
+	
+	@Path("/test")
+	public void test(){
+		
+	}
+	
+	@Path("/testJSONPost")
+	public void testJsonPost(Long idMedico, LocalDate horario){
+		
+		System.out.println("DEBUG");
+		System.out.println(idMedico);
+		System.out.println(horario);
+		
+	}
+	
+	
+	
+	
 }
