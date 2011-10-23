@@ -29,34 +29,37 @@ public class HorarioConverter {
 	
 	public List<HorarioJsonImpl> getAgenda(Long idMedico, LocalDate data){
 		
-		LocalTime horaAtual = getHoraInicioExpediente();
-		
-		List<Agendamento> listAgendamentos = daoAgendamento.agendamentosPara(idMedico, data);
+		List<Agendamento> listAgendamentos = getAgendamentos(idMedico, data);
 		
 		AgendaDoDia agenda = new AgendaDoDia(listAgendamentos);
-		
-		Map<LocalTime,HorarioJsonImpl> mapaConvertidos = new TreeMap<LocalTime,HorarioJsonImpl>();
+
+		AgendaJson agendaJson = new AgendaJson(parametros);
+			
+		LocalTime horaAtual = getHoraInicioExpediente();
 		while(estiverNoExpediente(horaAtual)){
 			
-			HorarioJsonImpl horarioJson = null;
 			if (agenda.temAgendamentoEm(horaAtual)){
 				Agendamento agendamento = agenda.getAgendamento(horaAtual);
-				horarioJson = criaHorarioJson(agendamento);
+				agendaJson.adicionaHorarioAgendado(horaAtual, agendamento);
 			} else {
-				horarioJson = criaHorarioJsonImplLivre(data,horaAtual);
+				agendaJson.adicionaHorarioLivre(data, horaAtual);				
 			}
-			mapaConvertidos.put(horaAtual, horarioJson );
 			
 			horaAtual = proximoHorario(horaAtual);
 		}
-		return new ArrayList<HorarioJsonImpl>(mapaConvertidos.values());
+		return agendaJson.getHorariosJSON();
+	}
+
+
+	private List<Agendamento> getAgendamentos(Long idMedico, LocalDate data) {
+		return daoAgendamento.agendamentosPara(idMedico, data);
 	}
 	
 	public List<HorarioJsonSimples> getHorariosLivres(Long idMedico, LocalDate data){
 		
 		LocalTime horaAtual = getHoraInicioExpediente();
 		
-		List<Agendamento> listAgendamentos = daoAgendamento.agendamentosPara(idMedico, data);
+		List<Agendamento> listAgendamentos = getAgendamentos(idMedico, data);
 		
 		AgendaDoDia agenda = new AgendaDoDia(listAgendamentos);
 		Long contador = 1L;
