@@ -32,15 +32,15 @@ public class HorarioConverter {
 		List<Agendamento> listAgendamentos = getAgendamentos(idMedico, data);
 		AgendaDoDia agenda = new AgendaDoDia(listAgendamentos, data);
 
-		AgendaJson<HorarioJsonImpl> agendaJson = converteParaAgendaJSon(agenda);
+		AgendaJsonImpl<HorarioJsonImpl> agendaJson = converteParaAgendaJSon(agenda);
 		
 		return agendaJson.getHorariosJSON();
 	}
 
 
-	private AgendaJson<HorarioJsonImpl> converteParaAgendaJSon(AgendaDoDia agenda ) {
+	private AgendaJsonImpl<HorarioJsonImpl> converteParaAgendaJSon(AgendaDoDia agenda ) {
 		
-		AgendaJson<HorarioJsonImpl> agendaJson = new AgendaJson<HorarioJsonImpl>(parametros);
+		AgendaJsonImpl<HorarioJsonImpl> agendaJson = new AgendaJsonImpl<HorarioJsonImpl>(parametros);
 		
 		LocalDate data = agenda.getDataAgendamentos();
 		LocalTime horaAtual = getHoraInicioExpediente();
@@ -65,46 +65,39 @@ public class HorarioConverter {
 	}
 	
 	public List<HorarioJsonSimples> getHorariosLivres(Long idMedico, LocalDate data){
-		
-		
 		List<Agendamento> listAgendamentos = getAgendamentos(idMedico, data);
 		
 		AgendaDoDia agenda = new AgendaDoDia(listAgendamentos,data);
-		Long contador = 1L;
 		
-		Map<LocalTime,HorarioJsonSimples> mapaHorariosLivres = new TreeMap<LocalTime,HorarioJsonSimples>();
+		AgendaJSonHorariosLivres agendaLivres = converteParaAgendaLivre(agenda);
+		
+		return agendaLivres.getHorariosJson();
+	}
 
+
+	private AgendaJSonHorariosLivres converteParaAgendaLivre(AgendaDoDia agenda) {
+		AgendaJSonHorariosLivres agendaLivres = new AgendaJSonHorariosLivres(parametros);
+		
+		LocalDate data = agenda.getDataAgendamentos();
 		LocalTime horaAtual = getHoraInicioExpediente();
 		while(estiverNoExpediente(horaAtual)){
 			
-			HorarioJsonSimples horarioJson = null;
 			if (!agenda.temAgendamentoEm(horaAtual)){
-				horarioJson = criaHorarioJsonSimplesLivre(contador++,data,horaAtual);
-				System.out.println(horarioJson);
-				mapaHorariosLivres.put(horaAtual, horarioJson );
+				agendaLivres.adicionaHorarioLivre(data, horaAtual);
 			}
-			
 			horaAtual = proximoHorario(horaAtual);
 		}
 		
-		return new ArrayList<HorarioJsonSimples>(mapaHorariosLivres.values());
+		return agendaLivres;
 	}
-	
-	private HorarioJsonSimples criaHorarioJsonSimplesLivre(Long id, LocalDate data,
-			LocalTime horaAtual) {
-		return new HorarioJsonSimples(id, data, horaAtual, parametros);
-	}
-
 
 	private LocalTime proximoHorario(LocalTime horaAtual) {
 		return parametros.proximaConsultaApos(horaAtual);
 	}
 
-
 	private boolean estiverNoExpediente(LocalTime horaAtual) {
 		return  !horaAtual.isAfter(horarioFinal);
 	}
-
 
 	private LocalTime getHoraInicioExpediente() {
 		return new LocalTime(horarioInicial);

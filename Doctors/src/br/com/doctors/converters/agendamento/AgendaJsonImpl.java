@@ -11,11 +11,11 @@ import org.joda.time.LocalTime;
 import br.com.doctors.modelo.agendamento.Agendamento;
 import br.com.doctors.modelo.util.ParametrosAgendamento;
 
-public class AgendaJson<T> {
+public class AgendaJsonImpl<T> {
 	private Map<LocalTime,T> mapaConvertidos;
 	private ParametrosAgendamento parametros;
 	
-	public AgendaJson(ParametrosAgendamento parametros) {
+	public AgendaJsonImpl(ParametrosAgendamento parametros) {
 		this.parametros = parametros; 
 		mapaConvertidos = new TreeMap<LocalTime,T>();
 	}
