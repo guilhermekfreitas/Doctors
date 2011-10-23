@@ -30,12 +30,21 @@ public class HorarioConverter {
 	public List<HorarioJsonImpl> getAgenda(Long idMedico, LocalDate data){
 		
 		List<Agendamento> listAgendamentos = getAgendamentos(idMedico, data);
-		
-		AgendaDoDia agenda = new AgendaDoDia(listAgendamentos);
+		AgendaDoDia agenda = new AgendaDoDia(listAgendamentos, data);
 
-		AgendaJson agendaJson = new AgendaJson(parametros);
-			
+		AgendaJson<HorarioJsonImpl> agendaJson = converteParaAgendaJSon(agenda);
+		
+		return agendaJson.getHorariosJSON();
+	}
+
+
+	private AgendaJson<HorarioJsonImpl> converteParaAgendaJSon(AgendaDoDia agenda ) {
+		
+		AgendaJson<HorarioJsonImpl> agendaJson = new AgendaJson<HorarioJsonImpl>(parametros);
+		
+		LocalDate data = agenda.getDataAgendamentos();
 		LocalTime horaAtual = getHoraInicioExpediente();
+		
 		while(estiverNoExpediente(horaAtual)){
 			
 			if (agenda.temAgendamentoEm(horaAtual)){
@@ -47,7 +56,7 @@ public class HorarioConverter {
 			
 			horaAtual = proximoHorario(horaAtual);
 		}
-		return agendaJson.getHorariosJSON();
+		return agendaJson;
 	}
 
 
@@ -57,14 +66,15 @@ public class HorarioConverter {
 	
 	public List<HorarioJsonSimples> getHorariosLivres(Long idMedico, LocalDate data){
 		
-		LocalTime horaAtual = getHoraInicioExpediente();
 		
 		List<Agendamento> listAgendamentos = getAgendamentos(idMedico, data);
 		
-		AgendaDoDia agenda = new AgendaDoDia(listAgendamentos);
+		AgendaDoDia agenda = new AgendaDoDia(listAgendamentos,data);
 		Long contador = 1L;
 		
 		Map<LocalTime,HorarioJsonSimples> mapaHorariosLivres = new TreeMap<LocalTime,HorarioJsonSimples>();
+
+		LocalTime horaAtual = getHoraInicioExpediente();
 		while(estiverNoExpediente(horaAtual)){
 			
 			HorarioJsonSimples horarioJson = null;
@@ -88,16 +98,6 @@ public class HorarioConverter {
 
 	private LocalTime proximoHorario(LocalTime horaAtual) {
 		return parametros.proximaConsultaApos(horaAtual);
-	}
-
-
-	private HorarioJsonImpl criaHorarioJsonImplLivre(LocalDate data, LocalTime horaAtual) {
-		return HorarioJsonImpl.criaHorarioLivre(data,horaAtual, parametros);
-	}
-
-
-	private HorarioJsonImpl criaHorarioJson(Agendamento agendamento) {
-		return new HorarioJsonImpl(agendamento, parametros);
 	}
 
 

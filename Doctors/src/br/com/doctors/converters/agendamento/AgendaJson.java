@@ -11,26 +11,28 @@ import org.joda.time.LocalTime;
 import br.com.doctors.modelo.agendamento.Agendamento;
 import br.com.doctors.modelo.util.ParametrosAgendamento;
 
-public class AgendaJson {
-	private Map<LocalTime,HorarioJsonImpl> mapaConvertidos;
+public class AgendaJson<T> {
+	private Map<LocalTime,T> mapaConvertidos;
 	private ParametrosAgendamento parametros;
 	
 	public AgendaJson(ParametrosAgendamento parametros) {
 		this.parametros = parametros; 
-		mapaConvertidos = new TreeMap<LocalTime,HorarioJsonImpl>();
+		mapaConvertidos = new TreeMap<LocalTime,T>();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void adicionaHorarioAgendado(LocalTime horaConsulta, Agendamento agendamento){
 		HorarioJsonImpl horarioJson = new HorarioJsonImpl(agendamento, parametros);
-		mapaConvertidos.put(horaConsulta, horarioJson );
+		mapaConvertidos.put(horaConsulta, (T) horarioJson );
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void adicionaHorarioLivre(LocalDate data, LocalTime horaConsulta){
 		HorarioJsonImpl horarioJson = HorarioJsonImpl.criaHorarioLivre(data,horaConsulta, parametros);
-		mapaConvertidos.put(horaConsulta, horarioJson );
+		mapaConvertidos.put(horaConsulta, (T) horarioJson );
 	}
 	
-	public List<HorarioJsonImpl> getHorariosJSON(){
-		return new ArrayList<HorarioJsonImpl>(mapaConvertidos.values());
+	public List<T> getHorariosJSON(){
+		return new ArrayList<T>(mapaConvertidos.values());
 	}
 }
