@@ -1,9 +1,7 @@
 package br.com.doctors.util.json;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class JQGridJSONConverter {
 	private String page;  // paginas requisitadas

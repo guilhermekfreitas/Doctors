@@ -124,7 +124,7 @@
 					datatype: "json",
 				   	colNames:['Horários Livres'],
 				   	colModel:[
-				   		{name:'horario',index:'horario', width:70, align:"center"}
+				   		{name:'horario',index:'horario', sortable:false, width:70, align:"center"}
 				   	],
 				   	onSelectRow: function(horario){
 
