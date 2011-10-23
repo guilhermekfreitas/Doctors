@@ -159,7 +159,7 @@ public class AgendamentosController {
 			that(agendamento.getHoraAgendamento() != null, 
 					"agendamento.horaAgendamento", "campo.obrigatorio", "Hora");
 			that(agendamento.getConvenio() != null && agendamento.getConvenio().getId() != null
-					&& agendamento.getConvenio().getId() != 0L, "agendamento.convenio.id", "campo.obrigatorio", "Convenio");
+				    , "agendamento.convenio.id", "campo.obrigatorio", "Convenio");
 		}};
 	}
 	
