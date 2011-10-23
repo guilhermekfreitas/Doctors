@@ -1,6 +1,5 @@
 package br.com.doctors.controller.agendamento;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -14,7 +13,6 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.validator.Validations;
 import br.com.caelum.vraptor.view.Results;
-import br.com.doctors.commands.AgendamentoCommand;
 import br.com.doctors.converters.agendamento.HorarioConverter;
 import br.com.doctors.converters.agendamento.HorarioJsonImpl;
 import br.com.doctors.converters.agendamento.HorarioJsonSimples;
@@ -28,13 +26,8 @@ import br.com.doctors.modelo.administracao.Paciente;
 import br.com.doctors.modelo.administracao.PerfilUsuario;
 import br.com.doctors.modelo.agendamento.Agendamento;
 import br.com.doctors.modelo.util.ParametrosAgendamento;
-//import br.com.doctors.services.AgendaCommand;
-import br.com.doctors.services.AgendamentoForFuncionarioService;
-import br.com.doctors.services.AgendamentoForPacienteService;
-import br.com.doctors.services.AgendamentoService;
 import br.com.doctors.util.UserSession;
 import br.com.doctors.util.json.JQGridJSONConverter;
-import br.com.doctors.util.json.JSONObject;
 
 /**
  * 
