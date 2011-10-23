@@ -23,6 +23,26 @@
 			float:left;
 			width: 25%;
 		}
+		div#relatorios {
+			float:right;
+			width: 30%;
+		}
+		div#form {
+			float:left;
+			width: 70%;
+		}
+		div#foot{
+			clear:both;
+		}
+		.acoes{
+			margin-bottom: 4px;
+		}
+		div#consulta fieldset{
+			padding:0; border:0; margin-top:25px;
+		}
+		div#consulta input.text { 
+			margin-bottom:12px; width:95%; padding: .4em; 
+		}
 </style>
 </head>
 <body>
@@ -60,9 +80,88 @@
 		<button id="btnIniciar">Iniciar Consulta</button>
 	</div>
 	
+<div id="consulta">
+	<div id="dialog-form" class="consulta" title="Nova Consulta">
+			<div id="form">
+				<form>
+					<fieldset>
+						<h1>Dados do paciente:</h1>
+						Nome do Paciente: Guilherme Kamizake de Freitas <button id="historico">Ver Histórico</button><br/>
+						Idade: 19 (07/10/1991)
+					</fieldset>
+					<fieldset>
+						<h1>Queixa Principal</h1>
+						<textarea id="queixaprinc" rows="12" cols="80">Modelo de Documento aqui?</textarea><br/>
+						
+						<h1>Observações</h1>
+						<textarea id="observacoes" rows="5" cols="80">[Observações da Consulta]</textarea>
+					</fieldset>
+				</form>
+			</div>
+			<div id="relatorios">
+				<h1>Ações Disponíveis:</h1>
+				<fieldset>
+					<button id="emit-receita" type="button" class="acoes">Emitir Receita</button><br/>
+					<button id="emit-atestado" class="acoes">Emitir Atestado</button><br/>
+					<button id="solic-exame" class="acoes">Emitir Solicitação de Exame</button><br/>
+				</fieldset>
+				<fieldset>
+					<h1>Lista de Relatórios Emitidos:</h1>
+					<table class="ui-widget ui-widget-content">
+						<thead>
+							<tr class="ui-widget-header ">
+								<th>Descrição              </th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr><th>Atestado</th><th><button id="edit">Editar</button></th><tr>
+							<tr><th>Receita Médica</th><th><button id="edit">Editar</button></th><tr>
+							<tr><th>Solicitação de Exame</th><th><button id="edit">Editar</button></th><tr>
+						</tbody>
+					</table>
+				</fieldset>
+			</div>
+			<div id="foot">
+			</div>
+	</div>
+
+	<div id="receita-form" title="Nova Receita">
+		<h1>Informações sobre Receita:</h1>
+		<textarea rows="15" cols="110">[Informações sobre Receita]</textarea>
+	</div>
+	
+	<div id="atestado-form" title="Novo Atestado">
+		<h1>Informações sobre Atestado:</h1>
+		<textarea rows="15" cols="110">[Modelo de Atestado]</textarea>
+	</div>
+	
+	<div id="exame-form" title="Nova Solicitação de Exame">
+		<h1>Informações sobre Exame:</h1>
+		<textarea rows="15" cols="110">[Modelo de Exame]</textarea>
+	</div>
+	
+	<div id="historico-busca" title="Consultar Histórico do Paciente">
+		<fieldset>
+			<h3>Opções de Busca:</h3>
+			<br /><label for="nome-paciente">Nome do paciente: </label><label id="nome-paciente">Guilherme Kamizake de Freitas</label>
+			<br /><label for="filtro-dtinicial">Data Inicial: </label><input type="text" id="filtro-dtinicial" />
+			<br /><label for="filtro-dtfinal">Data Final: </label><input type="text" id="filtro-dtfinal" />
+			<br /><label for="filtro-medico">Médico: </label><input type="text" id="filtro-medico" />
+		</fieldset>
+		<h3>Deve colocar tabela à direta ---- e visualizar a esquerda</h3>
+	</div>
+	
+</div>
+			
 	<script type="text/javascript">
 		$("#agenda").hide();
 		$("#dialog-detalhes").hide();
+		$("#receita-form").hide();        // transformar em class ? p/ poder esconder em grupos?
+		$("#atestado-form").hide();
+		$("#exame-form").hide();
+		$("#dialog-form").hide();
+		$("#historico-busca").hide();
 		
 		$( "#showPreAgendam" ).button();
 		$( "#novaConsulta").button();
@@ -77,7 +176,7 @@
 			alert("Falta implementar");
 		});
 		$( "#btnIniciar" ).click(function(){
-			alert("Falta implementar");
+			$( "#dialog-form" ).dialog( "open" );
 		});
 		
 		$("#medicos").change(function(){
@@ -94,7 +193,6 @@
 				datatype: "json",
 			   	colNames:['ID do Agendamento','Data','Horário','','Nome do Paciente', 'Status','Convenio','','Médico','','Funcionário'],
 			   	colModel:[
-					//{name:'id',index:'id',hidden:true, width:60},
 					{name:'idAgendamento',index:'idAgendamento',hidden:true, width:60},
 					{name:'data',index:'data',hidden:true, width:60},
 			   		{name:'horario',index:'horario', sortable:false,width:60, align:"center"},
@@ -132,8 +230,6 @@
 			   	},
 			   	rowNum:20,
 			   	rowList:[20],
-			   	//sortname: 'horario',
-			   	//pager: "#pager2",
 			    viewrecords: true,
 			    sortorder: "asc",
 			    width: 640,
@@ -153,7 +249,6 @@
 		    	         cell:"cells"
 		             }}
 			});
-			//$("#agendamentos2").jqGrid('navGrid','#pager2',{edit:false,add:false,del:false});
 			
 			atualizaGrid();
 			}
@@ -165,12 +260,6 @@
 				atualizaGrid();
 			}});	
 		
-		function Dia(data,horarios) {
-			this.data = data;
-			this.horarios = horarios;
-		}
-		
-		
 	function showCaption(){
 		return "Agenda do dia: " + $("#calendario").attr("value") + " para médico: " + $("#medicos option:selected").text(); 
 	}	
@@ -181,6 +270,115 @@
 		$("#agendamentos").jqGrid('setCaption',showCaption());
 		$("#agendamentos").trigger("reloadGrid");
 	}
+	
+	
+	$( "#dialog-form" ).dialog({
+		autoOpen: false,
+		closeOnEscape: false,
+		height: 500,
+		width: 850,
+		modal: true,
+		buttons: {
+			"Finalizar": function() {
+				$( this ).dialog( "close" );
+			},
+			"Cancelar": function() {
+				$( this ).dialog( "close" );
+			}
+		},
+		close: function() {
+			allFields.val( "" ).removeClass( "ui-state-error" );
+		}
+	});
+	
+	$( "#emit-receita" ).button().click(function() {
+		$( "#receita-form" ).dialog({
+			autoOpen: false,
+			closeOnEscape: false,
+			height: 370,
+			width: 600,
+			modal: true,
+			buttons: {
+				"Salvar": function() {
+					$( this ).dialog( "close" );
+				},
+				"Imprimir": function() {
+					$( this ).dialog( "close" );
+				},
+				"Cancelar": function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+		$( "#receita-form").dialog("open");
+	});
+	
+	$( "#emit-atestado" ).button().click(function() {
+		$( "#atestado-form" ).dialog({
+			autoOpen: false,
+			closeOnEscape: false,
+			height: 370,
+			width: 600,
+			modal: true,
+			buttons: {
+				"Salvar": function() {
+					$( this ).dialog( "close" );
+				},
+				"Imprimir": function() {
+					$( this ).dialog( "close" );
+				},
+				"Cancelar": function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+		$( "#atestado-form").dialog("open");
+	});
+	
+	$( "#solic-exame" ).button().click(function() {
+		$( "#exame-form" ).dialog({
+			autoOpen: false,
+			closeOnEscape: false,
+			height: 370,
+			width: 600,
+			modal: true,
+			buttons: {
+				"Salvar": function() {
+					$( this ).dialog( "close" );
+				},
+				"Imprimir": function() {
+					$( this ).dialog( "close" );
+				},
+				"Cancelar": function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+		$( "#exame-form").dialog("open");
+	});
+	
+	$( "#historico" ).button().click(function() {
+		$( "#historico-busca" ).dialog({
+			autoOpen: false,
+			closeOnEscape: false,
+			height: 370,
+			width: 600,
+			modal: true,
+			buttons: {
+				"Salvar": function() {
+					$( this ).dialog( "close" );
+				},
+				"Imprimir": function() {
+					$( this ).dialog( "close" );
+				},
+				"Cancelar": function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+		$( "#historico-busca").dialog("open");
+	});
+	
 	</script>	
 </body>
 </html>

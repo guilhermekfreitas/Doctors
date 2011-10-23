@@ -152,7 +152,7 @@
 </head>
 <body>
 
-<div class="demo">
+<div id="consulta" class="demo">
 
 <div id="dialog-form" class="consulta" title="Nova Consulta">
 		<div id="form">

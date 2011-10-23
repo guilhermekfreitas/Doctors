@@ -40,6 +40,7 @@ public class HorarioConverter {
 
 	private AgendaJsonImpl<HorarioJsonImpl> converteParaAgendaJSon(AgendaDoDia agenda ) {
 		
+		// parte que varia
 		AgendaJsonImpl<HorarioJsonImpl> agendaJson = new AgendaJsonImpl<HorarioJsonImpl>(parametros);
 		
 		LocalDate data = agenda.getDataAgendamentos();
@@ -47,6 +48,7 @@ public class HorarioConverter {
 		
 		while(estiverNoExpediente(horaAtual)){
 			
+			// parte que varia
 			if (agenda.temAgendamentoEm(horaAtual)){
 				Agendamento agendamento = agenda.getAgendamento(horaAtual);
 				agendaJson.adicionaHorarioAgendado(horaAtual, agendamento);
@@ -76,15 +78,18 @@ public class HorarioConverter {
 
 
 	private AgendaJSonHorariosLivres converteParaAgendaLivre(AgendaDoDia agenda) {
+		// parte que varia
 		AgendaJSonHorariosLivres agendaLivres = new AgendaJSonHorariosLivres(parametros);
 		
 		LocalDate data = agenda.getDataAgendamentos();
 		LocalTime horaAtual = getHoraInicioExpediente();
 		while(estiverNoExpediente(horaAtual)){
 			
+			// parte que varia
 			if (!agenda.temAgendamentoEm(horaAtual)){
 				agendaLivres.adicionaHorarioLivre(data, horaAtual);
 			}
+			
 			horaAtual = proximoHorario(horaAtual);
 		}
 		
