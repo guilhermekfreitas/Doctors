@@ -1,5 +1,6 @@
 package br.com.doctors.controller.agendamento;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -14,6 +15,9 @@ import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.validator.Validations;
 import br.com.caelum.vraptor.view.Results;
 import br.com.doctors.commands.AgendamentoCommand;
+import br.com.doctors.converters.agendamento.HorarioConverter;
+import br.com.doctors.converters.agendamento.HorarioJsonImpl;
+import br.com.doctors.converters.agendamento.HorarioJsonSimples;
 import br.com.doctors.dao.administracao.ConvenioDao;
 import br.com.doctors.dao.administracao.FuncionarioDao;
 import br.com.doctors.dao.administracao.MedicoDao;
@@ -23,11 +27,14 @@ import br.com.doctors.modelo.administracao.Convenio;
 import br.com.doctors.modelo.administracao.Paciente;
 import br.com.doctors.modelo.administracao.PerfilUsuario;
 import br.com.doctors.modelo.agendamento.Agendamento;
+import br.com.doctors.modelo.util.ParametrosAgendamento;
 //import br.com.doctors.services.AgendaCommand;
 import br.com.doctors.services.AgendamentoForFuncionarioService;
 import br.com.doctors.services.AgendamentoForPacienteService;
 import br.com.doctors.services.AgendamentoService;
 import br.com.doctors.util.UserSession;
+import br.com.doctors.util.json.JQGridJSONConverter;
+import br.com.doctors.util.json.JSONObject;
 
 /**
  * 
@@ -45,6 +52,7 @@ public class AgendamentosController {
 	private ConvenioDao daoConvenio;
 	private FuncionarioDao daoFuncionario;
 	private UserSession userSession;
+	private HorarioConverter horarioConverter;
 
 	public AgendamentosController(AgendamentoDao daoAgendamento, Result result, 
 			Validator validator, PacienteDao daoPaciente, MedicoDao daoMedico,
@@ -58,6 +66,9 @@ public class AgendamentosController {
 		this.daoConvenio = daoConvenio;
 		this.daoFuncionario = daoFuncionario;
 		this.userSession = userSession;
+		
+		ParametrosAgendamento parametros = ParametrosAgendamento.getParametrosDefault();
+		horarioConverter = new HorarioConverter(parametros, daoAgendamento);
 	}
 	
 	@Get @Path({"/agenda"})
@@ -94,8 +105,7 @@ public class AgendamentosController {
 		switch(usuario.getTipo()){
 			case ROLE_PACIENTE:
 				Paciente paciente = daoPaciente.carregaPorPerfil(usuario);
-//				System.out.println("Pega id:" + paciente.getId());
-				result.forwardTo(this).cadastro_paciente(paciente,daoConvenio.buscaPor(paciente.getId()));
+				result.forwardTo(this).preAgendar(paciente,daoConvenio.buscaPor(paciente.getId()));
 				break;
 			default:
 				result.include("pacientes", daoPaciente.listaTudo());
@@ -104,15 +114,16 @@ public class AgendamentosController {
 	}
 	
 	@Get @Path("/agenda/novo/{paciente}")
-	public void cadastro_paciente(Paciente paciente, List<Convenio> conveniosAssociados){
+	public void preAgendar(Paciente paciente, List<Convenio> conveniosAssociados){
 		result.include("paciente", paciente);
 		result.include("convenios", conveniosAssociados);
 		
-		System.out.println("convenios associados");
 		for(Convenio c: conveniosAssociados){
 			System.out.println(c);
 		}
 	}
+	
+	
 	
 	@Post @Path("/agenda")
 	public void adiciona(final Agendamento agendamento){
@@ -129,7 +140,7 @@ public class AgendamentosController {
 	private void atribueConvenio(final Agendamento agendamento) {
 		// verifica se não é particular
 		Convenio conv = agendamento.getConvenio(); 
-		if (conv != null && conv.getId() != 0){
+		if (conv != null && conv.getId() != null){
 			Convenio convenio = daoConvenio.carrega(conv.getId());
 			agendamento.setConvenio(convenio);
 		} else {
@@ -147,6 +158,8 @@ public class AgendamentosController {
 					"agendamento.dataAgendamento", "campo.obrigatorio", "Data");
 			that(agendamento.getHoraAgendamento() != null, 
 					"agendamento.horaAgendamento", "campo.obrigatorio", "Hora");
+			that(agendamento.getConvenio() != null && agendamento.getConvenio().getId() != null
+					&& agendamento.getConvenio().getId() != 0L, "agendamento.convenio.id", "campo.obrigatorio", "Convenio");
 		}};
 	}
 	
@@ -184,36 +197,34 @@ public class AgendamentosController {
 		result.use(Results.json()).from(lista).serialize();
 	}
 	
-	@Get
-	@Path("/agenda/carregaHorarios/{idMedico}")
-	public void carregaHorariosLivres(Long idMedico){
+	@Post
+	@Path("/agenda/carregaHorarios")
+	public void carregaHorariosLivres(Long idMedico, LocalDate data){
 		
-		AgendamentoService service = new AgendamentoForPacienteService(daoAgendamento);
-		List<? extends AgendamentoCommand> listaHorarios = service.getAgenda(idMedico);
+//		ParametrosAgendamento parametros = ParametrosAgendamento.getParametrosDefault();
+//		HorarioConverter horarioConverter = new HorarioConverter(parametros, daoAgendamento);
+		List<HorarioJsonSimples> agenda = horarioConverter.getHorariosLivres(idMedico, data);
 		
-		result.use(Results.json()).from(listaHorarios, "datas").include("horarios").serialize();
+		JQGridJSONConverter jqgrid = new JQGridJSONConverter();
+		
+		jqgrid.addJSONObjects(agenda);
+		
+		result.use(Results.json()).withoutRoot().from(jqgrid).include("rows").include("rows.cells").serialize();
 	}
 	
 	@Post
-	@Path("/agenda/carregaAgenda")
+	@Path("/agenda/carregaAgenda") // nomes do parametros devem ficar iguais
 	public void carregaAgenda(Long idMedico, LocalDate data){
 		
-		System.out.println(idMedico + " " + data);
-//		System.out.println(ano+mes+dia);
+//		ParametrosAgendamento parametros = ParametrosAgendamento.getParametrosDefault();
+//		HorarioConverter horarioConverter = new HorarioConverter(parametros, daoAgendamento);
+		List<HorarioJsonImpl> agenda = horarioConverter.getAgenda(idMedico, data);
 		
-//		LocalDate data;
-//		if (dia != null)
-//			data = new LocalDate(ano,mes,dia);
-//		else
-//			data = new LocalDate();
-//		
-//		System.out.println(data);
+		JQGridJSONConverter jqgrid = new JQGridJSONConverter();
 		
-		AgendamentoService service = new AgendamentoForFuncionarioService(daoAgendamento).comDataInicial(new LocalDate());
-//		service.setDataInicial(new LocalDate());
-		List<? extends AgendamentoCommand> agenda = service.getAgenda(idMedico);
+		jqgrid.addJSONObjects(agenda);
 		
-		result.use(Results.json()).from(agenda, "datas").include("horarios").include("horarios.id").serialize();
+		result.use(Results.json()).withoutRoot().from(jqgrid).include("rows").include("rows.cells").serialize();
 	}
 	
 	@Get

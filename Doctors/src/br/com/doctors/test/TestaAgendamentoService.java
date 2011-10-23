@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.joda.time.LocalDate;
 
 import br.com.doctors.dao.agendamento.AgendamentoDao;
 import br.com.doctors.modelo.agendamento.Agendamento;
@@ -28,7 +29,7 @@ public class TestaAgendamentoService {
 //		System.out.println();
 //		
 		AgendamentoService service = new AgendamentoForPacienteService(dao);
-		service.getAgenda(1L);
+		service.getAgenda(1L, new LocalDate());
 		
 	}
 }

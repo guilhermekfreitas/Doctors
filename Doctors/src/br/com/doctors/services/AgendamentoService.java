@@ -30,9 +30,9 @@ public abstract class AgendamentoService {
 
 	protected abstract AgendaConverter getAgendaConverter();
 	
-	public List<? extends AgendamentoCommand> getAgenda(Long idMedico){
+	public List<? extends AgendamentoCommand> getAgenda(Long idMedico, LocalDate dataAgendamentos){
 		
-		List<Agendamento> horariosConfirmados = daoAgendamento.agendamentosPara(idMedico);
+		List<Agendamento> horariosConfirmados = daoAgendamento.agendamentosPara(idMedico,dataAgendamentos);
 		AgendaConverter converter = getAgendaConverter();
 		Map<LocalDate, ? extends AgendamentoCommand> horariosAgrupadosPorDia = converter.agrupaHorariosPorDia(horariosConfirmados);
 

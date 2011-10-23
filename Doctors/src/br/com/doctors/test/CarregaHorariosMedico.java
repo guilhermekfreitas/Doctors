@@ -3,6 +3,7 @@ package br.com.doctors.test;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.joda.time.LocalDate;
 
 import br.com.doctors.dao.administracao.PerfilUsuarioDao;
 import br.com.doctors.dao.agendamento.AgendamentoDao;
@@ -17,7 +18,7 @@ public class CarregaHorariosMedico {
 		Session session = factory.openSession();
 		
 		AgendamentoDao dao = new AgendamentoDao(session);
-		dao.agendamentosPara(1L);
+		dao.agendamentosPara(1L, new LocalDate());
 		
 	}
 }

@@ -42,7 +42,6 @@
 		</div>
 		<div id="lista">
 			<table id="agendamentos"></table>
-			<div id="pager2"></div>
 		</div>
 	</div>
 	
@@ -93,43 +92,50 @@
 			   	mtype: 'POST',
 			   	postData: {idMedico: $("#medicos").val(), data: $("#calendario").attr("value")},
 				datatype: "json",
-			   	colNames:['ID','ID do Agendamento','Data','Horário','Nome do Paciente', 'Status','Convenio','Médico','Funcionário'],
+			   	colNames:['ID do Agendamento','Data','Horário','','Nome do Paciente', 'Status','Convenio','','Médico','','Funcionário'],
 			   	colModel:[
-					{name:'id',index:'id',hidden:true, width:60},
+					//{name:'id',index:'id',hidden:true, width:60},
 					{name:'idAgendamento',index:'idAgendamento',hidden:true, width:60},
-					{name:'data',index:'dataConsulta',hidden:true, width:60},
+					{name:'data',index:'data',hidden:true, width:60},
 			   		{name:'horario',index:'horario', width:60, align:"center"},
+			   		{name:'idPaciente',index:'idPaciente',hidden:true, width:60},
 			   		{name:'nomePaciente',index:'nomePaciente', width:280},
 			   		{name:'status',index:'status', width:120, align:"right"},
 			   		{name:'convenio',index:'convenio',hidden:true, width:50, align:"right"},
-			   		{name:'medico',index:'medico',hidden:true, width:50, align:"right"},
-			   		{name:'funcionario',index:'funcionario',hidden:true, width:50, align:"right"},
+			   		{name:'idMedico',index:'idMedico',hidden:true, width:60},
+			   		{name:'nomeMedico',index:'medico',hidden:true, width:50, align:"right"},
+			   		{name:'idFuncionario',index:'idFuncionario',hidden:true, width:60},
+			   		{name:'nomeFuncionario',index:'funcionario',hidden:true, width:50, align:"right"}
 			   	],
 			   	onSelectRow: function(id){
 			   		
-			   		//getRowData >> para JSON
-			   		
-			   		var registro = $("#agendamentos").jqGrid('getLocalRow',id);
-			   		$("#idAgendamento").text(registro.idAgendamento);
-			   		$("#nomePaciente").text(registro.nomePaciente);
-			   		$("#nomeMedico").text(registro.medico);
-			   		$("#dataConsulta").text(registro.dataConsulta);
-			   		$("#horaConsulta").text(registro.horario);
-			   		$("#nomeConvenio").text(registro.convenio);
-			   		$("#nomeFuncionario").text(registro.funcionario);
-			   		
-			   	    $("#dialog-detalhes").dialog({
-			   	    	width: 540,
-			   	    	resizable: false,
-			   	    	modal: true
-			   	    });
+				   	var registro = $("#agendamentos").jqGrid('getRowData',id);
+				   	
+				   	if (registro.idAgendamento !== "0"){
+				   		$("#idAgendamento").text(registro.idAgendamento);
+				   		$("#nomePaciente").text(registro.nomePaciente);
+				   		$("#nomeMedico").text(registro.nomeMedico);
+				   		$("#dataConsulta").text(registro.data);
+				   		$("#horaConsulta").text(registro.horario);
+				   		$("#nomeConvenio").text(registro.convenio);
+				   		$("#nomeFuncionario").text(registro.nomeFuncionario);
+				   		
+				   	    $("#dialog-detalhes").dialog({
+				   	    	width: 540,
+				   	    	resizable: false,
+				   	    	modal: true
+				   	    });
+				   	 	$( "#novaConsulta").attr("disabled","disabled");
+				   	} else {
+				   		$( "#novaConsulta").attr("disabled","");
+				   	}
 			   	},
-			   	rowNum:16,
-			   	rowList:[16],
-			   	sortname: 'id',
-			   	pager: "#pager2",
+			   	rowNum:20,
+			   	rowList:[20],
+			   	sortname: 'horario',
+			   	//pager: "#pager2",
 			    viewrecords: true,
-			    sortorder: "desc",
+			    sortorder: "asc",
 			    width: 640,
 			    height: 380,
 			    caption:showCaption(),
@@ -147,7 +153,7 @@
 		    	         cell:"cells"
 		             }}
 			});
-			$("#agendamentos2").jqGrid('navGrid','#pager2',{edit:false,add:false,del:false});
+			//$("#agendamentos2").jqGrid('navGrid','#pager2',{edit:false,add:false,del:false});
 			
 			atualizaGrid();
 			}

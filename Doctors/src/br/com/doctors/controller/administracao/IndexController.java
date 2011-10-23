@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.text.DateFormatter;
 
@@ -14,7 +15,7 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
-import br.com.doctors.util.json.JQGridJSONTransport;
+import br.com.doctors.util.json.JQGridJSONConverter;
 import br.com.doctors.util.json.JSONObject;
 
 @Resource
@@ -89,23 +90,10 @@ public class IndexController {
 			public void setNote(String note) {
 				this.note = note;
 			}
-			
 			@Override
-			public List<String> getCells() {
-				
-				System.out.println("DEBUG");
-				for( Field atributo : this.getClass().getDeclaredFields()){
-					if (!atributo.getName().equals("this$0")){  // pq é inner class
-						System.out.print(atributo.getName()+ " ");
-					}
-				}
-				System.out.println();
-				List<String> list = new ArrayList<String>();
-				list.add(id.toString());
-				list.add(invdate.toString());
-				list.add(amount.toString());
-				list.add(note.toString());
-				return list;
+			public Map<String, String> getCells() {
+				// TODO Auto-generated method stub
+				return null;
 			}
 		};
 		
@@ -126,7 +114,7 @@ public class IndexController {
 		list.add(c2);
 		list.add(c2);
 		
-		JQGridJSONTransport jqgrid = new JQGridJSONTransport();
+		JQGridJSONConverter jqgrid = new JQGridJSONConverter();
 		
 		jqgrid.addJSONObjects(list);
 		

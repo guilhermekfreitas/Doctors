@@ -25,11 +25,9 @@ public class AgendamentoDao extends DaoImpl<Agendamento>{
 	 * @param idMedico
 	 * @return
 	 */
-	public List<Agendamento> agendamentosPara(Long idMedico){
-		LocalDate dataInicial = new LocalDate();
-		LocalDate dataFinal = new LocalDate(dataInicial).plusMonths(2);
+	public List<Agendamento> agendamentosPara(Long idMedico, LocalDate dataAgendamentos){
 		Criteria criteria = getSession().createCriteria(Agendamento.class)
-				.add(Restrictions.between("dataAgendamento", dataInicial, dataFinal))
+				.add(Restrictions.eq("dataAgendamento", dataAgendamentos))
 				.createCriteria("medico").add(Restrictions.idEq(idMedico))
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return criteria.list();

@@ -74,4 +74,9 @@ public class ParametrosAgendamento {
 	public void setDataFinal(LocalDate dataFinal) {
 		this.dataFinal = dataFinal;
 	}
+	
+	public LocalTime proximaConsultaApos(LocalTime horario){
+		return horario.plus(minutosPorConsulta);
+	}
+	
 }

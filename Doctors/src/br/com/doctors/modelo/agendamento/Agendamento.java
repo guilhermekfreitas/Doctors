@@ -1,5 +1,7 @@
 package br.com.doctors.modelo.agendamento;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,6 +20,7 @@ import br.com.doctors.modelo.administracao.Funcionario;
 import br.com.doctors.modelo.administracao.Medico;
 import br.com.doctors.modelo.administracao.Paciente;
 import br.com.doctors.modelo.consultas.Consulta;
+import br.com.doctors.util.json.JSONObject;
 
 // Funcionario: funcionário que realizou a confirmação
 
@@ -171,5 +174,5 @@ public class Agendamento {
 			status = "Cancelado";
 		return status;
 	}
-	
+
 }
