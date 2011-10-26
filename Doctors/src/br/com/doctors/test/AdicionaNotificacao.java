@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.joda.time.DateTime;
 
 import br.com.doctors.dao.administracao.ConvenioDao;
@@ -20,11 +18,7 @@ import br.com.doctors.modelo.util.Notificacao;
 public class AdicionaNotificacao {
 	public static void main(String[] args) {
 
-		Configuration configuration = new Configuration();
-		configuration.configure();
-
-		SessionFactory factory = configuration.buildSessionFactory();
-		Session session = factory.openSession();
+		Session session = SessionUtil.getSession();
 
 //		gravaNotificacaoDeHoje(session);
 		gravaNotificacaoDeOntem(session);

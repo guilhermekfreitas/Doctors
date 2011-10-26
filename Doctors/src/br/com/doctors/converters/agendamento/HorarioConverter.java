@@ -1,9 +1,6 @@
 package br.com.doctors.converters.agendamento;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
@@ -48,6 +45,11 @@ public class HorarioConverter {
 		
 		while(estiverNoExpediente(horaAtual)){
 			
+			if (estaNoHorarioAlmoco(horaAtual)){
+				horaAtual = proximoHorario(horaAtual);
+				continue;
+			}
+			
 			// parte que varia
 			if (agenda.temAgendamentoEm(horaAtual)){
 				Agendamento agendamento = agenda.getAgendamento(horaAtual);
@@ -60,6 +62,7 @@ public class HorarioConverter {
 		}
 		return agendaJson;
 	}
+
 
 
 	private List<Agendamento> getAgendamentos(Long idMedico, LocalDate data) {
@@ -85,6 +88,11 @@ public class HorarioConverter {
 		LocalTime horaAtual = getHoraInicioExpediente();
 		while(estiverNoExpediente(horaAtual)){
 			
+			if (estaNoHorarioAlmoco(horaAtual)){
+				horaAtual = proximoHorario(horaAtual);
+				continue;
+			}
+			
 			// parte que varia
 			if (!agenda.temAgendamentoEm(horaAtual)){
 				agendaLivres.adicionaHorarioLivre(data, horaAtual);
@@ -108,4 +116,9 @@ public class HorarioConverter {
 		return new LocalTime(horarioInicial);
 	}
 	
+
+	private boolean estaNoHorarioAlmoco(LocalTime horaAtual) {
+		return parametros.estaNoHorarioAlmoco(horaAtual);
+	}
+
 }

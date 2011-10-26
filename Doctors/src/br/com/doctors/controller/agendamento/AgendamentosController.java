@@ -191,7 +191,7 @@ public class AgendamentosController {
 	}
 	
 	@Post
-	@Path("/agenda/carregaHorarios")
+	@Path("/agenda/carregaHorarios.json")
 	public void carregaHorariosLivres(Long idMedico, LocalDate data){
 		
 //		ParametrosAgendamento parametros = ParametrosAgendamento.getParametrosDefault();

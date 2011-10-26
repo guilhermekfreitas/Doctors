@@ -14,6 +14,8 @@ public class ParametrosAgendamento {
 	private Minutes minutosPorConsulta;
 	private LocalDate dataInicial;
 	private LocalDate dataFinal;
+	private LocalTime horaInicioAlmoco;
+	private LocalTime horaFimAlmoco;
 	
 	public ParametrosAgendamento() {
 	}
@@ -28,6 +30,8 @@ public class ParametrosAgendamento {
 		padrao.setMinutosPorConsulta(Minutes.minutes(30));
 		padrao.setDataFormatter(DateTimeFormat.forPattern("dd/MM/yyyy"));
 		padrao.setHoraFormatter(DateTimeFormat.forPattern("HH:mm"));
+		padrao.setHoraInicioAlmoco(new LocalTime(11,59));
+		padrao.setHoraFimAlmoco(new LocalTime(14,00));
 		
 		return padrao;
 	}
@@ -77,6 +81,26 @@ public class ParametrosAgendamento {
 	
 	public LocalTime proximaConsultaApos(LocalTime horario){
 		return horario.plus(minutosPorConsulta);
+	}
+
+	public boolean estaNoHorarioAlmoco(LocalTime horaAtual) {
+		return horaAtual.isAfter(horaInicioAlmoco) && horaAtual.isBefore(horaFimAlmoco);
+	}
+
+	public LocalTime getHoraInicioAlmoco() {
+		return horaInicioAlmoco;
+	}
+
+	public LocalTime getHoraFimAlmoco() {
+		return horaFimAlmoco;
+	}
+
+	public void setHoraInicioAlmoco(LocalTime horaInicioAlmoco) {
+		this.horaInicioAlmoco = horaInicioAlmoco;
+	}
+
+	public void setHoraFimAlmoco(LocalTime horaFimAlmoco) {
+		this.horaFimAlmoco = horaFimAlmoco;
 	}
 	
 }

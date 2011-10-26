@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormatter;
 
 import br.com.doctors.modelo.util.ParametrosAgendamento;
 
@@ -17,7 +18,7 @@ public class HorarioJsonSimples implements HorarioJson {
 		
 		this.id = id;
 		atributos = new LinkedHashMap<String, String>();
-		addAtributo("horario", horaAtual.toString(parametros.getHoraFormatter()));
+		addAtributo("horario", geraHorario(parametros, horaAtual));
 	}
 
 
@@ -33,6 +34,17 @@ public class HorarioJsonSimples implements HorarioJson {
 	
 	private void addAtributo(String nomeAtributo, String valorAtributo){
 		atributos.put(nomeAtributo, valorAtributo);
+	}
+	
+	private String geraHorario(ParametrosAgendamento parametros,
+			LocalTime horaAgendamento) {
+		
+		DateTimeFormatter horaFormatter = parametros.getHoraFormatter();
+		
+		String horarioInicial = horaAgendamento.toString(horaFormatter);
+		String horarioFinal = parametros.proximaConsultaApos(horaAgendamento).toString(horaFormatter);
+		String horario = horarioInicial + " - " + horarioFinal;
+		return horario;
 	}
 	
 	@Override
