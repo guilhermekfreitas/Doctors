@@ -50,17 +50,17 @@
 			<td><select id="medicos" name="agendamento.medico.id">
 				<option value="">Selecione um médico..</option>
 				<c:forEach items="${medicos}" var="medico">
-				<option value="${medico.id}">${medico.nome}</option>
+					<option value="${medico.id}">${medico.nome}</option>
 				</c:forEach>
 			</select></td></tr>
 
 			<tr><td><label for="convenios">Convênio:</label></td> 
-			<td><select id="convenios" name="agendamento.convenio.id" ${empty convenios?'disabled':''}>
+			<td><select id="convenios" name="agendamento.convenio.id">
 				<c:choose>
 					<c:when test="${!empty convenios}">
 						<option value="">Selecione um convênio..</option>
 						<c:forEach items="${convenios}" var="convenio">
-						<option value="${convenio.id}">${convenio.nome}</option>
+							<option value="${convenio.id}">${convenio.nome}</option>
 						</c:forEach>
 					</c:when>
 					<c:otherwise>
