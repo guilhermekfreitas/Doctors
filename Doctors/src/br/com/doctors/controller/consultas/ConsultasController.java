@@ -142,6 +142,13 @@ public class ConsultasController {
 
 	@Path("/consultas/efetuarConsulta")
 	public void efetuarConsultar(Consulta consulta) {
+		
+		Agendamento agendamento = daoAgendamento.carrega(consulta.getAgendamento().getId());
+		agendamento.setConsulta(consulta);
+		// atualizar status do agendamento tbm
+		daoAgendamento.atualiza(agendamento);
+		
+		System.out.println(consulta);
 		daoConsulta.adiciona(consulta);
 	}
 

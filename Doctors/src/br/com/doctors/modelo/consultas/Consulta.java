@@ -109,7 +109,8 @@ public class Consulta {
 
 	@Override
 	public String toString() {
-		return queixaPrincipal;
+		return String.format("Queixa:%s,Obs:%s,Agendamento:%s,Atestados:%s,Exames:%s,Receitas:%s", 
+				queixaPrincipal, observacoes, agendamento, atestados, exames, receitas);
 	}
 	
 }

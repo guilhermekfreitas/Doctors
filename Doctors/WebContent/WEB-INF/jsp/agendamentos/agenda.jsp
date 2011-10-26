@@ -83,7 +83,7 @@
 <div id="consulta">
 	<div id="dialog-form" class="consulta" title="Nova Consulta">
 			<div id="form">
-				<form>
+				<form id="consulta-form" action="<c:url value="/consultas/efetuarConsulta"/>" method="post">
 					<fieldset>
 						<h1>Dados do paciente:</h1>
 						Nome do Paciente: Guilherme Kamizake de Freitas <button id="historico">Ver Histórico</button><br/>
@@ -91,11 +91,12 @@
 					</fieldset>
 					<fieldset>
 						<h1>Queixa Principal</h1>
-						<textarea id="queixaprinc" rows="12" cols="80">Modelo de Documento aqui?</textarea><br/>
+						<textarea id="queixaprinc" name="consulta.queixaPrincipal" rows="12" cols="80">Modelo de Documento aqui?</textarea><br/>
 						
 						<h1>Observações</h1>
-						<textarea id="observacoes" rows="5" cols="80">[Observações da Consulta]</textarea>
+						<textarea id="observacoes" name="consulta.observacoes" rows="5" cols="80">[Observações da Consulta]</textarea>
 					</fieldset>
+					<input type="hidden" id="agendamentoId" name="consulta.agendamento.id" />
 				</form>
 			</div>
 			<div id="relatorios">
@@ -176,6 +177,10 @@
 			alert("Falta implementar");
 		});
 		$( "#btnIniciar" ).click(function(){
+			alert($("#idAgendamento").text());
+			$("#agendamentoId").val($("#idAgendamento").text());
+			alert($("#agendamentoId").val());
+			alert($("#agendamendoId"));
 			$( "#dialog-form" ).dialog( "open" );
 		});
 		
@@ -280,6 +285,7 @@
 		modal: true,
 		buttons: {
 			"Finalizar": function() {
+				$("#consulta-form").submit();
 				$( this ).dialog( "close" );
 			},
 			"Cancelar": function() {
