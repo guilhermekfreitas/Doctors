@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://www.joda.org/joda/time/tags" prefix="joda" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -44,6 +45,14 @@
 		div#consulta input.text { 
 			margin-bottom:12px; width:95%; padding: .4em; 
 		}
+		div#divresultados {
+			float:right;
+			width: 75%;
+		}
+		div#divhistorico {
+			float:left;
+			width: 25%;
+		}
 </style>
 </head>
 <body>
@@ -55,7 +64,7 @@
 		</c:forEach>
 	</select>
 	
-	<div id="agenda">
+	<div id="agenda" >
 		<div id="divesq">
 			<div class="calendario" id="calendario"></div>
 			<br /><input type="checkbox" id="showPreAgendam" class="button" /><label for="showPreAgendam">Visualizar apenas consultas a confirmar</label>
@@ -66,7 +75,7 @@
 		</div>
 	</div>
 	
-	<div id="dialog-detalhes" title="Informações sobre a Consulta">
+	<div id="dialog-detalhes" class="dialog" title="Informações sobre a Consulta">
 		<label class="label">Agendamento(#id): </label><label id="idAgendamento"></label><br />
 		<label class="label">Nome do paciente: </label><label id="nomePaciente"></label><br />
 		<label class="label">Nome do médico: </label><label id="nomeMedico"></label><br />
@@ -76,90 +85,113 @@
 		<label class="label">Funcionário que realizou confirmação: </label><label id="nomeFuncionario"></label><br />
 		
 		<br /><h3>Ações:</h3><br />
-		<button id="btnConfirmar" class="button">Confirmar Pré-Agendamento</button>
-		<button id="btnNotificar" class="button">Notificar Chegada do Paciente</button>
-		<button id="btnIniciar" class="button">Iniciar Consulta</button>
+		<sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_FUNCIONARIO">
+			<button id="btnConfirmar" class="button">Confirmar Pré-Agendamento</button>
+			<button id="btnTransferir" class="button">Transferir Horário</button>
+			<button id="btnNotificar" class="button">Notificar Chegada do Paciente</button>
+		</sec:authorize>
+		<sec:authorize ifAnyGranted="ROLE_ADMIN,ROLE_MEDICO">
+			<button id="btnIniciar" class="button">Iniciar Consulta</button>
+		</sec:authorize>
+	</div>
+	
+	<div id="dialog-confirmacao" class="dialog" title="Confirmação de Pré-Agendamento">
+		<p>Escolha uma das opções abaixo:</p>
+	</div>
+	
+	<div id="dialog-msg-confirmacao" class="dialog" title="Confirmação de Agendamento">
+		<p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+			O agendamento foi confirmado com sucesso.</p>
+	</div>
+	
+	<div id="dialog-msg-cancelamento" class="dialog" title="Cancelamento de Agendamento">
+		<p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+			O agendamento foi cancelado com sucesso.</p>
 	</div>
 	
 	<div id="consulta">
-		<div id="dialog-form" class="consulta" title="Nova Consulta">
+		<div id="dialog-form" class="consulta dialog" title="Nova Consulta">
 				<div id="form">
 					<form id="consulta-form" action="<c:url value="/consultas/efetuarConsulta"/>" method="post">
-						<fieldset>
-							<h1>Dados do paciente:</h1>
+							<h2>Dados do paciente:</h2>
 							Nome do Paciente: Guilherme Kamizake de Freitas <button id="historico">Ver Histórico</button><br/>
 							Idade: 19 (07/10/1991)
-						</fieldset>
-						<fieldset>
-							<h1>Queixa Principal</h1>
+							<h3>Queixa Principal:</h3>
 							<textarea id="queixaprinc" name="consulta.queixaPrincipal" rows="12" cols="80">Modelo de Documento aqui?</textarea><br/>
 							
-							<h1>Observações</h1>
-							<textarea id="observacoes" name="consulta.observacoes" rows="5" cols="80">[Observações da Consulta]</textarea>
-						</fieldset>
+							<h3>Observações:</h3>
+							<textarea id="observacoes" name="consulta.observacoes" rows="4" cols="80">[Observações da Consulta]</textarea>
 						<input type="hidden" id="agendamentoId" name="consulta.agendamento.id" />
 					</form>
 				</div>
 				<div id="relatorios">
-					<h1>Ações Disponíveis:</h1>
-					<fieldset>
-						<button id="emit-receita" type="button" class="acoes">Emitir Receita</button><br/>
-						<button id="emit-atestado" class="acoes">Emitir Atestado</button><br/>
-						<button id="solic-exame" class="acoes">Emitir Solicitação de Exame</button><br/>
-					</fieldset>
-					<fieldset>
-						<h1>Lista de Relatórios Emitidos:</h1>
-						<table class="ui-widget ui-widget-content">
+					<h2>Ações Disponíveis:</h2><br />
+						<button id="emit-receita" type="button" class="button">Emitir Receita</button><br/>
+						<button id="emit-atestado" class="button">Emitir Atestado</button><br/>
+						<button id="solic-exame" class="button">Emitir Solicitação de Exame</button><br/>
+						<br /><h2>Lista de Relatórios Emitidos:</h2><br />
+						<table id="list-documentos" class="ui-widget ui-widget-content">
 							<thead>
 								<tr class="ui-widget-header ">
-									<th>Descrição              </th>
-									<th></th>
+									<th>Id   </th>
+									<th>Tipo              </th>
+									<th>Ações</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr><th>Atestado</th><th><button id="edit" class="button">Editar</button></th><tr>
-								<tr><th>Receita Médica</th><th><button id="edit" class="button">Editar</button></th><tr>
-								<tr><th>Solicitação de Exame</th><th><button id="edit" class="button">Editar</button></th><tr>
+								<tr><td>1</td><td>Atestado</td><td><button id="edit" class="button">Editar</button></td><tr>
+								<tr><td>1</td><td>Receita Médica</td><td><button id="edit" class="button">Editar</button></td><tr>
+								<tr><td>1</td><td>Solicitação de Exame</td><td><button id="edit" class="button">Editar</button></td><tr>
 							</tbody>
 						</table>
-					</fieldset>
 				</div>
 				<div id="foot">
 				</div>
 		</div>
+		
+		<div id="dialog-confirm" class="dialog" title="Cancelar consulta">
+			<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Você está saindo da consulta. Tem certeza disso?</p>
+		</div>
 	
-		<div id="receita-form" title="Nova Receita">
-			<h1>Informações sobre Receita:</h1>
-			<textarea rows="15" cols="110">[Informações sobre Receita]</textarea>
+		<div id="receita-form" class="dialog" title="Nova Receita">
+			<h3>Informações sobre Receita:</h3>
+			<textarea id="receita-info" rows="15" cols="110">[Informações sobre Receita]</textarea>
 		</div>
 		
-		<div id="atestado-form" title="Novo Atestado">
-			<h1>Informações sobre Atestado:</h1>
-			<textarea rows="15" cols="110">[Modelo de Atestado]</textarea>
+		<div id="atestado-form" class="dialog" title="Novo Atestado">
+			<h3>Informações sobre Atestado:</h3>
+			<textarea id="atestado-info" rows="15" cols="110">[Modelo de Atestado]</textarea>
 		</div>
 		
-		<div id="exame-form" title="Nova Solicitação de Exame">
-			<h1>Informações sobre Exame:</h1>
-			<textarea rows="15" cols="110">[Modelo de Exame]</textarea>
+		<div id="exame-form" class="dialog" title="Nova Solicitação de Exame">
+			<h3>Informações sobre Exame:</h3>
+			<textarea id="exame-info" rows="15" cols="110">[Modelo de Exame]</textarea>
 		</div>
 		
-		<div id="historico-busca" title="Consultar Histórico do Paciente">
-			<fieldset>
+		<div id="historico-busca" class="dialog" title="Consultar Histórico do Paciente">
+			<div id="div-filtro">
 				<h3>Opções de Busca:</h3>
-				<br /><label for="nome-paciente">Nome do paciente: </label><label id="nomePaciente"></label>
-				<br /><label for="filtro-dtinicial">Data Inicial: </label><input 
-					type="text"  id="dataInicial" class="data" />
-				<br /><label for="filtro-dtfinal">Data Final: </label><input 
-					type="text" id="dataFinal" class="data" />
-				<br /><label for="filtro-medico">Médico: </label><input type="text" id="idMedico" />
+				<table>
+					<tr><td><label for="nomePaciente">Nome do paciente: </label></td>
+						<td><input type="text" id="nomePaciente" /></td></tr>
+					<tr><td><label for="dataInicial">Data Inicial: </label></td>
+						<td><input type="text"  id="dataInicial" class="data" /></td></tr>
+					<tr><td><label for="dataFinal">Data Final: </label></td>
+						<td><input type="text" id="dataFinal" class="data" /></td></tr>
+					<tr><td><label for="idMedico">Médico: </label></td>
+					 	<td><select	id="idMedico">
+								<c:forEach items="${medicos}" var="medico">
+									<option value="${medico.id}">${medico.nome}</option>
+								</c:forEach>
+							</select></td></tr>
+				</table>
 				<br /><input type="text" id="idPaciente" name="idPaciente"/> 
 				<br /><button id="btn-consultaHist" class="button" >Buscar Históricos</button>
-			</fieldset>
-			<h3>Deve colocar tabela à direta ---- e visualizar a esquerda</h3>
-			<table id="lista-resultados">
-			</table>
-			<div id="resultado">
-				
+			</div>
+			<div id="divresultados">
+				<table id="lista-resultados"></table>
+			</div>
+			<div id="divhistorico">
 			</div>
 		</div>
 		

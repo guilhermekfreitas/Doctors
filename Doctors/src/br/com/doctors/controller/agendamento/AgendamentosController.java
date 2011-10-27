@@ -69,6 +69,7 @@ public class AgendamentosController {
 		PerfilUsuario usuario = userSession.getUsuario();
 		switch (usuario.getTipo()){
 		case ROLE_FUNCIONARIO:
+		case ROLE_MEDICO:
 			result.include("medicos", daoMedico.listaTudo());
 //			result.forwardTo(this).veragenda(); // teste
 //			result.forwardTo(this).agendaDoFuncionario();
@@ -226,6 +227,18 @@ public class AgendamentosController {
 		Agendamento agendamento = daoAgendamento.carrega(idAgendamento);
 		agendamento.confirmarPreAgendamento();
 		daoAgendamento.atualiza(agendamento);		
+		
+		result.use(Results.status()).accepted();
+	}
+	
+	@Get
+	@Path("/agenda/cancelaAgendamento/{idAgendamento}")
+	public void cancelaAgendamento(Long idAgendamento){		
+		Agendamento agendamento = daoAgendamento.carrega(idAgendamento);
+		agendamento.cancelarPreAgendamento();
+		daoAgendamento.atualiza(agendamento);		
+		
+		result.use(Results.status()).accepted();
 	}
 	
 	@Get

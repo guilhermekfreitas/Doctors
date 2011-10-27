@@ -21,4 +21,8 @@ public abstract class Documento {
 		this.descricao = descricao;
 	}
 
+	@Override
+	public String toString() {
+		return descricao;
+	}
 }

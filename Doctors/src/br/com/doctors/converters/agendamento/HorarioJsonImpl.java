@@ -1,6 +1,5 @@
 package br.com.doctors.converters.agendamento;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -11,16 +10,7 @@ import org.joda.time.format.DateTimeFormatter;
 import br.com.doctors.modelo.agendamento.Agendamento;
 import br.com.doctors.modelo.util.ParametrosAgendamento;
 
-import com.google.common.base.Strings;
-
 public class HorarioJsonImpl implements HorarioJson {
-	private String dataAgendamento;
-	private String confirmado;
-	private String cancelado;
-	private String idConvenio;
-	private String nomeConvenio;
-	private String horario;
-	
 	private Map<String,String> atributos;
 	private Long id;
 	
@@ -67,50 +57,6 @@ public class HorarioJsonImpl implements HorarioJson {
 		return id;
 	}
 
-	public String getIdAgendamento() {
-		return id.toString();
-	}
-
-	public String getDataAgendamento() {
-		return dataAgendamento;
-	}
-
-	public String getConfirmado() {
-		return confirmado;
-	}
-
-	public String getCancelado() {
-		return cancelado;
-	}
-
-	public String getIdConvenio() {
-		return idConvenio;
-	}
-
-	public String getNomeConvenio() {
-		return nomeConvenio;
-	}
-
-	public void setDataAgendamento(String dataAgendamento) {
-		this.dataAgendamento = dataAgendamento;
-	}
-
-	public void setConfirmado(String confirmado) {
-		this.confirmado = confirmado;
-	}
-
-	public void setCancelado(String cancelado) {
-		this.cancelado = cancelado;
-	}
-
-	public void setIdConvenio(String idConvenio) {
-		this.idConvenio = idConvenio;
-	}
-
-	public void setNomeConvenio(String nomeConvenio) {
-		this.nomeConvenio = nomeConvenio;
-	}
-
 	@Override
 	public Map<String,String> getCells() {
 		return atributos;
@@ -118,14 +64,6 @@ public class HorarioJsonImpl implements HorarioJson {
 
 	private String verifica(Object campo) {
 		return campo!= null ? campo.toString() : "";
-	}
-
-	public String getHorario() {
-		return horario;
-	}
-
-	public void setHorario(String horario) {
-		this.horario = horario;
 	}
 
 	private void addAtributo(String nomeAtributo, String valorAtributo){

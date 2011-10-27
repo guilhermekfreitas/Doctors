@@ -21,30 +21,169 @@ $(document).ready(function(){
 	   						this.paciente.id = registro.idPaciente,
 	   						this.paciente.nome = registro.nomePaciente;
 	   						this.medico.id = '-1';
-	   						this.medico.nomeMedico = registro.nomeMedico;
+	   						this.medico.nome = registro.nomeMedico;
 	   					},
 	   			getDadosConsulta: function(){
 	   				
-	   					}
+	   					},
+	   		    habilitaTodos: function(){
+		   		    	$("#btnConfirmar").button( "option", "disabled", false);
+		   		    	$("#btnIniciar").button( "option", "disabled", false);
+		   		    	$("#btnNotificar").button( "option", "disabled", false);
+		   		    	$("#btnTransferir").button( "option", "disabled", false);
+		   		    },
+		   		desabilita: function(nome){
+			   			$(nome).button( "option", "disabled", true);
+			   		},
+			   	habilita: function(nome){
+			   			$(nome).button( "option", "disabled", false);
+			   	}
 				};
+		MYAPP.historico = {
+				url: 'consulta/consultarHistorico',
+				showCaption: function() {
+					return "Resultados da busca";
+				},
+				getPostData: function() {
+					return {
+						idPaciente: $("#idPaciente").val(), 
+						idMedico: $("#idMedico").val(), 
+						dataInicial: $("#dataInicial").val(), 
+						dataFinal: $("#dataFinal").val()
+						};
+					}
+		};
+		MYAPP.consulta = {
+				// atributos
+				documentos: [],
+				exames: [],
+				atestados: [],
+				receitas: [],
+				total: 0,
+				// funcoes
+				addDocumento : function(documento,tipo){
+					
+					this.total++;
+					switch(tipo){
+						case "exame":
+							this.add(this.exames,documento,tipo);
+							this.show(this.atestados);
+							break;
+						case "atestado":
+							this.add(this.atestados,documento,tipo);
+							this.show(this.atestados);
+							break;
+						case "receita":
+							this.add(this.receitas,documento,tipo);
+							this.show(this.receitas);
+							break;
+					}
+					
+//					var indice = this.documentos.length;
+//					// adiciona na div (dados + botao)
+//					$("#list-documentos > tbody").append("<tr><td>" + (indice+1) + "</td><td>" + tipo + "</td><td>editar</td></tr>");
+//					$("#consulta-form").append($('<input>',{
+//						name: 'consulta.' + tipo + 's[' + indice + '].descricao',
+//						value: documento
+//					}));
+//					this.documentos.push(documento);
+				},
+				showDocumentos : function(){
+						for (var i in this.documentos){
+							console.log(this.documentos[i]);
+						}
+				},
+				show: function(array){
+						for (var i in array){
+							console.log(array[i]);
+						}
+				},
+				add: function(array,documento,tipo){
+						var indice = array.length;
+						$("#list-documentos > tbody").append("<tr><td>" + this.total + "</td><td>" + 
+															tipo + "</td><td><button type='button' class='button'>Editar</button></td></tr>");
+						$("#consulta-form").append($('<input>',{
+							name: 'consulta.' + tipo + 's[' + indice + '].descricao',
+							value: documento
+						}));
+						array.push(documento);
+				}
+		};
+		
 	
 		$("#agenda").hide();
-		$("#dialog-detalhes").hide();
-		$("#receita-form").hide();        // transformar em class ? p/ poder esconder em grupos?
-		$("#atestado-form").hide();
-		$("#exame-form").hide();
-		$("#dialog-form").hide();
-		$("#historico-busca").hide();
-		
-		//$( "#showPreAgendam" ).button();
-		//$( "#novaConsulta").button();
-		//$( "#btnConfirmar").button();
-		//$( "#btnNotificar").button();
-		//$( "#btnIniciar" ).button();
-		
+		$( ".dialog" ).hide();
 		$( ".button" ).button();
+		$( ".editDoc" ).button();
 
+		$( ".editDoc").click(function(){
+			alert("falta implementar");
+		});
+		
 		$( "#btnConfirmar" ).click(function(){
+			
+			$("#dialog-confirmacao").dialog({
+				modal:true,
+				width: 300,
+				buttons: {
+					"Confirmar": function(){
+						$.ajax({
+							url: 'agenda/confirmaAgendamento/' + $( '#idAgendamento' ).text(),
+							type: 'GET',
+							dataType: 'json',
+							success: function(data){
+								$("#dialog-msg-confirmacao").dialog({
+									modal:true,
+									resizable: false,
+									width: 300,
+									buttons: {
+										Ok: function(){
+											$( this ).dialog( "close" );
+										}
+									}
+								});
+								 $("#dialog-confirmacao").dialog( "close" );
+								 $("#dialog-detalhes").dialog( "close" );
+								 atualizaGrid();
+							},
+							error: function(data){
+								alert('ERRO!');
+							} 
+						});	
+					},
+					"Cancelamento": function(){
+						$.ajax({
+							url: 'agenda/cancelaAgendamento/' + $( '#idAgendamento' ).text(),
+							type: 'GET',
+							dataType: 'json',
+							success: function(data){
+								$("#dialog-msg-cancelamento").dialog({
+									modal:true,
+									resizable: false,
+									width: 300,
+									buttons: {
+										Ok: function(){
+											$( this ).dialog( "close" );
+										}
+									}
+								});
+								 $("#dialog-confirmacao").dialog( "close" );
+								 $("#dialog-detalhes").dialog( "close" );
+								 atualizaGrid();
+							},
+							error: function(data){
+								alert('ERRO!');
+							} 
+						});	
+					},
+					"Voltar": function(){
+						$(this).dialog("close");
+					}
+				}
+			});
+		});
+		
+		$( "#btnTransferir" ).click(function(){
 			alert("Falta implementar");
 		});
 		$( "#btnNotificar" ).click(function(){
@@ -52,6 +191,8 @@ $(document).ready(function(){
 		});
 		$( "#btnIniciar" ).click(function(){
 			$("#agendamentoId").val($("#idAgendamento").text());
+			// reinicializa consulta, senao fica com dados de antes
+//			MYAPP.consulta
 			$( "#dialog-form" ).dialog( "open" );
 		});
 		
@@ -85,31 +226,45 @@ $(document).ready(function(){
 			   		
 				   	var registro = $("#agendamentos").jqGrid('getRowData',id);
 				   	
-				   	if (registro.idAgendamento !== "0"){
+				   	if (registro.status !== "Cancelado" && registro.status !== "Livre"){
 				   		
 				   		MYAPP.agendamento.carrega(registro);
+				   		MYAPP.agendamento.habilitaTodos();
 				   		
 				   		var dados = MYAPP.agendamento;
 				   		
-				   		$("#idAgendamento").text(dados.idAgendamento);
-				   		$("#nomePaciente").text(registro.nomePaciente);
-				   		$("#nomeMedico").text(registro.nomeMedico);
-				   		$("#dataConsulta").text(registro.data);
-				   		$("#horaConsulta").text(registro.horario);
-				   		$("#nomeConvenio").text(registro.convenio);
-				   		$("#nomeFuncionario").text(registro.nomeFuncionario);
-				   		alert(registro.idPaciente);
-				   		$("#idPaciente").text(registro.idPaciente);
+				   		$("#idAgendamento").text(dados.id);
+				   		$("#nomePaciente").text(dados.paciente.nome);
+				   		$("#nomeMedico").text(dados.medico.nome);
+				   		$("#dataConsulta").text(dados.data);
+				   		$("#horaConsulta").text(dados.horario);
+				   		$("#nomeConvenio").text(dados.nomeConvenio);
+				   		$("#nomeFuncionario").text(dados.nomeFuncionario);
+				   		$("#idPaciente").text(dados.paciente.id);
+				   		
+				   		if (registro.status == "Confirmado"){
+				   			MYAPP.agendamento.desabilita("#btnConfirmar");
+				   		}
+				   		if (registro.status == "A Confirmar"){
+				   			MYAPP.agendamento.desabilita("#btnIniciar");
+				   			MYAPP.agendamento.desabilita("#btnNotificar");
+				   		}
 				   		
 				   	    $("#dialog-detalhes").dialog({
-				   	    	width: 540,
+				   	    	width: 570,
 				   	    	resizable: false,
+				   	    	closeOnEscape: false,
 				   	    	modal: true
 				   	    });
-				   	 	$( "#novaConsulta").attr("disabled","disabled");
+				   	    
+				   	    MYAPP.agendamento.desabilita("#novaConsulta");
 				   	 	debug();
 				   	} else {
-				   		$( "#novaConsulta").attr("disabled","");
+				   		if (registro.status == "Livre"){
+				   			MYAPP.agendamento.habilita("#novaConsulta");
+				   		} else {
+				   			MYAPP.agendamento.desabilita("#novaConsulta");
+				   		}
 				   	}
 			   	},
 			   	rowNum:20,
@@ -138,7 +293,6 @@ $(document).ready(function(){
 			}
 		});		
 		
-		
 		$( "#calendario").datepicker({
 			autoSize:true,dateFormat:'dd/mm/yy', minDate: 0, maxDate: "+2M", onSelect: function(dateText, inst){
 				atualizaGrid();
@@ -166,9 +320,24 @@ $(document).ready(function(){
 			"Finalizar": function() {
 				$("#consulta-form").submit();
 				$( this ).dialog( "close" );
+				$("#dialog-detalhes").dialog( "close" );
 			},
 			"Cancelar": function() {
-				$( this ).dialog( "close" );
+				$( "#dialog:ui-dialog" ).dialog( "destroy" );
+				$( "#dialog-confirm" ).dialog({
+					resizable: false,
+					height:140,
+					modal: true,
+					buttons: {
+						"Sair": function() {
+							$( this ).dialog( "close" );
+							$( "#dialog-form" ).dialog( "close" );
+						},
+						"Cancelar": function() {
+							$( this ).dialog( "close" );
+						}
+					}
+				});
 			}
 		},
 		close: function() {
@@ -177,79 +346,28 @@ $(document).ready(function(){
 	});
 	
 	$( "#emit-receita" ).button().click(function() {
-		$( "#receita-form" ).dialog({
-			autoOpen: false,
-			closeOnEscape: false,
-			height: 370,
-			width: 600,
-			modal: true,
-			buttons: {
-				"Salvar": function() {
-					$( this ).dialog( "close" );
-				},
-				"Imprimir": function() {
-					$( this ).dialog( "close" );
-				},
-				"Cancelar": function() {
-					$( this ).dialog( "close" );
-				}
-			}
-		});
+		$("#receita-info").attr("value","[Modelo]");
+		novoDocumento("#receita-form","receita");
 		$( "#receita-form").dialog("open");
 	});
 	
 	$( "#emit-atestado" ).button().click(function() {
-		$( "#atestado-form" ).dialog({
-			autoOpen: false,
-			closeOnEscape: false,
-			height: 370,
-			width: 600,
-			modal: true,
-			buttons: {
-				"Salvar": function() {
-					$( this ).dialog( "close" );
-				},
-				"Imprimir": function() {
-					$( this ).dialog( "close" );
-				},
-				"Cancelar": function() {
-					$( this ).dialog( "close" );
-				}
-			}
-		});
+		$("#atestado-info").attr("value","[Modelo]");
+		novoDocumento("#atestado-form","atestado");
 		$( "#atestado-form").dialog("open");
 	});
 	
 	$( "#solic-exame" ).button().click(function() {
-		$( "#exame-form" ).dialog({
-			autoOpen: false,
-			closeOnEscape: false,
-			height: 370,
-			width: 600,
-			modal: true,
-			buttons: {
-				"Salvar": function() {
-					$( this ).dialog( "close" );
-				},
-				"Imprimir": function() {
-					$( this ).dialog( "close" );
-				},
-				"Cancelar": function() {
-					$( this ).dialog( "close" );
-				}
-			}
-		});
+		$("#exame-info").attr("value","[Modelo]");
+		novoDocumento("#exame-form","exame");
 		$( "#exame-form").dialog("open");
 	});
 	
 	$( ".data").datepicker({
-		autoSize:true,dateFormat:'dd/mm/yy'});
-	
-//	$( "#dataInicial").datepicker({
-//		autoSize:true,dateFormat:'dd/mm/yy'});
-//	
-//	$( "#dataFinal").datepicker({
-//		autoSize:true,dateFormat:'dd/mm/yy'});
+		dateFormat:'dd/mm/yy',
+		showOn: "button",
+		buttonImage: "img/calendar.png",
+		buttonImageOnly: true});
 	
 	$("#lista-resultados").hide();
 
@@ -261,57 +379,55 @@ $(document).ready(function(){
 			width: 600,
 			modal: true,
 			buttons: {
-				"Salvar": function() {
-					$( this ).dialog( "close" );
-				},
-				"Imprimir": function() {
-					$( this ).dialog( "close" );
-				},
-				"Cancelar": function() {
+				"Fechar": function() {
 					$( this ).dialog( "close" );
 				}
 			}
 		});
-		$("#nomePaciente").text(MYAPP.agendamento.paciente.nome);
-		$("#lista-resultados").jqGrid({
-		   	url:'consulta/consultarHistorico',
-		   	mtype: 'POST',
-		   	postData: {idPaciente: $("#idPaciente").val(), idMedico: $("#idMedico").val(), 
-			     dataInicial: $("#dataInicial").val(), dataFinal: $("#dataFinal").val()},
-			datatype: "json",
-		   	colNames:['Data','Médico'],
-		   	colModel:[
-				{name:'data',index:'data',hidden:true, width:60},
-		   		{name:'nomeMedico',index:'medico',hidden:true, width:50, align:"right"},
-		   	],
-		   	onSelectRow: function(id){
-				alert("selecionou");		
-		   	},
-		   	rowNum:10,
-		   	rowList:[10],
-		    viewrecords: true,
-		    sortorder: "asc",
-		    width: 200,
-		    height: 200,
-		    caption:showCaption(),
-		    jsonReader : {
-	     		root: "rows",
-	     		page: "page",
-	     		total: "total",
-	    		records: "records",
-	   		    repeatitems: true,
-	   		    cell: "cells",
-	   		    id: "id",
-	   		    userdata: "userdata",
-	   		    subgrid: {root:"rows", 
-	    		    repeatitems: true, 
-	    	         cell:"cells"
-	             }}
-		});
-		$( "#historico-busca").dialog("open");
+		$("#nomePaciente").attr("value",MYAPP.agendamento.paciente.nome);
+				$( "#historico-busca").dialog("open");
 		
 		$("#btn-consultaHist").click(function(){
-			$("#lista-resultados").trigger("reloadGrid");
+			
+			jQuery("#lista-resultados").jqGrid({
+			   	url: MYAPP.historico.url,
+			   	mtype: 'POST',
+				postData: MYAPP.historico.getPostData(),
+				datatype: "json",
+			   	colNames:['Data','Médico'],
+			   	colModel:[
+					{name:'data',index:'data',width:60,sortable:false},
+			   		{name:'nomeMedico',index:'nomeMedico',width:50,sortable:false, align:"right"},
+			   	],
+			   	onSelectRow: function(id){
+					alert("selecionou");		
+			   	},
+			   	rowNum:10,
+			   	rowList:[10],
+			    viewrecords: true,
+			    width: 200,
+			    height: 200,
+			    caption: MYAPP.historico.showCaption(),
+			    jsonReader : {
+		     		root: "rows",
+		     		page: "page",
+		     		total: "total",
+		    		records: "records",
+		   		    repeatitems: true,
+		   		    cell: "cells",
+		   		    id: "id",
+		   		    userdata: "userdata",
+		   		    subgrid: {root:"rows", 
+		    		    repeatitems: true, 
+		    	         cell:"cells"
+		             }}
+			});
+
+			// transformar em funcao utilitaria
+			$("#lista-resultados").jqGrid('clearGridData');
+			$("#lista-resultados").jqGrid().setGridParam(MYAPP.historico.getPostData());
+			$("#lista-resultados").jqGrid('setCaption',MYAPP.historico.showCaption());
+			$("#lista-resultados").trigger('reloadGrid');
 		});
 		
 		
@@ -328,6 +444,38 @@ $(document).ready(function(){
 			   + agendamento.paciente.nome + " "
 			   + agendamento.medico.id + " "
 			   + agendamento.nome);
+	}
+	
+	function showDocumentos(){
+		MYAPP.consulta.showDocumentos();
+	}
+	
+	function novoDocumento(idForm,tipo){
+		$( idForm ).dialog({
+			autoOpen: false,
+			closeOnEscape: false,
+			height: 400,
+			width: 600,
+			modal: true,
+			buttons: {
+				"Salvar": function() {
+					
+					//console.log($("#"+tipo+"-info").val());
+					var documento = $("#"+tipo+"-info").val();
+					MYAPP.consulta.addDocumento(documento,tipo);
+					
+					//showDocumentos(); // debug
+					
+					$( this ).dialog( "close" );
+				},
+				"Imprimir": function() {
+					$( this ).dialog( "close" );
+				},
+				"Cancelar": function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
 	}
 	
 });

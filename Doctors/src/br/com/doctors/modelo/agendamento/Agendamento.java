@@ -1,8 +1,8 @@
 package br.com.doctors.modelo.agendamento;
 
-import java.util.List;
-
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -20,7 +20,7 @@ import br.com.doctors.modelo.administracao.Funcionario;
 import br.com.doctors.modelo.administracao.Medico;
 import br.com.doctors.modelo.administracao.Paciente;
 import br.com.doctors.modelo.consultas.Consulta;
-import br.com.doctors.util.json.JSONObject;
+import br.com.doctors.util.StatusAgendamento;
 
 // Funcionario: funcionário que realizou a confirmação
 
@@ -36,9 +36,9 @@ public class Agendamento {
 	private LocalDate dataAgendamento;
 	@Type(type="org.joda.time.contrib.hibernate.PersistentLocalTimeAsString")
 	private LocalTime horaAgendamento;
-	private Boolean confirmado = false;
-	private Boolean cancelado = false;
-
+	@Enumerated(EnumType.STRING)
+	private StatusAgendamento status;
+	
 	@ManyToOne(fetch=FetchType.EAGER) @JoinColumn(name="convenio_id")
 	private Convenio convenio;
 	
@@ -54,6 +54,10 @@ public class Agendamento {
 	@OneToOne(fetch=FetchType.EAGER) @JoinColumn(name="consulta_id")
 	private Consulta consulta;
 
+	public Agendamento() {
+		status = StatusAgendamento.A_CONFIRMAR;
+	}
+	
 	public Consulta getConsulta() {
 		return consulta;
 	}
@@ -63,11 +67,13 @@ public class Agendamento {
 	}
 
 	public void confirmarPreAgendamento(){
-		confirmado = true;
+		status = StatusAgendamento.CONFIRMADO;
+//		confirmado = true;
 	}
 	
 	public void cancelarPreAgendamento(){
-		cancelado = true;
+		status = StatusAgendamento.CANCELADO;
+//		cancelado = true;
 	}
 	
 	public void transferirHorario(String data, String hora){
@@ -75,35 +81,16 @@ public class Agendamento {
 
 	@Override
 	public String toString() {
-		return String.format("Data:%s Hora:%s Paciente:%s Confirmado:%b Cancelado:%b", 
-				dataAgendamento, horaAgendamento, paciente, confirmado, cancelado);
+		return String.format("Data:%s Hora:%s Paciente:%s Status:%s", 
+				dataAgendamento, horaAgendamento, paciente, status.toString());
 	}
 	
 	public Long getId() {
 		return id;
 	}
 
-	public Boolean getConfirmado() {
-		return confirmado;
-	}
-
-	public Boolean getCancelado() {
-		return cancelado;
-	}
-
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-
-	// uso apenas para JSP popular campos
-	public void setConfirmado(Boolean confirmado) {
-		this.confirmado = confirmado;
-	}
-
-	// uso apenas para JSP popular campos
-	public void setCancelado(Boolean cancelado) {
-		this.cancelado = cancelado;
 	}
 
 	public Medico getMedico() {
@@ -130,11 +117,6 @@ public class Agendamento {
 		this.funcionario = funcionario;
 	}
 	
-	
-	public boolean isConsultaDisponivel(){
-		return confirmado && !cancelado;
-	}
-
 	public Convenio getConvenio() {
 		return convenio;
 	}
@@ -163,15 +145,11 @@ public class Agendamento {
 		return paciente.getNome();
 	}
 
-	public String getStatus() {
-		String status = "ERRO";
-		
-		if (!confirmado && !cancelado)
-			status = "A Confirmar";
-		else if (confirmado)
-			status = "Confirmado";
-		if (cancelado)
-			status = "Cancelado";
+	public void setStatus(StatusAgendamento status) {
+		this.status = status;
+	}
+
+	public StatusAgendamento getStatus() {
 		return status;
 	}
 

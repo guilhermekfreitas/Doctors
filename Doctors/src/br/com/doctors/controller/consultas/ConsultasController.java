@@ -14,12 +14,21 @@ import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.view.Results;
+import br.com.doctors.controller.agendamento.AgendamentosController;
+import br.com.doctors.converters.consulta.ConsultaConverter;
+import br.com.doctors.converters.consulta.ConsultaJSon;
 import br.com.doctors.dao.agendamento.AgendamentoDao;
+import br.com.doctors.dao.consultas.AtestadoDao;
 import br.com.doctors.dao.consultas.ConsultaDao;
 import br.com.doctors.dao.consultas.ExameDao;
+import br.com.doctors.dao.consultas.ReceitaDao;
 import br.com.doctors.modelo.agendamento.Agendamento;
+import br.com.doctors.modelo.consultas.Atestado;
 import br.com.doctors.modelo.consultas.Consulta;
 import br.com.doctors.modelo.consultas.Exame;
+import br.com.doctors.modelo.consultas.Receita;
+import br.com.doctors.modelo.util.ParametrosAgendamento;
+import br.com.doctors.util.json.JQGridJSONConverter;
 
 /**
  * 
@@ -32,16 +41,22 @@ public class ConsultasController {
 	private Result result;
 	private Validator validator;
 	private AgendamentoDao daoAgendamento;
-	private ExameDao exameDao;
+	private ExameDao daoExame;
+	private ParametrosAgendamento parametros;
+	private AtestadoDao daoAtestado;
+	private ReceitaDao daoReceita;
 
 	public ConsultasController(ConsultaDao daoConsulta,
 			AgendamentoDao daoAgendamento, Result result, Validator validator,
-			ExameDao exameDao) {
+			ExameDao daoExame, AtestadoDao daoAtestado, ReceitaDao daoReceita) {
 		this.daoConsulta = daoConsulta;
 		this.daoAgendamento = daoAgendamento;
 		this.result = result;
 		this.validator = validator;
-		this.exameDao = exameDao;
+		this.daoExame = daoExame;
+		this.daoAtestado = daoAtestado;
+		this.daoReceita = daoReceita;
+		this.parametros = ParametrosAgendamento.getParametrosDefault();
 	}
 
 	@Get
@@ -71,7 +86,7 @@ public class ConsultasController {
 			System.out.println(descricao);
 			Exame exame = new Exame(descricao);
 			exame.setConsulta(consulta);
-			exameDao.adiciona(exame);
+			daoExame.adiciona(exame);
 			examesList.add(exame);
 		}
 		// consulta.setExames(examesList);
@@ -140,6 +155,7 @@ public class ConsultasController {
 		result.redirectTo(ConsultasController.class).list();
 	}
 
+	@Post
 	@Path("/consultas/efetuarConsulta")
 	public void efetuarConsultar(Consulta consulta) {
 		
@@ -150,8 +166,27 @@ public class ConsultasController {
 		
 		System.out.println(consulta);
 		daoConsulta.adiciona(consulta);
-	}
+		
+		// temporário
+		for(Exame exame : consulta.getExames()){
+			exame.setConsulta(consulta);
+			daoExame.adiciona(exame);
+		}
 
+		for(Atestado atestado: consulta.getAtestados()){
+			atestado.setConsulta(consulta);
+			daoAtestado.adiciona(atestado);
+		}
+		
+		for(Receita receita: consulta.getReceitas()){
+			receita.setConsulta(consulta);
+			daoReceita.adiciona(receita);
+		}
+		
+		result.redirectTo(AgendamentosController.class).list();
+	}
+	
+	@Post
 	@Path("/consulta/consultarHistorico")
 	public void consultarHistorico(Long idPaciente, Long idMedico, 
 				LocalDate dataInicial, LocalDate dataFinal){
@@ -159,27 +194,18 @@ public class ConsultasController {
 		System.out.printf("idPaciente: %d, idMedico: %d, inicial:%s, final:%s\n", 
 				idPaciente, idMedico, dataInicial, dataFinal);
 		
-		List<Agendamento> listaAgendamentos;
-		if (idMedico == 0){
-			// busca p/ todos os medicos
-			listaAgendamentos = daoAgendamento.agendamentosPara(idPaciente, dataInicial, dataFinal);
-		} else {
-		    // busca medico especifico
-			listaAgendamentos = daoAgendamento.agendamentosPara(idMedico, idPaciente, dataInicial, dataFinal);
-		}
 			
-			List<Consulta> listaConsultas = new ArrayList<Consulta>();
-			for (Agendamento agendamento : listaAgendamentos){
-				if (agendamento.getConsulta() != null){
-					listaConsultas.add(agendamento.getConsulta());
-				}
-			}
+			ConsultaConverter consultaConverter = new ConsultaConverter(daoAgendamento,parametros);
 			
-			System.out.println(listaConsultas);
+			List<ConsultaJSon> consultasJSon = consultaConverter.buscarHistorico(idMedico, idPaciente, dataInicial, dataFinal);
 			
-			// falta converter a lista
+			System.out.println(consultasJSon);
 			
-			result.use(Results.json()).from(listaConsultas).serialize();
+			JQGridJSONConverter jqgrid = new JQGridJSONConverter();
+			jqgrid.addJSONObjects(consultasJSon);
+			
+			result.use(Results.json()).withoutRoot().from(jqgrid).include("rows").include("rows.cells").serialize();
+			
 		
 	}
 	

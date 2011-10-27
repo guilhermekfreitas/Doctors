@@ -48,7 +48,7 @@ public class AgendamentoDao extends DaoImpl<Agendamento>{
 		
 		Query q = getSession().
 				createQuery("from Agendamento a where a.dataAgendamento>=:dataInicial and a.dataAgendamento <=:dataFinal " +
-		                    "and a.medico.id=:idMedico and a.paciente.id=:idPaciente");
+		                    "and a.medico.id=:idMedico and a.paciente.id=:idPaciente and a.consulta is not null");
 		q.setParameter("dataInicial", dataInicial);
 		q.setParameter("dataFinal", dataFinal);
 		q.setParameter("idMedico", idMedico);
@@ -60,6 +60,7 @@ public class AgendamentoDao extends DaoImpl<Agendamento>{
 	public List<Agendamento> agendamentosPara(Long idPaciente, LocalDate dataInicial, LocalDate dataFinal) {
 		Criteria criteria = getSession().createCriteria(Agendamento.class)
 				.add(Restrictions.between("dataAgendamento", dataInicial, dataFinal))
+				.add(Restrictions.isNotNull("consulta"))
 				.createCriteria("paciente").add(Restrictions.idEq(idPaciente))
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return criteria.list();
