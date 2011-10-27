@@ -2,7 +2,9 @@ package br.com.doctors.dao.agendamento;
 
 import java.util.List;
 
+
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
@@ -37,12 +39,22 @@ public class AgendamentoDao extends DaoImpl<Agendamento>{
 	// pesquisa por paciente
 	public List<Agendamento> agendamentosPara(Long idMedico, Long idPaciente, 
 			LocalDate dataInicial, LocalDate dataFinal) {
-		Criteria criteria = getSession().createCriteria(Agendamento.class)
-				.add(Restrictions.between("dataAgendamento", dataInicial, dataFinal))
-				.createCriteria("medico").add(Restrictions.idEq(idMedico))
-				.createCriteria("paciente").add(Restrictions.idEq(idPaciente))
-				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		return criteria.list();
+//		Criteria criteria = getSession().createCriteria(Agendamento.class)
+//				.add(Restrictions.between("dataAgendamento", dataInicial, dataFinal))
+//				.createCriteria("medico").add(Restrictions.idEq(idMedico))
+//				.createCriteria("paciente").add(Restrictions.idEq(idPaciente))
+//				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+//		return criteria.list();
+		
+		Query q = getSession().
+				createQuery("from Agendamento a where a.dataAgendamento>=:dataInicial and a.dataAgendamento <=:dataFinal " +
+		                    "and a.medico.id=:idMedico and a.paciente.id=:idPaciente");
+		q.setParameter("dataInicial", dataInicial);
+		q.setParameter("dataFinal", dataFinal);
+		q.setParameter("idMedico", idMedico);
+		q.setParameter("idPaciente", idPaciente);
+		
+		return q.list();
 	}
 	
 	public List<Agendamento> agendamentosPara(Long idPaciente, LocalDate dataInicial, LocalDate dataFinal) {

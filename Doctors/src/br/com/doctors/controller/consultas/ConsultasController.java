@@ -156,6 +156,9 @@ public class ConsultasController {
 	public void consultarHistorico(Long idPaciente, Long idMedico, 
 				LocalDate dataInicial, LocalDate dataFinal){
 		
+		System.out.printf("idPaciente: %d, idMedico: %d, inicial:%s, final:%s\n", 
+				idPaciente, idMedico, dataInicial, dataFinal);
+		
 		List<Agendamento> listaAgendamentos;
 		if (idMedico == 0){
 			// busca p/ todos os medicos
@@ -167,8 +170,12 @@ public class ConsultasController {
 			
 			List<Consulta> listaConsultas = new ArrayList<Consulta>();
 			for (Agendamento agendamento : listaAgendamentos){
-				listaConsultas.add(agendamento.getConsulta());
+				if (agendamento.getConsulta() != null){
+					listaConsultas.add(agendamento.getConsulta());
+				}
 			}
+			
+			System.out.println(listaConsultas);
 			
 			// falta converter a lista
 			
