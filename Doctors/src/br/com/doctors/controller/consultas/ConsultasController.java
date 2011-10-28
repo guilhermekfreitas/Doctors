@@ -158,60 +158,68 @@ public class ConsultasController {
 	@Post
 	@Path("/consultas/efetuarConsulta")
 	public void efetuarConsultar(Consulta consulta) {
-		
-		Agendamento agendamento = daoAgendamento.carrega(consulta.getAgendamento().getId());
+
+		Agendamento agendamento = daoAgendamento.carrega(consulta
+				.getAgendamento().getId());
 		agendamento.setConsulta(consulta);
 		// atualizar status do agendamento tbm
 		daoAgendamento.atualiza(agendamento);
-		
+
 		System.out.println(consulta);
 		daoConsulta.adiciona(consulta);
-		
+
 		// temporário
-		for(Exame exame : consulta.getExames()){
-			exame.setConsulta(consulta);
-			daoExame.adiciona(exame);
+		if (consulta.getExames() != null) {
+			for (Exame exame : consulta.getExames()) {
+				exame.setConsulta(consulta);
+				daoExame.adiciona(exame);
+			}
 		}
 
-		for(Atestado atestado: consulta.getAtestados()){
-			atestado.setConsulta(consulta);
-			daoAtestado.adiciona(atestado);
+		if (consulta.getAtestados() != null) {
+			for (Atestado atestado : consulta.getAtestados()) {
+				atestado.setConsulta(consulta);
+				daoAtestado.adiciona(atestado);
+			}
 		}
-		
-		for(Receita receita: consulta.getReceitas()){
-			receita.setConsulta(consulta);
-			daoReceita.adiciona(receita);
+
+		if (consulta.getReceitas() != null) {
+			for (Receita receita : consulta.getReceitas()) {
+				receita.setConsulta(consulta);
+				daoReceita.adiciona(receita);
+			}
 		}
-		
+
 		result.redirectTo(AgendamentosController.class).list();
 	}
-	
+
 	@Post
 	@Path("/consulta/consultarHistorico")
-	public void consultarHistorico(Long idPaciente, Long idMedico, 
-				LocalDate dataInicial, LocalDate dataFinal){
-		
-		System.out.printf("idPaciente: %d, idMedico: %d, inicial:%s, final:%s\n", 
+	public void consultarHistorico(Long idPaciente, Long idMedico,
+			LocalDate dataInicial, LocalDate dataFinal) {
+
+		System.out.printf(
+				"idPaciente: %d, idMedico: %d, inicial:%s, final:%s\n",
 				idPaciente, idMedico, dataInicial, dataFinal);
-		
-			
-			ConsultaConverter consultaConverter = new ConsultaConverter(daoAgendamento,parametros);
-			
-			List<ConsultaJSon> consultasJSon = consultaConverter.buscarHistorico(idMedico, idPaciente, dataInicial, dataFinal);
-			
-			System.out.println(consultasJSon);
-			
-			JQGridJSONConverter jqgrid = new JQGridJSONConverter();
-			jqgrid.addJSONObjects(consultasJSon);
-			
-			result.use(Results.json()).withoutRoot().from(jqgrid).include("rows").include("rows.cells").serialize();
-			
-		
+
+		ConsultaConverter consultaConverter = new ConsultaConverter(
+				daoAgendamento, parametros);
+
+		List<ConsultaJSon> consultasJSon = consultaConverter.buscarHistorico(
+				idMedico, idPaciente, dataInicial, dataFinal);
+
+		System.out.println(consultasJSon);
+
+		JQGridJSONConverter jqgrid = new JQGridJSONConverter();
+		jqgrid.addJSONObjects(consultasJSon);
+
+		result.use(Results.json()).withoutRoot().from(jqgrid).include("rows")
+		.include("rows.cells").serialize();
+
 	}
-	
+
 	public void consulta() {
 
 	}
-
 
 }
