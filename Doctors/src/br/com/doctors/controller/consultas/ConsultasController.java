@@ -188,6 +188,8 @@ public class ConsultasController {
 				receita.setConsulta(consulta);
 				daoReceita.adiciona(receita);
 			}
+			
+			
 		}
 
 		result.redirectTo(AgendamentosController.class).list();
