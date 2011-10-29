@@ -23,12 +23,11 @@
 	      			<sitemesh-decorator:body/>
 	      			<div class="clear"></div>
 	      		</div> <!-- 4 -->
-			</div>
-
+	      	</div>
+	      	
 	      	<div id="rodape">
 	      		<%@ include file="/WEB-INF/jsp/footer.jsp" %>
-	      		<!-- <%@ include file="/WEB-INF/jsp/notificacoes-bar.jsp" %> -->
 	      	</div> <!-- 6 -->
-    	</div>
+   		</div>
 	</body>
 </html>

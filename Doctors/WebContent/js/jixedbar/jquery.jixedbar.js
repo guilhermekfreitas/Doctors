@@ -74,7 +74,7 @@
 		                $("body").css({"margin": "0px", "overflow": "auto", "height": "100%"});
 					} else { // else for FF, Chrome, Opera, Safari and other browser
 						$("html").css({"height" : "100%"});
-						$("body").css({"margin": "0px", "height": "100%"});
+						$("body").css({"margin": "160px", "height": "100%"});
 					}
 
 					/* check what position method to use */

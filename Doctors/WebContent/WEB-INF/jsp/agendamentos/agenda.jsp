@@ -11,8 +11,8 @@
 <title>Agenda do Médico</title>
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/jqgrid/grid.locale-pt-br.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/jqgrid/jquery.jqGrid.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/jqgrid/js/grid.locale-pt-br.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/jqgrid/js/jquery.jqGrid.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery.printArea.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/doctors.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/logic.agenda.js'/>"></script>

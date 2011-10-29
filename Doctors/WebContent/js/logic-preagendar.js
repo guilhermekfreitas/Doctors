@@ -21,7 +21,7 @@ $(document).ready(function(){
 				atualizaCampoData($("#calendar").val());
 				//$("#dataAgendamento").attr("value", $("#calendar").val());
 				
-				jQuery("#horariosLivres").jqGrid({
+				$("#horariosLivres").jqGrid({
 				   	url:'carregaHorarios.json',
 				   	mtype: 'POST',
 				   	postData: {idMedico: $("#medicos").val(), data: $("#calendar").attr("value")},

@@ -8,16 +8,45 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
-<!-- <script type="text/javascript" src="<c:url value='/js/jixedbar/jquery.jixedbar.js'/>"></script> -->
+<script type="text/javascript" src="<c:url value='/js/jixedbar/jquery.jixedbar.js'/>"></script> 
 <script type="text/javascript" src="<c:url value='/js/doctors.js'/>"></script>
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/ui-lightness/jquery-ui-1.8.14.custom.css"/>"/>
 <link type="text/css" href="<c:url value='/js/jixedbar/themes/vista/jx.stylesheet.css'/>" rel="stylesheet"/>
 <link type="text/css" href="<c:url value='/js/jixedbar/themes/vista/jx.bar.css'/>" rel="stylesheet"/> 
+<style type="text/css">
+	#bottom {
+	width: 80%;
+	position: fixed;
+	bottom: 0px;
+	background: #18f8f8;
+	text-align: center;
+	}
+	.button-bar {
+		float:right;
+	}
+	.showhide {
+		float:right;
+		background-image:url('../img/show.gif');
+	}
+	.bar {
+	bottom: 0; 
+right: 0;
+width: 100%;
+}
+	</style>
 </head>
 <body>
-	<sec:authorize ifAnyGranted="ROLE_MEDICO">
-		<div id="sample-bar">
-	
+	<!--	
+	<div id="bottom">
+		<button class="button-bar button" >Visualizar Notificações</button>
+		<button class="button-bar button showhide" >Hide/Show</button>
+	</div>
+	<div id="botton-hidden">
+		<button class="button-bar button showhide" >Hide/Show</button>
+	</div> -->
+	 <sec:authorize ifAnyGranted="ROLE_MEDICO">
+		<div id="sample-bar" class="bar">
+	 
 			<ul class="jx-bar-button-right">
 				<li title="Notificações"><a href="#">Visualizar Notificações
 				</a>
@@ -37,10 +66,16 @@
 <script type="text/javascript">
 
 	$(".button").button();
+	//$("#bottom-hidden").hide();
+	
+	/*$(".showhide").click(function(){
+		$("#bottom").toggle('Clip');
+		$("#bottom-hidden").show('Clip');
+	});*/
 
-	$("#sample-bar").jixedbar({
+	//$("#sample-bar").jixedbar({
 		
-	});
+	//});
 </script>
 </body>
 </html>

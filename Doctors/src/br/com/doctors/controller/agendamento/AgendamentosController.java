@@ -247,16 +247,10 @@ public class AgendamentosController {
 	public void transferirHorario(Long idAgendamento, LocalDate novaData, LocalTime novaHora){
 		
 		Agendamento agendamento = daoAgendamento.carrega(idAgendamento);
-		System.out.println(agendamento);
 		agendamento.transferirHorario(novaData, novaHora);
-		System.out.println(agendamento);
 		daoAgendamento.atualiza(agendamento);
 		
 		result.use(Results.status()).accepted();
-		// carrega agendamento
-		// alterar data e hora.
-		// campo 'confirmado' = false
-		
 	}
 	
 	

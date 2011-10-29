@@ -6,6 +6,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
+<!-- <script type="text/javascript" src="<c:url value='/js/jquery.timers-1.2.js'/>"></script> -->
+<link rel="stylesheet"  type="text/css" href="<c:url value="/css/ui-lightness/jquery-ui-1.8.14.custom.css"/>"/>
+<style>
+	.item {
+	
+	}
+</style>
 </head>
 <body>
 <div id="wrap">
@@ -24,6 +33,9 @@
 				Tipo de Perfil: ${userSession.usuario.tipo}	<br />
 			</c:if>
 			<p>&nbsp;</p>
+			<sec:authorize ifAllGranted="ROLE_MEDICO">
+				<button id="btnVerNotificacoes" class="button">Notificações</button>
+			</sec:authorize>
 		</div>
 		<div id="sitecption">
 			Doctors: Sistema para seu <span class="bigger">Consultório Médico</span>
@@ -51,10 +63,73 @@
 		</div>
 	</div>
 </div>
+
+<div id="notificacoes-list" class="hidden">
+
+<div id="notificacao" class="item">
+	<label for="horaNotificacao"></label><label id="horaNotificacao"></label><br />
+	<label id="idPaciente"></label><br />
+	<label id="nomePaciente"></label><br />
+	<label id="funcionario"></label><br />
+	<label id="horario"></label><br />
+</div>
+</div>
+
 <script type="text/javascript">
 
+/*$(document).everyTime(15000, function(){
+		
+		$.ajax({
+			url: 'notificacoes/verifica',
+			type: 'get',
+			dataType: 'json',
+			success: function(data){
+				
+			},
+			error: function(data){
+				alert('ERRO!');
+			} 
+		});	
+		
+	},0);*/
+
+	$(".hidden").hide();
 	$(".button").button();
 
+	$("#btnVerNotificacoes").click(function(){
+		$.ajax({
+			url: 'notificacoes/verifica',
+			type: 'get',
+			dataType: 'json',
+			success: function(data){
+				console.log(data.notificacoes);
+				//for (var i in data.notificacoes.length){
+					var json = data.notificacoes[0];
+					var notificacao = {
+							horaNotificacao: json.horarioNotificacao,
+							idPaciente: json.idPaciente,
+							nomePaciente: json.nomePaciente,
+							funcionario: json.nomeFuncionario,
+							horario: json.horarioConsulta
+					};
+				//}
+				
+					
+				$("#horaNotificacao").text(notificacao.horaNotificacao);
+				$("#idPaciente").text(notificacao.idPaciente);
+				$("#nomePaciente").text(notificacao.nomePaciente);
+				$("#funcionario").text(notificacao.funcionario);
+				$("#horario").text(notificacao.horario);
+				
+				$("#notificacoes-list").dialog({					
+				});
+			},
+			error: function(data){
+				alert('ERRO!');
+			} 
+		});	
+	});
+	
 	$("#btnNovoCadastro").click(function(){
 		
 	});

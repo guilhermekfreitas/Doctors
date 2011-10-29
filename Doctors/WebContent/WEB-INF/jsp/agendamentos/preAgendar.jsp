@@ -8,14 +8,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Pré-Agendar Nova Consulta:</title>
-<script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/jqgrid/grid.locale-pt-br.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/jqgrid/jquery.jqGrid.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/logic-preagendar.js'/>"></script>
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/ui-lightness/jquery-ui-1.8.14.custom.css"/>"/>
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/jqgrid/ui.jqgrid.css"/>"/>
-<link rel="stylesheet"  type="text/css" href="<c:url value="/css/jqgrid/ui.jqgrid.css"/>"/>
+<script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/jqgrid/js/grid.locale-pt-br.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/jqgrid/js/jquery.jqGrid.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/logic-preagendar.js'/>"></script>
 <style>
 		div#lista {
 			float:right;
