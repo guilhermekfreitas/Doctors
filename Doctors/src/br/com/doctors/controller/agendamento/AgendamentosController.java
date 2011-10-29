@@ -3,6 +3,7 @@ package br.com.doctors.controller.agendamento;
 import java.util.List;
 
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
@@ -241,10 +242,17 @@ public class AgendamentosController {
 		result.use(Results.status()).accepted();
 	}
 	
-	@Get
-	@Path("/agenda/transferirHorario/{idAgendamento}")
-	public void transferirHorario(Long idAgendamento, String novaData, String novaHora){
+	@Post
+	@Path("/agenda/transferirHorario")
+	public void transferirHorario(Long idAgendamento, LocalDate novaData, LocalTime novaHora){
 		
+		Agendamento agendamento = daoAgendamento.carrega(idAgendamento);
+		System.out.println(agendamento);
+		agendamento.transferirHorario(novaData, novaHora);
+		System.out.println(agendamento);
+		daoAgendamento.atualiza(agendamento);
+		
+		result.use(Results.status()).accepted();
 		// carrega agendamento
 		// alterar data e hora.
 		// campo 'confirmado' = false
