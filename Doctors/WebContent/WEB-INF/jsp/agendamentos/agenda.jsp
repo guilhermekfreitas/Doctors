@@ -13,6 +13,8 @@
 <script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jqgrid/grid.locale-pt-br.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jqgrid/jquery.jqGrid.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery.printArea.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/doctors.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/logic.agenda.js'/>"></script>
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/ui-lightness/jquery-ui-1.8.14.custom.css"/>"/>
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/jqgrid/ui.jqgrid.css"/>"/>
@@ -24,6 +26,14 @@
 		div#divesq {
 			float:left;
 			width: 25%;
+		}
+		.lista {
+			float:right;
+			width: 30%;
+		}
+		.divesq {
+			float:left;
+			width: 70%;
 		}
 		div#relatorios {
 			float:right;
@@ -100,7 +110,7 @@
 	</div>
 	
 	<div id="dialog-msg-confirmacao" class="dialog" title="Confirmação de Agendamento">
-		<p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+		<br /><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
 			O agendamento foi confirmado com sucesso.</p>
 	</div>
 	
@@ -108,6 +118,23 @@
 		<p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
 			O agendamento foi cancelado com sucesso.</p>
 	</div>
+	
+	<div id="dialog-transferir" class="dialog" title="Transferir Horário de Consulta">
+			<div class="divesq">
+				<label>Nova Data: </label><br />
+				<div class="calendar" id="novaData"></div>
+			</div>
+			<div class="lista">
+				<table id="horariosList"></table>
+				<br ><input type="hidden" id="novaHora" name="novaHora" />
+			</div>
+	</div>
+	
+	<div id="dialog-msg-sucesso" class="dialog" >
+		<span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+		<div id="mensagem"></div>
+	</div>
+	
 	
 	<div id="consulta">
 		<div id="dialog-form" class="consulta dialog" title="Nova Consulta">
@@ -153,19 +180,9 @@
 			<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Você está saindo da consulta. Tem certeza disso?</p>
 		</div>
 	
-		<div id="receita-form" class="dialog" title="Nova Receita">
-			<h3>Informações sobre Receita:</h3>
-			<textarea id="receita-info" rows="15" cols="110">[Informações sobre Receita]</textarea>
-		</div>
-		
-		<div id="atestado-form" class="dialog" title="Novo Atestado">
-			<h3>Informações sobre Atestado:</h3>
-			<textarea id="atestado-info" rows="15" cols="110">[Modelo de Atestado]</textarea>
-		</div>
-		
-		<div id="exame-form" class="dialog" title="Nova Solicitação de Exame">
-			<h3>Informações sobre Exame:</h3>
-			<textarea id="exame-info" rows="15" cols="110">[Modelo de Exame]</textarea>
+		<div id="documento-form" class="dialog">
+			<h3 id="label-documento">Informações do Documento:</h3>
+			<textarea id="documento-info" rows="15"  cols="110"></textarea>
 		</div>
 		
 		<div id="historico-busca" class="dialog" title="Consultar Histórico do Paciente">
@@ -196,5 +213,7 @@
 		</div>
 		
 	</div>
+	
+	<div id="impressao" class="hidden"></div>
 </body>
 </html>

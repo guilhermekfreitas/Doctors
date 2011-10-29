@@ -63,20 +63,21 @@ public class Agendamento {
 	}
 
 	public void setConsulta(Consulta consulta) {
+		status = (consulta != null ? StatusAgendamento.FINALIZADO : status);
 		this.consulta = consulta;
 	}
 
 	public void confirmarPreAgendamento(){
 		status = StatusAgendamento.CONFIRMADO;
-//		confirmado = true;
 	}
 	
 	public void cancelarPreAgendamento(){
 		status = StatusAgendamento.CANCELADO;
-//		cancelado = true;
 	}
 	
-	public void transferirHorario(String data, String hora){
+	public void transferirHorario(LocalDate novaData, LocalTime novoHorario){
+		this.dataAgendamento = novaData;
+		this.horaAgendamento = novoHorario;
 	}
 
 	@Override

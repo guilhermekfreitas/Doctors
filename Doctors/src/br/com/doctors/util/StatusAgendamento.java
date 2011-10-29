@@ -4,7 +4,8 @@ public enum StatusAgendamento {
 	CONFIRMADO("Confirmado"), 
 	CANCELADO("Cancelado"), 
 	A_CONFIRMAR("A Confirmar"),
-	PACIENTE_AUSENTE("Paciente Ausente");
+	PACIENTE_AUSENTE("Paciente Ausente"),
+	FINALIZADO("Finalizado");
 	
 	private String status;
 	

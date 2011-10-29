@@ -8,7 +8,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
-		<link type="text/css" rel="stylesheet" href="<c:url value="/css/frame.css"/>"/>
+		<link type="text/css" rel="stylesheet" href="<c:url value="/css/frame.css"/>"/> 
 		<link type="text/css" rel="stylesheet" href="<c:url value="/css/style.css"/>"/>
 		<title><sitemesh-decorator:title default="Projeto Doctors"/></title>
 		<sitemesh-decorator:head/>
@@ -27,6 +27,7 @@
 
 	      	<div id="rodape">
 	      		<%@ include file="/WEB-INF/jsp/footer.jsp" %>
+	      		<!-- <%@ include file="/WEB-INF/jsp/notificacoes-bar.jsp" %> -->
 	      	</div> <!-- 6 -->
     	</div>
 	</body>

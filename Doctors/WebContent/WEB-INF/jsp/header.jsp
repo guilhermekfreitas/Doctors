@@ -17,7 +17,7 @@
 		<div id="headercontent">
 			<c:if test="${empty userSession.usuario }">
 				Olá, Visitante. <a href="<c:url value='/login'/>">Logar</a><br />
-				Ainda não é usuário? <button type="button" onclick="abrirDialog()">Cadastre-se</button>
+				Ainda não é usuário? <button id="btnNovoCadastro" class="button" type="button">Cadastre-se</button>
 			</c:if>
 			<c:if test="${!empty userSession.usuario }">
 				Olá, ${userSession.usuario.login} <a href="<c:url value='/logout'/>">Logout</a>
@@ -51,5 +51,13 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+
+	$(".button").button();
+
+	$("#btnNovoCadastro").click(function(){
+		
+	});
+</script>
 </body>
 </html>
