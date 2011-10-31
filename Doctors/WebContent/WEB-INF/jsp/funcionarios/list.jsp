@@ -43,7 +43,7 @@
 					<td>${funcionario.cpf}</td>
 					<td>${funcionario.telefone}</td>
 					<td>${funcionario.email}</td>
-					<td><fmt:formatDate value="${funcionario.dataDeNascimento}" pattern="dd/MM/yyyy"/></td>
+					<td>${funcionario.dataNascimento}</td>
 					<td>${funcionario.perfil.login}</td>
 					<td><a href="<c:url value="/funcionarios/${funcionario.id}"/>">Alterar</a></td>
 					<td><a href="<c:url value="/funcionarios/remover/${funcionario.id}"/>">Remover</a></td>

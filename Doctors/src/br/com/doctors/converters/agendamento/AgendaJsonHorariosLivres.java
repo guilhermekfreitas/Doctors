@@ -10,23 +10,33 @@ import org.joda.time.LocalTime;
 
 import br.com.doctors.modelo.util.ParametrosAgendamento;
 
-public class AgendaJSonHorariosLivres {
+public class AgendaJsonHorariosLivres implements AgendaJson{
 
 	private ParametrosAgendamento parametros;
 	private Map<LocalTime,HorarioJsonSimples> mapaHorariosLivres;
 	private Long contador;
+	private LocalDate data;
 	
-	public AgendaJSonHorariosLivres(ParametrosAgendamento parametros) {
+	public AgendaJsonHorariosLivres(ParametrosAgendamento parametros, LocalDate data) {
 		this.parametros = parametros;
+		this.data = data;
 		this.mapaHorariosLivres = new TreeMap<LocalTime,HorarioJsonSimples>();
 		contador = new Long(1L);
 	}
 
-	public List<HorarioJsonSimples> getHorariosJson(){ 
+	@Override
+	public List<? extends HorarioJson> getHorariosJSON(){ 
 		return new ArrayList<HorarioJsonSimples>(mapaHorariosLivres.values());
 	}
 	
-	public void adicionaHorarioLivre(LocalDate data, LocalTime horaAtual){
+	@Override
+	public void addHorario(AgendaDoDia agenda, LocalTime horario) {
+		if (!agenda.temAgendamentoEm(horario)){
+			adicionaHorarioLivre(horario);
+		}
+	}
+
+	private void adicionaHorarioLivre(LocalTime horaAtual){
 		HorarioJsonSimples horarioJson = new HorarioJsonSimples(contador++, data, horaAtual, parametros);
 		mapaHorariosLivres.put(horaAtual, horarioJson);
 	}

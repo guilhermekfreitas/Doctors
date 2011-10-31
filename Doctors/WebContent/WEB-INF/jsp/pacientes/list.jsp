@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -23,6 +24,7 @@
 				<th>Nome</th>
 				<th>Email</th>
 				<th>Telefone</th>
+				<th>Data de Nascimento</th>
 				<th>Login</th>
 				<th>Alterar</th>
 				<th>Excluir</th>
@@ -34,6 +36,7 @@
 					<td>${paciente.nome}</td>
 					<td>${paciente.email}</td>
 					<td>${paciente.telefone}</td>
+					<td>${paciente.dataNascimento}</td>
 					<td>${paciente.perfil.login}</td>
 					<td><a class="btn-layout" href="<c:url value="/pacientes/${paciente.id}"/>">Alterar</a></td>
 					<td><a type="button" class="btn-layout" onclick="return apagarPaciente(${paciente.id});">Remover</a></td>

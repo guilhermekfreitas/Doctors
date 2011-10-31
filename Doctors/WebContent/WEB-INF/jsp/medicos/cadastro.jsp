@@ -49,7 +49,7 @@
 				name="medico.email" value="${medico.email}"/><br /> 
 				
 			<label for="dataNasc">Data de Nascimento:</label> <input id="dataNasc" type="text"
-				name="medico.dataDeNascimento" value="<fmt:formatDate value="${medico.dataDeNascimento}" pattern="dd/MM/yyyy"/>" /> <br /> 
+				name="medico.dataNascimento" value="${medico.dataNascimento}"/> <br /> 
 				
 			<label for="login">Login:</label><input id="login" type="text" 
 				name="medico.perfil.login" value="${medico.perfil.login}"/><br /> 
@@ -62,6 +62,11 @@
 			<a href="./"><button id="cancel-operation" type="submit" >Cancelar</button></a>
 		</fieldset>
 	</form>
-		
+	<script type="text/javascript">
+		$("#dataNasc").datepicker({
+			changeMonth:true,changeYear:true,yearRange:'-100,+0',
+			autoSize:true,dateFormat:'dd/mm/yy',maxDate: 0
+		});
+	</script>
 </body>
 </html>

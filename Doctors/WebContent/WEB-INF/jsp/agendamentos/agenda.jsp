@@ -11,8 +11,8 @@
 <title>Agenda do Médico</title>
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/jqgrid/grid.locale-pt-br.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/jqgrid/jquery.jqGrid.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/jqgrid/js/grid.locale-pt-br.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/jqgrid/js/jquery.jqGrid.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery.printArea.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/doctors.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/logic.agenda.js'/>"></script>
@@ -87,7 +87,7 @@
 	
 	<div id="dialog-detalhes" class="dialog" title="Informações sobre a Consulta">
 		<label class="label">Agendamento(#id): </label><label id="idAgendamento"></label><br />
-		<label class="label">Nome do paciente: </label><label id="nomePaciente"></label><br />
+		<label class="label">Nome do paciente: </label><label id="nomePaciente" class="nomePaciente"></label><br />
 		<label class="label">Nome do médico: </label><label id="nomeMedico"></label><br />
 		<label class="label">Data do Agendamento: </label><label id="dataConsulta"></label><br />
 		<label class="label">Hora do Agendamento: </label><label id="horaConsulta"></label><br />
@@ -107,16 +107,6 @@
 	
 	<div id="dialog-confirmacao" class="dialog" title="Confirmação de Pré-Agendamento">
 		<p>Escolha uma das opções abaixo:</p>
-	</div>
-	
-	<div id="dialog-msg-confirmacao" class="dialog" title="Confirmação de Agendamento">
-		<br /><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
-			O agendamento foi confirmado com sucesso.</p>
-	</div>
-	
-	<div id="dialog-msg-cancelamento" class="dialog" title="Cancelamento de Agendamento">
-		<p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
-			O agendamento foi cancelado com sucesso.</p>
 	</div>
 	
 	<div id="dialog-transferir" class="dialog" title="Transferir Horário de Consulta">
@@ -141,8 +131,8 @@
 				<div id="form">
 					<form id="consulta-form" action="<c:url value="/consultas/efetuarConsulta"/>" method="post">
 							<h2>Dados do paciente:</h2>
-							Nome do Paciente: Guilherme Kamizake de Freitas <button id="historico">Ver Histórico</button><br/>
-							Idade: 19 (07/10/1991)
+							Nome do Paciente: <label class="nomePaciente"></label> <button id="historico">Ver Histórico</button><br/>
+							Data de Nascimento: <label class="dataNascimento"></label><br />
 							<h3>Queixa Principal:</h3>
 							<textarea id="queixaprinc" name="consulta.queixaPrincipal" rows="12" cols="80">Modelo de Documento aqui?</textarea><br/>
 							
@@ -190,19 +180,20 @@
 				<h3>Opções de Busca:</h3>
 				<table>
 					<tr><td><label for="nomePaciente">Nome do paciente: </label></td>
-						<td><input type="text" id="nomePaciente" /></td></tr>
+						<td><label class="nomePaciente"></label></td></tr>
 					<tr><td><label for="dataInicial">Data Inicial: </label></td>
-						<td><input type="text"  id="dataInicial" class="data" /></td></tr>
+						<td><input type="text"  id="dataInicial" /></td></tr>
 					<tr><td><label for="dataFinal">Data Final: </label></td>
-						<td><input type="text" id="dataFinal" class="data" /></td></tr>
+						<td><input type="text" id="dataFinal" /></td></tr>
 					<tr><td><label for="idMedico">Médico: </label></td>
 					 	<td><select	id="idMedico">
+					 			<option value="0">Todos</option>
 								<c:forEach items="${medicos}" var="medico">
 									<option value="${medico.id}">${medico.nome}</option>
 								</c:forEach>
 							</select></td></tr>
 				</table>
-				<br /><input type="text" id="idPaciente" name="idPaciente"/> 
+				<br /><input type="text" id="idPaciente" class="idPaciente"/> 
 				<br /><button id="btn-consultaHist" class="button" >Buscar Históricos</button>
 			</div>
 			<div id="divresultados">

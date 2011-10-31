@@ -4,12 +4,12 @@
 <hibernate-configuration>
 <session-factory>
 <property name="hibernate.connection.username">root</property>
-<property name="hibernate.connection.password">KalEl1221</property>
+<property name="hibernate.connection.password">admin</property>
 <property name="hibernate.connection.url">jdbc:mysql://localhost/doctors</property>
 <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
 <property name="hibernate.hbm2ddl.auto">update</property>
-<property name="show_sql">true</property>
+<property name="show_sql">false</property>
 <property name="format_sql">true</property>
 
 <!-- entidades >

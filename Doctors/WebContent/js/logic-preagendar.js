@@ -21,7 +21,7 @@ $(document).ready(function(){
 				atualizaCampoData($("#calendar").val());
 				//$("#dataAgendamento").attr("value", $("#calendar").val());
 				
-				jQuery("#horariosLivres").jqGrid({
+				$("#horariosLivres").jqGrid({
 				   	url:'carregaHorarios.json',
 				   	mtype: 'POST',
 				   	postData: {idMedico: $("#medicos").val(), data: $("#calendar").attr("value")},
@@ -63,6 +63,42 @@ $(document).ready(function(){
 			}
 		});		
 		
+		/*$("#enviar").click(function(){
+			//alert(JSON.stringify($('#form').serializeObject()));
+			//alert($("#form").serializeArray());
+			
+			$.ajax({
+				url: 'preagendar',
+				contentType: 'application/x-www-form-urlencoded; charset=UTF-8', 
+				type: 'post',
+				data: {
+					"agendamento.paciente.id":$("[name=agendamento.paciente.id]").val(),
+					"agendamento.medico.id": $("#medicos").val(),
+					"agendamento.convenio.id": $("#convenios").val(),
+					"agendamento.horaAgendamento": $("#horaAgendamento").val(),
+					"agendamento.dataAgendamento": $("#dataAgendamento").val()
+				}, //JSON.stringify($('#form').serializeObject()),
+				dataType: 'json',
+				success: function(data){
+					console.log(data);
+				},
+				error: function(data,status,errorThrown){
+					console.log(data.responseText);
+					
+					var resposta = $.parseJSON(data.responseText);
+					for (var i in resposta.errors){
+						var erro = resposta.errors[i];
+						console.log(erro.message + " " + erro.category);
+						$("#erros").append(erro.category + " - " + erro.message + "<br />" );
+						//console.log($("name='"+erro.category+"'").val());
+					}
+					
+				} 
+			});	
+			
+			
+		}); */
+						
 		function showCaption(){
 			return "Dia: " + $("#calendar").attr("value"); 
 		}

@@ -46,7 +46,7 @@
 					<td>${medico.cpf}</td>
 					<td>${medico.telefone}</td>
 					<td>${medico.email}</td>
-					<td><fmt:formatDate value="${medico.dataDeNascimento}" pattern="dd/MM/yyyy"/></td>
+					<td>${medico.dataNascimento}</td>
 					<td>${medico.perfil.login}</td>
 					<td><a href="<c:url value="/medicos/${medico.id}"/>">Alterar</a></td>
 					<td><a href="<c:url value="/medicos/remover/${medico.id}"/>">Remover</a></td>

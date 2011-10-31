@@ -87,6 +87,6 @@
 			$( "#dialog-form" ).dialog( "open" );
 		});
 		
-		$(".tablesorter").tablesorter( {sortList: [[0,0]]} );
+		//$(".tablesorter").tablesorter( {sortList: [[0,0]]} );
 		
 	});

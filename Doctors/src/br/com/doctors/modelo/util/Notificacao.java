@@ -4,8 +4,10 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 
 import br.com.doctors.modelo.administracao.Funcionario;
+import br.com.doctors.modelo.administracao.Paciente;
 import br.com.doctors.modelo.agendamento.Agendamento;
 
 @Entity
@@ -36,6 +38,10 @@ public class Notificacao {
 	
 	public DateTime getHorarioDeNotificacao() {
 		return horarioDeNotificacao;
+	}
+	
+	public LocalTime getHorarioNotificacaoAsLocalTime(){
+		return horarioDeNotificacao.toLocalTime();
 	}
 	
 	public Funcionario getFuncionario() {
@@ -73,5 +79,13 @@ public class Notificacao {
 
 	public void setHorarioDeNotificacao(DateTime horarioDeNotificacao) {
 		this.horarioDeNotificacao = horarioDeNotificacao;
+	}
+	
+	public LocalTime getHorarioConsulta(){
+		return agendamento.getHoraAgendamento();
+	}
+	
+	public Paciente getPaciente(){
+		return agendamento.getPaciente();
 	}
 }

@@ -44,7 +44,7 @@
 				name="funcionario.email" value="${funcionario.email}"/><br /> 
 				
 			<label for="dataNasc">Data de Nascimento:</label> <input id="dataNasc" type="text"
-				name="funcionario.dataDeNascimento" value="<fmt:formatDate value="${funcionario.dataDeNascimento}" pattern="dd/MM/yyyy"/>" /> <br /> 
+				name="funcionario.dataNascimento" value="${funcionario.dataNascimento}" /> <br /> 
 				
 			<label for="login">Login:</label> <input id="login" type="text"
 				name="funcionario.perfil.login" value="${funcionario.perfil.login}" disabled="disabled" /><br />
@@ -56,5 +56,11 @@
 			<a href="./"><button id="cancelar" type="submit" >Cancelar</button></a>
 		</fieldset>
 	</form>
+	<script type="text/javascript">
+		$("#dataNasc").datepicker({
+			changeMonth:true,changeYear:true,yearRange:'-100,+0',
+			autoSize:true,dateFormat:'dd/mm/yy',maxDate: 0
+		});
+	</script>
 </body>
 </html>

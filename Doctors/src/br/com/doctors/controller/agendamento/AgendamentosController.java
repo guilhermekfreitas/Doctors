@@ -1,10 +1,13 @@
 package br.com.doctors.controller.agendamento;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
+import br.com.caelum.vraptor.Consumes;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
@@ -12,6 +15,7 @@ import br.com.caelum.vraptor.Put;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.util.hibernate.extra.Load;
 import br.com.caelum.vraptor.validator.Validations;
 import br.com.caelum.vraptor.view.Results;
 import br.com.doctors.converters.agendamento.HorarioConverter;
@@ -23,6 +27,8 @@ import br.com.doctors.dao.administracao.MedicoDao;
 import br.com.doctors.dao.administracao.PacienteDao;
 import br.com.doctors.dao.agendamento.AgendamentoDao;
 import br.com.doctors.modelo.administracao.Convenio;
+import br.com.doctors.modelo.administracao.Funcionario;
+import br.com.doctors.modelo.administracao.Medico;
 import br.com.doctors.modelo.administracao.Paciente;
 import br.com.doctors.modelo.administracao.PerfilUsuario;
 import br.com.doctors.modelo.agendamento.Agendamento;
@@ -70,10 +76,15 @@ public class AgendamentosController {
 		PerfilUsuario usuario = userSession.getUsuario();
 		switch (usuario.getTipo()){
 		case ROLE_FUNCIONARIO:
-		case ROLE_MEDICO:
 			result.include("medicos", daoMedico.listaTudo());
 //			result.forwardTo(this).veragenda(); // teste
 //			result.forwardTo(this).agendaDoFuncionario();
+			result.forwardTo(this).agenda();
+			break;
+		case ROLE_MEDICO:
+			List<Medico> medicos = new ArrayList<Medico>();
+			medicos.add(daoMedico.buscaPorPerfil(usuario.getId()));
+			result.include("medicos", medicos);
 			result.forwardTo(this).agenda();
 			break;
 		default:
@@ -119,16 +130,22 @@ public class AgendamentosController {
 	}
 	
 	
-	
-	@Post @Path("/agenda")
+	@Post @Path({"/agenda","/agenda/preagendar"})
 	public void adiciona(final Agendamento agendamento){
 		
-		validator.checking(getValidations(agendamento));
-		validator.onErrorForwardTo(this).cadastro();
+//		System.out.println("convenio:" + convenio);
+//		agendamento.setConvenio(convenio);
 		
+		System.out.println(agendamento);
+		validator.checking(getValidations(agendamento));
+//		validator.onErrorSendBadRequest();
+		validator.onErrorForwardTo(this).cadastro();
+//		System.out.println("AQui");
 		atribueConvenio(agendamento);
 		
 		daoAgendamento.adiciona(agendamento);
+		//result.use(Results.http()).body("url").setStatusCode(200);
+//		result.use(Results.status()).ok();
 		result.redirectTo(AgendamentosController.class).list();
 	}
 
@@ -226,6 +243,11 @@ public class AgendamentosController {
 	@Path("/agenda/confirmaAgendamento/{idAgendamento}")
 	public void confirmaAgendamento(Long idAgendamento){		
 		Agendamento agendamento = daoAgendamento.carrega(idAgendamento);
+		
+		PerfilUsuario usuario = userSession.getUsuario();
+		Funcionario funcionario = daoFuncionario.buscaPorPerfil(usuario);
+		
+		agendamento.setFuncionario(funcionario);
 		agendamento.confirmarPreAgendamento();
 		daoAgendamento.atualiza(agendamento);		
 		
@@ -247,16 +269,10 @@ public class AgendamentosController {
 	public void transferirHorario(Long idAgendamento, LocalDate novaData, LocalTime novaHora){
 		
 		Agendamento agendamento = daoAgendamento.carrega(idAgendamento);
-		System.out.println(agendamento);
 		agendamento.transferirHorario(novaData, novaHora);
-		System.out.println(agendamento);
 		daoAgendamento.atualiza(agendamento);
 		
 		result.use(Results.status()).accepted();
-		// carrega agendamento
-		// alterar data e hora.
-		// campo 'confirmado' = false
-		
 	}
 	
 	

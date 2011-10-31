@@ -67,7 +67,7 @@ public class Paciente extends Pessoa {
 
 	@Override
 	public String toString() {
-		return getId() + ":" + getNome() + ": " + getDataDeNascimento() + "- " + getPerfil();
+		return getId() + ":" + getNome() + ": " + getDataNascimento() + "- " + getPerfil();
 	}
 
 	public List<Agendamento> getAgendamentos() {

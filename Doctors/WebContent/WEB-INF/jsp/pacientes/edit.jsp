@@ -41,7 +41,7 @@
 			
 			<label for="dataNasc">Data
 				de Nascimento:</label> <input id="dataNasc" type="text"
-				name="paciente.dataDeNascimento" value="<fmt:formatDate value="${paciente.dataDeNascimento}" pattern="dd/MM/yyyy"/>" /> <br />
+				name="paciente.dataNascimento" value="${paciente.dataNascimento}" /> <br />
 				
 			<label for="login">Login:</label> <input id="login" type="text"
 				name="paciente.perfil.login" value="${paciente.perfil.login}" disabled="disabled"/><br />
@@ -93,6 +93,11 @@
 	<script type="text/javascript">
 		$('.btn-remover-convenio').live('click', function() {
 			$(this).parent().remove();
+		});
+		
+		$("#dataNasc").datepicker({
+			changeMonth:true,changeYear:true,yearRange:'-100,+0',
+			autoSize:true,dateFormat:'dd/mm/yy',maxDate: 0
 		});
 	
 		function hideConveniados(){
