@@ -64,7 +64,7 @@ public class NotificacoesController {
 	}
 
 	public Funcionario getFuncionarioLogado() {
-		return daoFuncionario.carregaPorPerfil(userSession.getUsuario());
+		return daoFuncionario.buscaPorPerfil(userSession.getUsuario());
 	}
 	
 	@Get

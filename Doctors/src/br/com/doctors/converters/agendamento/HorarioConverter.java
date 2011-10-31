@@ -23,39 +23,37 @@ public class HorarioConverter {
 		this.horarioFinal = parametros.getHoraFimAtendimento();
 	}
 	
-	
+	@SuppressWarnings("unchecked")
 	public List<HorarioJsonImpl> getAgenda(Long idMedico, LocalDate data){
 		
 		List<Agendamento> listAgendamentos = getAgendamentos(idMedico, data);
 		AgendaDoDia agenda = new AgendaDoDia(listAgendamentos, data);
 
-		AgendaJsonImpl<HorarioJsonImpl> agendaJson = converteParaAgendaJSon(agenda);
+		AgendaJson agendaJson = preencheAgendaJson(agenda, new AgendaJsonImpl(parametros, data));
 		
-		return agendaJson.getHorariosJSON();
+		return (List<HorarioJsonImpl>) agendaJson.getHorariosJSON();
 	}
 
 
-	private AgendaJsonImpl<HorarioJsonImpl> converteParaAgendaJSon(AgendaDoDia agenda ) {
+	@SuppressWarnings("unchecked")
+	public List<HorarioJsonSimples> getHorariosLivres(Long idMedico, LocalDate data){
 		
-		// parte que varia
-		AgendaJsonImpl<HorarioJsonImpl> agendaJson = new AgendaJsonImpl<HorarioJsonImpl>(parametros);
+		List<Agendamento> listAgendamentos = getAgendamentos(idMedico, data);
+		AgendaDoDia agenda = new AgendaDoDia(listAgendamentos,data);
 		
-		LocalDate data = agenda.getDataAgendamentos();
+		AgendaJson agendaLivres = preencheAgendaJson(agenda, new AgendaJsonHorariosLivres(parametros, data));
+		
+		return (List<HorarioJsonSimples>) agendaLivres.getHorariosJSON();
+	}
+
+
+	private AgendaJson preencheAgendaJson(AgendaDoDia agenda, AgendaJson agendaJson) {
+		
 		LocalTime horaAtual = getHoraInicioExpediente();
-		
 		while(estiverNoExpediente(horaAtual)){
 			
-			if (estaNoHorarioAlmoco(horaAtual)){
-				horaAtual = proximoHorario(horaAtual);
-				continue;
-			}
-			
-			// parte que varia
-			if (agenda.temAgendamentoEm(horaAtual)){
-				Agendamento agendamento = agenda.getAgendamento(horaAtual);
-				agendaJson.adicionaHorarioAgendado(horaAtual, agendamento);
-			} else {
-				agendaJson.adicionaHorarioLivre(data, horaAtual);				
+			if (!estaNoHorarioAlmoco(horaAtual)){
+				agendaJson.addHorario(agenda, horaAtual);
 			}
 			
 			horaAtual = proximoHorario(horaAtual);
@@ -63,47 +61,10 @@ public class HorarioConverter {
 		return agendaJson;
 	}
 
-
-
 	private List<Agendamento> getAgendamentos(Long idMedico, LocalDate data) {
 		return daoAgendamento.agendamentosPara(idMedico, data);
 	}
 	
-	public List<HorarioJsonSimples> getHorariosLivres(Long idMedico, LocalDate data){
-		List<Agendamento> listAgendamentos = getAgendamentos(idMedico, data);
-		
-		AgendaDoDia agenda = new AgendaDoDia(listAgendamentos,data);
-		
-		AgendaJSonHorariosLivres agendaLivres = converteParaAgendaLivre(agenda);
-		
-		return agendaLivres.getHorariosJson();
-	}
-
-
-	private AgendaJSonHorariosLivres converteParaAgendaLivre(AgendaDoDia agenda) {
-		// parte que varia
-		AgendaJSonHorariosLivres agendaLivres = new AgendaJSonHorariosLivres(parametros);
-		
-		LocalDate data = agenda.getDataAgendamentos();
-		LocalTime horaAtual = getHoraInicioExpediente();
-		while(estiverNoExpediente(horaAtual)){
-			
-			if (estaNoHorarioAlmoco(horaAtual)){
-				horaAtual = proximoHorario(horaAtual);
-				continue;
-			}
-			
-			// parte que varia
-			if (!agenda.temAgendamentoEm(horaAtual)){
-				agendaLivres.adicionaHorarioLivre(data, horaAtual);
-			}
-			
-			horaAtual = proximoHorario(horaAtual);
-		}
-		
-		return agendaLivres;
-	}
-
 	private LocalTime proximoHorario(LocalTime horaAtual) {
 		return parametros.proximaConsultaApos(horaAtual);
 	}
@@ -115,7 +76,6 @@ public class HorarioConverter {
 	private LocalTime getHoraInicioExpediente() {
 		return new LocalTime(horarioInicial);
 	}
-	
 
 	private boolean estaNoHorarioAlmoco(LocalTime horaAtual) {
 		return parametros.estaNoHorarioAlmoco(horaAtual);

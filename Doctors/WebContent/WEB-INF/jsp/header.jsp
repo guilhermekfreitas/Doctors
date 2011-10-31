@@ -6,9 +6,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<script type="text/javascript" src="<c:url value='/js/jquery.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
-<!-- <script type="text/javascript" src="<c:url value='/js/jquery.timers-1.2.js'/>"></script> -->
 <link rel="stylesheet"  type="text/css" href="<c:url value="/css/ui-lightness/jquery-ui-1.8.14.custom.css"/>"/>
 <style>
 	.item {
@@ -91,7 +88,7 @@
 			} 
 		});	
 		
-	},0);*/
+	},0);
 
 	$(".hidden").hide();
 	$(".button").button();
@@ -129,10 +126,8 @@
 			} 
 		});	
 	});
-	
-	$("#btnNovoCadastro").click(function(){
-		
-	});
+	*/
+	$("#btnNovoCadastro").button();
 </script>
 </body>
 </html>

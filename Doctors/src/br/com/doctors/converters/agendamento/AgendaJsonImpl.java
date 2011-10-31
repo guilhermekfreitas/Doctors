@@ -11,28 +11,40 @@ import org.joda.time.LocalTime;
 import br.com.doctors.modelo.agendamento.Agendamento;
 import br.com.doctors.modelo.util.ParametrosAgendamento;
 
-public class AgendaJsonImpl<T> {
-	private Map<LocalTime,T> mapaConvertidos;
+public class AgendaJsonImpl implements AgendaJson{
+	private Map<LocalTime,HorarioJsonImpl> mapaConvertidos;
 	private ParametrosAgendamento parametros;
-	
-	public AgendaJsonImpl(ParametrosAgendamento parametros) {
-		this.parametros = parametros; 
-		mapaConvertidos = new TreeMap<LocalTime,T>();
+	private LocalDate data;
+
+	public AgendaJsonImpl(ParametrosAgendamento parametros, LocalDate data) {
+		this.parametros = parametros;
+		this.data = data;
+		mapaConvertidos = new TreeMap<LocalTime,HorarioJsonImpl>();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public void adicionaHorarioAgendado(LocalTime horaConsulta, Agendamento agendamento){
+	public List<? extends HorarioJson> getHorariosJSON(){
+		return new ArrayList<HorarioJsonImpl>(mapaConvertidos.values());
+	}
+
+	@Override
+	public void addHorario(AgendaDoDia agenda, LocalTime horario) {
+		if (agenda.temAgendamentoEm(horario)){
+			Agendamento agendamento = agenda.getAgendamento(horario);
+			adicionaHorarioAgendado(agendamento);
+		} else {
+			adicionaHorarioLivre(horario);				
+		}
+	}
+
+	private void adicionaHorarioAgendado(Agendamento agendamento){
 		HorarioJsonImpl horarioJson = new HorarioJsonImpl(agendamento, parametros);
-		mapaConvertidos.put(horaConsulta, (T) horarioJson );
+		mapaConvertidos.put(agendamento.getHoraAgendamento(), horarioJson );
 	}
-	
-	@SuppressWarnings("unchecked")
-	public void adicionaHorarioLivre(LocalDate data, LocalTime horaConsulta){
+
+	private void adicionaHorarioLivre(LocalTime horaConsulta){
 		HorarioJsonImpl horarioJson = HorarioJsonImpl.criaHorarioLivre(data,horaConsulta, parametros);
-		mapaConvertidos.put(horaConsulta, (T) horarioJson );
+		mapaConvertidos.put(horaConsulta, horarioJson );
 	}
+
 	
-	public List<T> getHorariosJSON(){
-		return new ArrayList<T>(mapaConvertidos.values());
-	}
 }

@@ -1,16 +1,13 @@
 package br.com.doctors.modelo.administracao;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Date;
-
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.LocalDate;
 
 /**
  * 
@@ -26,8 +23,8 @@ public abstract class Pessoa {
 	private String endereco;
 	private String cpf;
 	private String email;
-	@Temporal(TemporalType.DATE)
-	private Date dataDeNascimento;
+	@Type(type="org.joda.time.contrib.hibernate.PersistentLocalDate")
+	private LocalDate dataNascimento;
 	
 	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}) @JoinColumn(name="perfil_id")
 	private PerfilUsuario perfil;
@@ -47,9 +44,6 @@ public abstract class Pessoa {
 	public String getEmail() {
 		return email;
 	}
-	public Date getDataDeNascimento() {
-		return dataDeNascimento;
-	}
 
 	public void setNome(String nome) {
 		this.nome = nome;
@@ -66,23 +60,18 @@ public abstract class Pessoa {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public void setDataDeNascimento(Date dataDeNascimento) {
-		this.dataDeNascimento = dataDeNascimento;
-	}
 
-	public void format(String date){
-		DateFormat df = DateFormat.getDateInstance();
-		try {
-			dataDeNascimento = df.parse(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-	}
 	public PerfilUsuario getPerfil() {
 		return perfil;
 	}
 	public void setPerfil(PerfilUsuario perfil) {
 		this.perfil = perfil;
+	}
+	public LocalDate getDataNascimento() {
+		return dataNascimento;
+	}
+	public void setDataNascimento(LocalDate dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 	
 }

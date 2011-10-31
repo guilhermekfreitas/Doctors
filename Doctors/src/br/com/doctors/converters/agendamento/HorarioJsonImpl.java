@@ -1,5 +1,8 @@
 package br.com.doctors.converters.agendamento;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -40,6 +43,10 @@ public class HorarioJsonImpl implements HorarioJson {
 		atributos.put("nomeMedico", verifica(agendamento.getMedico().getNome()));
 		atributos.put("idFuncionario", verifica((agendamento.getFuncionario()!= null ? agendamento.getFuncionario().getId() : "0")));
 		atributos.put("nomeFuncionario", verifica((agendamento.getFuncionario()!= null ? agendamento.getFuncionario().getNome() : "Ainda não foi confirmado")));
+		
+		LocalDate dataNascimento = agendamento.getPaciente().getDataNascimento() ;
+		String dataNascAsString = dataNascimento != null ? dataNascimento.toString(parametros.getDataFormatter()) : "";
+		atributos.put("dataNascimento", verifica(dataNascAsString));
 	}
 
 	private String geraHorario(ParametrosAgendamento parametros,

@@ -14,6 +14,7 @@
 <script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.14.custom.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jqgrid/js/grid.locale-pt-br.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/jqgrid/js/jquery.jqGrid.min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/doctors.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/logic-preagendar.js'/>"></script>
 <style>
 		div#lista {
@@ -35,8 +36,12 @@
 			<li>${error.category} - ${error.message}</li>
 		</c:forEach>
 	</ul>
+	
+	<div id="erros">
+		
+	</div>
 
-	<form name="form" action="<c:url value="/agenda"/>" method="post">
+	<form id="form" name="form" action="<c:url value="/agenda"/>" method="post">
 		<fieldset>
 			<legend>Adicionar Agendamento:</legend>
 			<input type="hidden" name="agendamento.paciente.id" value="${paciente.id}"/>
@@ -71,12 +76,13 @@
 			 </table>
 			<div id="dadosHorario">
 			<fieldset > <legend>Horário de Agendamento:</legend>
+			<div id="horario">
 			<input id="horaAgendamento" type="hidden"
 				name="agendamento.horaAgendamento" value='${agendamento.horaAgendamento}'/><br /> 
+			</div>
 			
 			<input id="dataAgendamento" type="hidden"
 				name="agendamento.dataAgendamento" value='<joda:format value="${agendamento.dataAgendamento}"/>'/><br /> 
-			
 			</fieldset>
 				
 			</div>
@@ -95,6 +101,7 @@
 			</div>
 		</fieldset>
 	</form>
-		
+	<div id="result">
+	</div>
 </body>
 </html>

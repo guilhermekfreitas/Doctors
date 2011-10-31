@@ -17,9 +17,10 @@ $(document).ready(function(){
 	   						this.data = registro.data;
 	   						this.horario = registro.horario;
 	   						this.nomeConvenio = registro.convenio;
-	   						this.nomeFuncionario = registro.funcionario;
+	   						this.nomeFuncionario = registro.nomeFuncionario;
 	   						this.paciente.id = registro.idPaciente,
 	   						this.paciente.nome = registro.nomePaciente;
+	   						this.paciente.dataNasc = registro.dataNascimento;
 	   						this.medico.id = registro.idMedico;
 	   						this.medico.nome = registro.nomeMedico;
 	   					},
@@ -46,7 +47,7 @@ $(document).ready(function(){
 				},
 				getPostData: function() {
 					return {
-						idPaciente: $("#idPaciente").val(), 
+						idPaciente: MYAPP.agendamento.paciente.id, 
 						idMedico: $("#idMedico").val(), 
 						dataInicial: $("#dataInicial").val(), 
 						dataFinal: $("#dataFinal").val()
@@ -174,11 +175,9 @@ $(document).ready(function(){
 		});
 		
 		$( "#btnTransferir" ).click(function(){
-			//alert("Falta implementar");
 			
-			// busca horários disponíveis para aquele médico.
 			$("#novaData").datepicker({
-				autoSize:true,dateFormat:'dd/mm/yy', minDate: 0, maxDate: "+2M", onSelect: function(dateText, inst){
+				autoSize:true,dateFormat:'dd/mm/yy', beforeShowDay: $.datepicker.noWeekends, minDate: 0, maxDate: "+2M", onSelect: function(dateText, inst){
 					
 					$("#horariosList").recarregaGrid({
 						postData:  {idMedico: MYAPP.agendamento.medico.id,data: dateText},
@@ -298,7 +297,7 @@ $(document).ready(function(){
 			   	mtype: 'POST',
 			   	postData: {idMedico: $("#medicos").val(), data: $("#calendario").attr("value")},
 				datatype: "json",
-			   	colNames:['ID do Agendamento','Data','Horário','','Nome do Paciente', 'Status','Convenio','','Médico','','Funcionário'],
+			   	colNames:['ID do Agendamento','Data','Horário','','Nome do Paciente', 'Status','Convenio','','Médico','','',''],
 			   	colModel:[
 					{name:'idAgendamento',index:'idAgendamento',hidden:true, width:60},
 					{name:'data',index:'data',hidden:true, width:60},
@@ -310,19 +309,22 @@ $(document).ready(function(){
 			   		{name:'idMedico',index:'idMedico',hidden:true, width:60},
 			   		{name:'nomeMedico',index:'medico',hidden:true, width:50, align:"right"},
 			   		{name:'idFuncionario',index:'idFuncionario',hidden:true, width:60},
-			   		{name:'nomeFuncionario',index:'funcionario',hidden:true, width:50, align:"right"}
+			   		{name:'nomeFuncionario',index:'nomeFuncionario',hidden:true, width:50, align:"right"},
+			   		{name:'dataNascimento',index:'dataNascimento',hidden:true, width:50, align:"right"}
 			   	],
 			   	onSelectRow: function(id){
 			   		
 				   	var registro = $("#agendamentos").jqGrid('getRowData',id);
 				   	
-				   	if (registro.status !== "Cancelado" && registro.status !== "Livre"){
+				   	if (registro.status !== "Cancelado" && registro.status !== "Livre" && registro.status !== "Finalizado"){
 				   		
 				   		MYAPP.agendamento.carrega(registro);
 				   		MYAPP.agendamento.habilitaTodos();
 				   		debug();
 				   		
 				   		var dados = MYAPP.agendamento;
+				   		
+				   		console.log(dados.paciente.nome);
 				   		
 				   		$("#idAgendamento").text(dados.id);
 				   		$("#nomePaciente").text(dados.paciente.nome);
@@ -332,6 +334,9 @@ $(document).ready(function(){
 				   		$("#nomeConvenio").text(dados.nomeConvenio);
 				   		$("#nomeFuncionario").text(dados.nomeFuncionario);
 				   		$("#idPaciente").text(dados.paciente.id);
+				   		$('label[class="nomePaciente"]').text(dados.paciente.nome);
+				   		$('label[class="dataNascimento"]').text(dados.paciente.dataNasc);
+				   		$('input[class="idPaciente"]').text(dados.paciente.id);
 				   		
 				   		if (registro.status == "Confirmado"){
 				   			MYAPP.agendamento.desabilita("#btnConfirmar");
@@ -388,7 +393,7 @@ $(document).ready(function(){
 		});		
 		
 		$( "#calendario").datepicker({
-			autoSize:true,dateFormat:'dd/mm/yy', minDate: 0, maxDate: "+2M", onSelect: function(dateText, inst){
+			autoSize:true,dateFormat:'dd/mm/yy', beforeShowDay: $.datepicker.noWeekends, minDate: 0, maxDate: "+2M", onSelect: function(dateText, inst){
 				atualizaGrid();
 			}});	
 		
@@ -457,9 +462,29 @@ $(document).ready(function(){
 		buttonImage: "img/calendar.png",
 		buttonImageOnly: true});
 	
+	var dates = $( "#dataInicial, #dataFinal" ).datepicker({
+		dateFormat: 'dd/mm/yy',
+		maxDate: 0,
+		defaultDate: "-1m",
+		changeMonth: true,
+		numberOfMonths: 1,
+		onSelect: function( selectedDate ) {
+			var option = this.id == "dataInicial" ? "minDate" : "maxDate",
+				instance = $( this ).data( "datepicker" ),
+				date = $.datepicker.parseDate(
+					instance.settings.dateFormat ||
+					$.datepicker._defaults.dateFormat,
+					selectedDate, instance.settings );
+			dates.not( this ).datepicker( "option", option, date );
+		}
+	});
+	
 	$("#lista-resultados").hide();
 
 	$( "#historico" ).button().click(function() {
+		
+		console.log(MYAPP.agendamento.paciente.id);
+		$("#idPaciente").text(MYAPP.agendamento.paciente.id);
 		$( "#historico-busca" ).dialog({
 			autoOpen: false,
 			closeOnEscape: false,
@@ -472,52 +497,51 @@ $(document).ready(function(){
 				}
 			}
 		});
-		$("#nomePaciente").attr("value",MYAPP.agendamento.paciente.nome);
-				$( "#historico-busca").dialog("open");
+		$("#nomeDoPaciente").attr("value",MYAPP.agendamento.paciente.nome);
 		
-		$("#btn-consultaHist").click(function(){
-			
-			jQuery("#lista-resultados").jqGrid({
-			   	url: MYAPP.historico.url,
-			   	mtype: 'POST',
-				postData: MYAPP.historico.getPostData(),
-				datatype: "json",
-			   	colNames:['Data','Médico'],
-			   	colModel:[
-					{name:'data',index:'data',width:60,sortable:false},
-			   		{name:'nomeMedico',index:'nomeMedico',width:50,sortable:false, align:"right"},
-			   	],
-			   	onSelectRow: function(id){
-					alert("selecionou");		
-			   	},
-			   	rowNum:10,
-			   	rowList:[10],
-			    viewrecords: true,
-			    width: 200,
-			    height: 200,
-			    caption: MYAPP.historico.showCaption(),
-			    jsonReader : {
-		     		root: "rows",
-		     		page: "page",
-		     		total: "total",
-		    		records: "records",
-		   		    repeatitems: true,
-		   		    cell: "cells",
-		   		    id: "id",
-		   		    userdata: "userdata",
-		   		    subgrid: {root:"rows", 
-		    		    repeatitems: true, 
-		    	         cell:"cells"
-		             }}
-			});
-
-			$("#lista-resultados").recarregaGrid({
-				postData: MYAPP.historico.getPostData(),
-				caption : MYAPP.historico.showCaption()
-			});
+		$( "#historico-busca").dialog("open");
+	});
+	
+	$("#btn-consultaHist").click(function(){
+		
+		jQuery("#lista-resultados").jqGrid({
+		   	url: MYAPP.historico.url,
+		   	mtype: 'POST',
+			postData: MYAPP.historico.getPostData(),
+			datatype: "json",
+		   	colNames:['Data','Médico'],
+		   	colModel:[
+				{name:'data',index:'data',width:60,sortable:false},
+		   		{name:'nomeMedico',index:'nomeMedico',width:50,sortable:false, align:"right"},
+		   	],
+		   	onSelectRow: function(id){
+				alert("selecionou");		
+		   	},
+		   	rowNum:10,
+		   	rowList:[10],
+		    viewrecords: true,
+		    width: 200,
+		    height: 200,
+		    caption: MYAPP.historico.showCaption(),
+		    jsonReader : {
+	     		root: "rows",
+	     		page: "page",
+	     		total: "total",
+	    		records: "records",
+	   		    repeatitems: true,
+	   		    cell: "cells",
+	   		    id: "id",
+	   		    userdata: "userdata",
+	   		    subgrid: {root:"rows", 
+	    		    repeatitems: true, 
+	    	         cell:"cells"
+	             }}
 		});
-		
-		
+
+		$("#lista-resultados").recarregaGrid({
+			postData: MYAPP.historico.getPostData(),
+			caption : MYAPP.historico.showCaption()
+		});
 	});
 	
 	function debug(param){

@@ -8,6 +8,7 @@ import java.util.Set;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.joda.time.LocalDate;
 
 import br.com.doctors.dao.administracao.ConvenioDao;
 import br.com.doctors.modelo.administracao.Convenio;
@@ -26,7 +27,7 @@ public class AdicionaPaciente {
 		Paciente p = new Paciente();
 		p.getPerfil().setLogin("guilhermekfreitas");
 		p.setCpf("06526257976");
-		p.setDataDeNascimento(new Date());
+		p.setDataNascimento(new LocalDate());
 		p.setEmail("email@email.com");
 		p.setEndereco("endereco");
 		
