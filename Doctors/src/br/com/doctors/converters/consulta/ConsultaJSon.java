@@ -6,6 +6,7 @@ import java.util.Map;
 import org.joda.time.format.DateTimeFormatter;
 
 import br.com.doctors.modelo.agendamento.Agendamento;
+import br.com.doctors.modelo.consultas.Consulta;
 import br.com.doctors.modelo.util.ParametrosAgendamento;
 import br.com.doctors.util.json.JSONObject;
 
@@ -27,6 +28,13 @@ public class ConsultaJSon implements JSONObject{
 		DateTimeFormatter dataFormatter = parametros.getDataFormatter();
 		addAtributo("data", agendamento.getDataAgendamento().toString(dataFormatter));
 		addAtributo("nomeMedico", agendamento.getMedico().getNome());
+		
+		Consulta consulta = agendamento.getConsulta();
+		addAtributo("queixaPrincipal", consulta.getQueixaPrincipal());
+		addAtributo("observacoes", consulta.getObservacoes());
+		
+		DocumentoConverter docConverter = new DocumentoConverter();
+		addAtributo("documentos", docConverter.converte(consulta.getDocumentos()));
 	}
 
 	private void addAtributo(String nomeAtributo, String valorAtributo) {

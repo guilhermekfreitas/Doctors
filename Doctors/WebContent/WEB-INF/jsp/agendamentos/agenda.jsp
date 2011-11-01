@@ -56,12 +56,20 @@
 			margin-bottom:12px; width:95%; padding: .4em; 
 		}
 		div#divresultados {
-			float:right;
+			float: left;
+			width: 25%;
+		}
+		div#divdetalhescons {
+			float: right;
 			width: 75%;
 		}
-		div#divhistorico {
+		.direita {
+			float:right;
+			width: 30%;
+		}
+		.esquerda {
 			float:left;
-			width: 25%;
+			width: 70%;
 		}
 </style>
 </head>
@@ -196,15 +204,42 @@
 				<br /><input type="text" id="idPaciente" class="idPaciente"/> 
 				<br /><button id="btn-consultaHist" class="button" >Buscar Históricos</button>
 			</div>
-			<div id="divresultados">
-				<table id="lista-resultados"></table>
-			</div>
 			<div id="divhistorico">
+				<div id="divresultados">
+					<table id="listaResultados"></table>
+				</div>
+				<div id="divdetalhescons">
+					<fieldset>
+					<div class="esquerda">
+						<h3>Queixa Principal:</h3>
+						<textarea name="queixaPrincipal" rows="12" cols="80" disabled="disabled">Modelo de Documento aqui?</textarea><br/>
+						<h3>Observações:</h3>
+						<textarea name="observacoes" rows="4" cols="80" disabled="disabled">[Observações da Consulta]</textarea>
+				    </div>
+				    <div class="direita">
+				    	<h2>Lista de Relatórios Emitidos:</h2><br />
+						<table class="documentos ui-widget ui-widget-content">
+							<thead>
+								<tr class="ui-widget-header ">
+									<th>Tipo              </th>
+									<th>Ações</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr><td>Atestado</td><td><button id="edit" class="button">Editar</button></td><tr>
+								<tr><td>Receita Médica</td><td><button id="edit" class="button">Editar</button></td><tr>
+								<tr><td>Solicitação de Exame</td><td><button id="edit" class="button">Editar</button></td><tr>
+							</tbody>
+						</table>
+				    </div>
+				    </fieldset>
+				</div>
 			</div>
 		</div>
 		
 	</div>
 	
+		
 	<div id="impressao" class="hidden"></div>
 </body>
 </html>

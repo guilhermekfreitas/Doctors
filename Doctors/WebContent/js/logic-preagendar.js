@@ -4,7 +4,7 @@ $(document).ready(function(){
 		$("#agenda").hide();
 
 		$( "#calendar").datepicker({
-			autoSize:true,dateFormat:'dd/mm/yy', minDate: 0, maxDate: "+2M", onSelect: function(dateText, inst){
+			autoSize:true,dateFormat:'dd/mm/yy', beforeShowDay: $.datepicker.noWeekends, minDate: 0, maxDate: "+2M", onSelect: function(dateText, inst){
 				
 				atualizaCampoData(dateText);
 				//$("#dataAgendamento").attr("value", dateText);

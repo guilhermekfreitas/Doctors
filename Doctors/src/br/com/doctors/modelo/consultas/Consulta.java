@@ -1,5 +1,6 @@
 package br.com.doctors.modelo.consultas;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -111,6 +112,14 @@ public class Consulta {
 	public String toString() {
 		return String.format("Queixa:%s,Obs:%s,Agendamento:%s,Atestados:%s,Exames:%s,Receitas:%s", 
 				queixaPrincipal, observacoes, agendamento, atestados, exames, receitas);
+	}
+
+	public List<Documento> getDocumentos(){
+		List<Documento> list = new ArrayList<Documento>();
+		list.addAll(atestados);
+		list.addAll(receitas);
+		list.addAll(exames);
+		return list;
 	}
 	
 }

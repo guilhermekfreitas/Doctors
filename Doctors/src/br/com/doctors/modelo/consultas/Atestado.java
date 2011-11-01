@@ -39,5 +39,10 @@ public class Atestado extends Documento {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	@Override
+	public String getTipo() {
+		return "Atestado";
+	}
 	
 }

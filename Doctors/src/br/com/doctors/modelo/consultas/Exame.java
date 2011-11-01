@@ -36,4 +36,9 @@ public class Exame extends Documento {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	@Override
+	public String getTipo() {
+		return "Exame";
+	}
 }

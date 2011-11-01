@@ -478,7 +478,7 @@ $(document).ready(function(){
 		}
 	});
 	
-	$("#lista-resultados").hide();
+	$("#divhistorico").hide();
 
 	$( "#historico" ).button().click(function() {
 		
@@ -487,8 +487,8 @@ $(document).ready(function(){
 		$( "#historico-busca" ).dialog({
 			autoOpen: false,
 			closeOnEscape: false,
-			height: 370,
-			width: 600,
+			height: 500,
+			width: 850,
 			modal: true,
 			buttons: {
 				"Fechar": function() {
@@ -503,18 +503,40 @@ $(document).ready(function(){
 	
 	$("#btn-consultaHist").click(function(){
 		
-		jQuery("#lista-resultados").jqGrid({
+		$("#divhistorico").show();
+		jQuery("#listaResultados").jqGrid({
 		   	url: MYAPP.historico.url,
 		   	mtype: 'POST',
 			postData: MYAPP.historico.getPostData(),
 			datatype: "json",
-		   	colNames:['Data','Médico'],
+		   	colNames:['Data', 'Médico', '','',''],
 		   	colModel:[
 				{name:'data',index:'data',width:60,sortable:false},
-		   		{name:'nomeMedico',index:'nomeMedico',width:50,sortable:false, align:"right"},
+		   		{name:'nomeMedico',index:'nomeMedico',width:50,sortable:false, align:"right"}, 
+		   		{name:'queixaPrincipal',index:'queixaPrincipal',hidden:true,width:50,sortable:false, align:"right"},
+		   		{name:'observacoes',index:'observacoes',hidden:true,width:50,sortable:false, align:"right"},
+		   		{name:'documentos',index:'documentos',hidden:true,width:50,sortable:false, align:"right"},
 		   	],
 		   	onSelectRow: function(id){
-				alert("selecionou");		
+		   		
+		   		var registro = $("#listaResultados").jqGrid('getRowData',id);
+		   		
+		   		$('textarea[name="queixaPrincipal"]').text(registro.queixaPrincipal);
+		   		$('textarea[name="observacoes"]').text(registro.observacoes);
+		   		
+		   		// adicionar documentos em var global
+		   		var documentos = $.parseJSON(registro.documentos);
+		   		
+		   		$(".documentos > tbody tr").remove();
+		   		for (var i in documentos){
+		   			console.log(documentos[i]);
+		   			var doc = documentos[i];
+		   			$(".documentos > tbody").append("<tr><td>" + 
+							doc.tipo + "</td><td><button type='button' class='button'>Editar</button></td></tr>");
+		   		}
+		   		
+		   		console.log(documentos);
+		   		console.log(registro.documentos);
 		   	},
 		   	rowNum:10,
 		   	rowList:[10],
@@ -537,10 +559,10 @@ $(document).ready(function(){
 	             }}
 		});
 
-		$("#lista-resultados").recarregaGrid({
+		$("#listaResultados").recarregaGrid({
 			postData: MYAPP.historico.getPostData(),
 			caption : MYAPP.historico.showCaption()
-		});
+		}); 
 	});
 	
 	function debug(param){

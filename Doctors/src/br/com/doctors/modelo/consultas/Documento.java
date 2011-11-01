@@ -20,6 +20,8 @@ public abstract class Documento {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+	
+	public abstract String getTipo();
 
 	@Override
 	public String toString() {

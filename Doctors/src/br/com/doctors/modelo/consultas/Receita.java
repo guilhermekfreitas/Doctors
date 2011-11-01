@@ -40,4 +40,9 @@ public class Receita extends Documento {
 		this.id = id;
 	}
 
+	@Override
+	public String getTipo() {
+		return "Receita";
+	}
+
 }
