@@ -42,6 +42,7 @@ $(document).ready(function(){
 				};
 		MYAPP.historico = {
 				url: 'consulta/consultarHistorico',
+				documentos: [],
 				showCaption: function() {
 					return "Resultados da busca";
 				},
@@ -67,27 +68,19 @@ $(document).ready(function(){
 					this.total++;
 					switch(tipo){
 						case "exame":
-							this.add(this.exames,documento,tipo);
+							this.add(this.exames,documento,tipo,"Solicitação de Exame");
 							this.show(this.atestados);
 							break;
 						case "atestado":
-							this.add(this.atestados,documento,tipo);
+							this.add(this.atestados,documento,tipo,"Atestado");
 							this.show(this.atestados);
 							break;
 						case "receita":
-							this.add(this.receitas,documento,tipo);
+							this.add(this.receitas,documento,tipo,"Receita Médica");
 							this.show(this.receitas);
 							break;
 					}
 					
-//					var indice = this.documentos.length;
-//					// adiciona na div (dados + botao)
-//					$("#list-documentos > tbody").append("<tr><td>" + (indice+1) + "</td><td>" + tipo + "</td><td>editar</td></tr>");
-//					$("#consulta-form").append($('<input>',{
-//						name: 'consulta.' + tipo + 's[' + indice + '].descricao',
-//						value: documento
-//					}));
-//					this.documentos.push(documento);
 				},
 				showDocumentos : function(){
 						for (var i in this.documentos){
@@ -99,12 +92,24 @@ $(document).ready(function(){
 							console.log(array[i]);
 						}
 				},
-				add: function(array,documento,tipo){
+				add: function(array,documento,tipo,descricao){
 						var indice = array.length;
-						$("#list-documentos > tbody").append("<tr><td>" + this.total + "</td><td>" + 
-															tipo + "</td><td><button type='button' class='button'>Editar</button></td></tr>");
+						var $btn = $("<button type='button' name:'editDoc'+indice class:'button'>Editar</button>").button().click(function(){
+							var doc = {
+									descricao: array[indice],
+									tipo: tipo
+							};
+							editarDocumento(doc,"Editar " + tipo, function(novaDescricao){
+								array[indice] = novaDescricao;
+								var nomeInput = 'consulta.' + tipo + 's[' + indice + '].descricao';
+								$('input[name="'+nomeInput+'"]').attr("value", novaDescricao);
+							});
+						});
+						var $tr = $("<tr>").append("<td>"+this.total).append("<td>"+descricao).append($btn);
+						$("#list-documentos > tbody").append($tr);
 						$("#consulta-form").append($('<input>',{
 							name: 'consulta.' + tipo + 's[' + indice + '].descricao',
+							type: 'hidden',
 							value: documento
 						}));
 						array.push(documento);
@@ -527,13 +532,27 @@ $(document).ready(function(){
 		   		// adicionar documentos em var global
 		   		var documentos = $.parseJSON(registro.documentos);
 		   		
+		   		MYAPP.historico.documentos = documentos;
+		   		
 		   		$(".documentos > tbody tr").remove();
 		   		for (var i in documentos){
 		   			console.log(documentos[i]);
 		   			var doc = documentos[i];
-		   			$(".documentos > tbody").append("<tr><td>" + 
-							doc.tipo + "</td><td><button type='button' class='button'>Editar</button></td></tr>");
+		   			var $btn = $("<button type='button' class:'button'>Visualizar</button>").button().click(function(){
+//		   				var document = {
+//		   						descricao: doc.descricao
+//		   				};
+		   				console.log(i);
+		   				visualizarDocumento(i);
+		   			});
+		   			var $tr = $("<tr>").append("<td>"+doc.tipo).append($btn);
+		   			$(".documentos > tbody").append($tr);
+		   			
+		   			
+		   			//$(".documentos > tbody").append("<tr><td>" + 
+					//		doc.tipo + "</td><td><button type='button' class='button'>Editar</button></td></tr>");
 		   		}
+		   		
 		   		
 		   		console.log(documentos);
 		   		console.log(registro.documentos);
@@ -559,10 +578,12 @@ $(document).ready(function(){
 	             }}
 		});
 
+		var top_rowid = $('#listaResultados tr:nth-child(2)').attr('id'); 
 		$("#listaResultados").recarregaGrid({
 			postData: MYAPP.historico.getPostData(),
 			caption : MYAPP.historico.showCaption()
 		}); 
+		$("#listaResultados").setSelection(top_rowid);
 	});
 	
 	function debug(param){
@@ -614,6 +635,49 @@ $(document).ready(function(){
 		});
 		$( "#documento-form").dialog("open");
 	}
+	
+	function editarDocumento(documento,titulo,fctSalvar){
+		$("#documento-info").attr("value",documento.descricao);
+		$("#documento-info").attr("option","disabled",true);
+		$( "#documento-form" ).dialog({
+			autoOpen: false,
+			closeOnEscape: false,
+			title: titulo,
+			height: 400,
+			width: 600,
+			modal: true,
+			buttons: {
+				"Salvar": function() {
+					var documento = $("#documento-info").val();
+					fctSalvar(documento);
+					$( this ).dialog( "close" );
+				},"Fechar": function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+		$( "#documento-form").dialog("open");
+	}
+	
+	function visualizarDocumento(indice){
+		$("#documento-info").attr("value",MYAPP.historico.documentos[indice].descricao);
+		$("#documento-info").attr("option","disabled","disabled");
+		$( "#documento-form" ).dialog({
+			autoOpen: false,
+			closeOnEscape: false,
+			title: "Visualizar Documento",
+			height: 400,
+			width: 600,
+			modal: true,
+			buttons: {
+				"Fechar": function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+		$( "#documento-form").dialog("open");
+	}
+	
 	
 	function exibeMsgSucesso(config){
 		$("#mensagem").empty().append(config.mensagem);

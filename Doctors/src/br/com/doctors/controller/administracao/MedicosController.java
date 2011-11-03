@@ -12,6 +12,7 @@ import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.validator.Validations;
+import br.com.caelum.vraptor.view.Results;
 import br.com.doctors.dao.administracao.ConvenioDao;
 import br.com.doctors.dao.administracao.MedicoDao;
 import br.com.doctors.dao.administracao.MedicoDao;
@@ -114,5 +115,11 @@ public class MedicosController {
 		Medico medico = daoMedico.carrega(id);
 		daoMedico.remove(medico);
 		result.redirectTo(MedicosController.class).list();
+	}
+	
+	@Get @Path({"/medicos/carregar.json"})
+	public void carregaTodosJSon(){ 
+//		result.include("medicos", daoMedico.listaTudo());
+		result.use(Results.json()).from(daoMedico.listaTudo(),"medicos");
 	}
 }

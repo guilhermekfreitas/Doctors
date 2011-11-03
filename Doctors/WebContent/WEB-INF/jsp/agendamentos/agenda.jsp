@@ -164,9 +164,6 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr><td>1</td><td>Atestado</td><td><button id="edit" class="button">Editar</button></td><tr>
-								<tr><td>1</td><td>Receita Médica</td><td><button id="edit" class="button">Editar</button></td><tr>
-								<tr><td>1</td><td>Solicitação de Exame</td><td><button id="edit" class="button">Editar</button></td><tr>
 							</tbody>
 						</table>
 				</div>
@@ -201,7 +198,6 @@
 								</c:forEach>
 							</select></td></tr>
 				</table>
-				<br /><input type="text" id="idPaciente" class="idPaciente"/> 
 				<br /><button id="btn-consultaHist" class="button" >Buscar Históricos</button>
 			</div>
 			<div id="divhistorico">
@@ -226,9 +222,6 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr><td>Atestado</td><td><button id="edit" class="button">Editar</button></td><tr>
-								<tr><td>Receita Médica</td><td><button id="edit" class="button">Editar</button></td><tr>
-								<tr><td>Solicitação de Exame</td><td><button id="edit" class="button">Editar</button></td><tr>
 							</tbody>
 						</table>
 				    </div>
